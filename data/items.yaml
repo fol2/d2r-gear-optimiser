@@ -1,0 +1,1389 @@
+# D2R Base Item Types
+# Base items that can receive runewords, be found as uniques/sets, or are commonly used
+# in endgame builds. Focused on items relevant to Warlock and caster builds.
+#
+# Sources: Arreat Summit, diablo.fandom.com, community-verified data.
+#
+# Schema notes:
+#   - base_defense: [min, max] range for armour/shields
+#   - base_damage: [min, max] range for weapons (one-hand or two-hand as noted)
+#   - base_block: block chance before class modifier (Amazon/Assassin/Barbarian base)
+#   - speed: weapon speed modifier (negative = faster)
+#   - item_category: maps to runewords.yaml base_types
+#
+# Category mapping to runewords.yaml abstract base_types:
+#   "weapon"       → any weapon category (sword, axe, mace, hammer, etc.)
+#   "melee_weapon" → any melee weapon (sword, axe, mace, hammer, scepter, etc.)
+#   "club"         → subset of mace category (clubs are mace-class in D2R)
+
+base_items:
+
+  # ============================================================
+  # SHIELDS
+  # ============================================================
+
+  # --- Normal Shields ---
+
+  - name: "Buckler"
+    slot: shield
+    item_category: shield
+    max_sockets: 1
+    required_str: 12
+    required_dex: 0
+    required_level: 1
+    base_defense: [4, 6]
+    base_block: 45
+    speed: 0
+
+  - name: "Small Shield"
+    slot: shield
+    item_category: shield
+    max_sockets: 2
+    required_str: 22
+    required_dex: 0
+    required_level: 1
+    base_defense: [8, 10]
+    base_block: 45
+    speed: 0
+
+  - name: "Kite Shield"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 47
+    required_dex: 0
+    required_level: 1
+    base_defense: [16, 18]
+    base_block: 45
+    speed: 10
+
+  - name: "Tower Shield"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 75
+    required_dex: 0
+    required_level: 1
+    base_defense: [22, 25]
+    base_block: 50
+    speed: 10
+
+  - name: "Gothic Shield"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 60
+    required_dex: 0
+    required_level: 1
+    base_defense: [30, 35]
+    base_block: 50
+    speed: 10
+
+  - name: "Bone Shield"
+    slot: shield
+    item_category: shield
+    max_sockets: 2
+    required_str: 25
+    required_dex: 0
+    required_level: 1
+    base_defense: [10, 10]
+    base_block: 40
+    speed: 0
+
+  # --- Exceptional Shields ---
+
+  - name: "Grim Shield"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 58
+    required_dex: 0
+    required_level: 25
+    base_defense: [50, 60]
+    base_block: 50
+    speed: 0
+
+  - name: "Ancient Shield"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 110
+    required_dex: 0
+    required_level: 25
+    base_defense: [80, 93]
+    base_block: 50
+    speed: 10
+
+  # --- Elite Shields ---
+
+  - name: "Monarch"
+    slot: shield
+    item_category: shield
+    max_sockets: 4
+    required_str: 156
+    required_dex: 0
+    required_level: 54
+    base_defense: [133, 148]
+    base_block: 52
+    speed: 0
+    notes: "Only non-paladin shield with 4 sockets. Required for Spirit shield."
+
+  - name: "Aegis"
+    slot: shield
+    item_category: shield
+    max_sockets: 4
+    required_str: 219
+    required_dex: 0
+    required_level: 59
+    base_defense: [145, 161]
+    base_block: 52
+    speed: 10
+
+  - name: "Ward"
+    slot: shield
+    item_category: shield
+    max_sockets: 4
+    required_str: 185
+    required_dex: 0
+    required_level: 63
+    base_defense: [153, 170]
+    base_block: 55
+    speed: 10
+
+  - name: "Troll Nest"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 106
+    required_dex: 0
+    required_level: 57
+    base_defense: [158, 173]
+    base_block: 56
+    speed: 0
+
+  - name: "Blade Barrier"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 118
+    required_dex: 0
+    required_level: 51
+    base_defense: [147, 163]
+    base_block: 48
+    speed: 0
+
+  - name: "Luna"
+    slot: shield
+    item_category: shield
+    max_sockets: 3
+    required_str: 100
+    required_dex: 0
+    required_level: 45
+    base_defense: [108, 120]
+    base_block: 48
+    speed: 0
+
+  # --- Paladin Shields ---
+
+  - name: "Sacred Targe"
+    slot: shield
+    item_category: paladin_shield
+    max_sockets: 4
+    required_str: 86
+    required_dex: 0
+    required_level: 47
+    base_defense: [126, 158]
+    base_block: 60
+    speed: -10
+    notes: "Paladin-only. Can spawn with +45 all resist automod."
+
+  - name: "Sacred Rondache"
+    slot: shield
+    item_category: paladin_shield
+    max_sockets: 4
+    required_str: 109
+    required_dex: 0
+    required_level: 47
+    base_defense: [138, 164]
+    base_block: 58
+    speed: 0
+    notes: "Paladin-only. Can spawn with +45 all resist automod."
+
+  - name: "Kurast Shield"
+    slot: shield
+    item_category: paladin_shield
+    max_sockets: 4
+    required_str: 124
+    required_dex: 0
+    required_level: 47
+    base_defense: [154, 172]
+    base_block: 55
+    speed: 0
+    notes: "Paladin-only. Can spawn with +45 all resist automod."
+
+  - name: "Zakarum Shield"
+    slot: shield
+    item_category: paladin_shield
+    max_sockets: 4
+    required_str: 142
+    required_dex: 0
+    required_level: 47
+    base_defense: [169, 193]
+    base_block: 52
+    speed: 10
+    notes: "Paladin-only. Can spawn with +45 all resist automod."
+
+  - name: "Vortex Shield"
+    slot: shield
+    item_category: paladin_shield
+    max_sockets: 4
+    required_str: 148
+    required_dex: 0
+    required_level: 47
+    base_defense: [182, 225]
+    base_block: 49
+    speed: 10
+    notes: "Paladin-only. Highest defense paladin shield. Can spawn with +45 all resist automod."
+
+  # --- Necromancer Shields (Shrunken Heads) ---
+
+  - name: "Hierophant Trophy"
+    slot: shield
+    item_category: necromancer_shield
+    max_sockets: 2
+    required_str: 58
+    required_dex: 0
+    required_level: 42
+    base_defense: [58, 70]
+    base_block: 72
+    notes: "Necromancer-only shrunken head. Can spawn with +3 to Necromancer skill tree automods."
+
+  - name: "Bloodlord Skull"
+    slot: shield
+    item_category: necromancer_shield
+    max_sockets: 2
+    required_str: 106
+    required_dex: 0
+    required_level: 63
+    base_defense: [103, 148]
+    base_block: 72
+    notes: "Necromancer-only. Elite shrunken head. Can spawn with +3 to Necromancer skill tree automods."
+
+  - name: "Succubus Skull"
+    slot: shield
+    item_category: necromancer_shield
+    max_sockets: 2
+    required_str: 95
+    required_dex: 0
+    required_level: 60
+    base_defense: [95, 113]
+    base_block: 68
+    notes: "Necromancer-only. Elite shrunken head."
+
+  # ============================================================
+  # BODY ARMOUR
+  # ============================================================
+
+  # --- Exceptional Body Armour ---
+
+  - name: "Mage Plate"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 55
+    required_dex: 0
+    required_level: 25
+    base_defense: [225, 261]
+    notes: "Low strength requirement makes this popular for caster builds."
+
+  - name: "Serpentskin Armor"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 43
+    required_dex: 0
+    required_level: 25
+    base_defense: [111, 126]
+    notes: "Base for Skin of the Vipermagi."
+
+  - name: "Russet Armor"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 97
+    required_dex: 0
+    required_level: 25
+    base_defense: [225, 243]
+    notes: "Base for Skullder's Ire."
+
+  - name: "Mesh Armor"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 92
+    required_dex: 0
+    required_level: 25
+    base_defense: [198, 213]
+
+  - name: "Cuirass"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 65
+    required_dex: 0
+    required_level: 25
+    base_defense: [188, 202]
+
+  # --- Elite Body Armour ---
+
+  - name: "Dusk Shroud"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 77
+    required_dex: 0
+    required_level: 49
+    base_defense: [361, 467]
+    notes: "Low strength requirement for elite armour. Base for Ormus' Robes."
+
+  - name: "Wyrmhide"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 84
+    required_dex: 0
+    required_level: 49
+    base_defense: [364, 470]
+
+  - name: "Scarab Husk"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 95
+    required_dex: 0
+    required_level: 49
+    base_defense: [369, 474]
+
+  - name: "Wire Fleece"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 111
+    required_dex: 0
+    required_level: 49
+    base_defense: [375, 481]
+    notes: "Base for The Gladiator's Bane."
+
+  - name: "Great Hauberk"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 118
+    required_dex: 0
+    required_level: 49
+    base_defense: [375, 481]
+
+  - name: "Balrog Skin"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 165
+    required_dex: 0
+    required_level: 49
+    base_defense: [410, 517]
+    notes: "Base for Arkaine's Valor."
+
+  - name: "Archon Plate"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 103
+    required_dex: 0
+    required_level: 63
+    base_defense: [410, 524]
+    notes: "Popular base for Enigma — good balance of defense and low strength req."
+
+  - name: "Kraken Shell"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 174
+    required_dex: 0
+    required_level: 49
+    base_defense: [417, 523]
+
+  - name: "Shadow Plate"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 220
+    required_dex: 0
+    required_level: 49
+    base_defense: [446, 557]
+
+  - name: "Sacred Armor"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 232
+    required_dex: 0
+    required_level: 49
+    base_defense: [487, 600]
+    notes: "Highest base defense body armour. Base for IK Soul Cage and Tyrael's Might."
+
+  - name: "Lacquered Plate"
+    slot: body
+    item_category: body_armour
+    max_sockets: 4
+    required_str: 208
+    required_dex: 0
+    required_level: 49
+    base_defense: [433, 541]
+    notes: "Base for Tal Rasha's Guardianship."
+
+  # ============================================================
+  # HELMS
+  # ============================================================
+
+  # --- Normal Helms ---
+
+  - name: "Cap"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 0
+    required_dex: 0
+    required_level: 1
+    base_defense: [3, 5]
+
+  - name: "Crown"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 55
+    required_dex: 0
+    required_level: 1
+    base_defense: [25, 45]
+
+  - name: "Bone Helm"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 25
+    required_dex: 0
+    required_level: 1
+    base_defense: [33, 36]
+
+  - name: "Mask"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 23
+    required_dex: 0
+    required_level: 1
+    base_defense: [9, 27]
+
+  # --- Exceptional Helms ---
+
+  - name: "War Hat"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 20
+    required_dex: 0
+    required_level: 25
+    base_defense: [45, 53]
+    notes: "Base for Peasant Crown."
+
+  - name: "Sallet"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 43
+    required_dex: 0
+    required_level: 25
+    base_defense: [52, 62]
+
+  - name: "Casque"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 59
+    required_dex: 0
+    required_level: 25
+    base_defense: [63, 72]
+
+  - name: "Death Mask"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 55
+    required_dex: 0
+    required_level: 25
+    base_defense: [54, 86]
+    notes: "Base for Tal Rasha's Horadric Crest."
+
+  - name: "Grand Crown"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 103
+    required_dex: 0
+    required_level: 25
+    base_defense: [78, 113]
+
+  # --- Elite Helms ---
+
+  - name: "Shako"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 50
+    required_dex: 0
+    required_level: 43
+    base_defense: [98, 141]
+    notes: "Base for Harlequin Crest. Low strength requirement."
+
+  - name: "Spired Helm"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 96
+    required_dex: 0
+    required_level: 59
+    base_defense: [114, 159]
+    notes: "Base for Nightwing's Veil and Veil of Steel."
+
+  - name: "Corona"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 174
+    required_dex: 0
+    required_level: 66
+    base_defense: [111, 165]
+    notes: "Base for Crown of Ages."
+
+  - name: "Demonhead"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 102
+    required_dex: 0
+    required_level: 55
+    base_defense: [101, 154]
+    notes: "Base for Andariel's Visage."
+
+  - name: "Bone Visage"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 106
+    required_dex: 0
+    required_level: 63
+    base_defense: [100, 157]
+    notes: "Base for Giant Skull and Trang-Oul's Guise."
+
+  - name: "Armet"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 109
+    required_dex: 0
+    required_level: 51
+    base_defense: [105, 149]
+
+  # --- Circlets / Diadems ---
+
+  - name: "Circlet"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 0
+    required_dex: 0
+    required_level: 24
+    base_defense: [20, 30]
+
+  - name: "Coronet"
+    slot: helmet
+    item_category: helm
+    max_sockets: 2
+    required_str: 0
+    required_dex: 0
+    required_level: 39
+    base_defense: [30, 40]
+
+  - name: "Tiara"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 0
+    required_dex: 0
+    required_level: 52
+    base_defense: [40, 50]
+
+  - name: "Diadem"
+    slot: helmet
+    item_category: helm
+    max_sockets: 3
+    required_str: 0
+    required_dex: 0
+    required_level: 64
+    base_defense: [50, 60]
+    notes: "Base for Griffon's Eye. No strength requirement."
+
+  # --- Barbarian Helms ---
+
+  - name: "Avenger Guard"
+    slot: helmet
+    item_category: barbarian_helm
+    max_sockets: 3
+    required_str: 65
+    required_dex: 0
+    required_level: 47
+    base_defense: [35, 50]
+    notes: "Barbarian-only. Base for Immortal King's Will."
+
+  # ============================================================
+  # WEAPONS — SWORDS
+  # ============================================================
+
+  - name: "Crystal Sword"
+    slot: weapon
+    item_category: sword
+    max_sockets: 6
+    required_str: 43
+    required_dex: 0
+    required_level: 11
+    base_damage: [5, 11]
+    damage_type: one_hand
+    speed: -30
+    notes: "Normal sword. From Normal cows can get exactly 4 sockets for Spirit."
+
+  - name: "Broad Sword"
+    slot: weapon
+    item_category: sword
+    max_sockets: 6
+    required_str: 48
+    required_dex: 0
+    required_level: 9
+    base_damage: [7, 14]
+    damage_type: one_hand
+    speed: 0
+
+  - name: "Long Sword"
+    slot: weapon
+    item_category: sword
+    max_sockets: 6
+    required_str: 55
+    required_dex: 39
+    required_level: 1
+    base_damage: [3, 19]
+    damage_type: one_hand
+    speed: -10
+
+  - name: "Dimensional Blade"
+    slot: weapon
+    item_category: sword
+    max_sockets: 6
+    required_str: 85
+    required_dex: 60
+    required_level: 25
+    base_damage: [13, 35]
+    damage_type: one_hand
+    speed: -30
+    notes: "Exceptional Crystal Sword. Popular for Spirit runeword."
+
+  - name: "Phase Blade"
+    slot: weapon
+    item_category: sword
+    max_sockets: 6
+    required_str: 25
+    required_dex: 136
+    required_level: 54
+    base_damage: [31, 35]
+    damage_type: one_hand
+    speed: -30
+    notes: "Elite Crystal Sword. Indestructible, very fast. Popular for Grief, Spirit."
+
+  - name: "Colossus Sword"
+    slot: weapon
+    item_category: sword
+    max_sockets: 5
+    required_str: 182
+    required_dex: 95
+    required_level: 60
+    base_damage: [26, 70]
+    damage_type: one_hand
+    speed: 10
+
+  - name: "Colossus Blade"
+    slot: weapon
+    item_category: sword
+    max_sockets: 6
+    required_str: 189
+    required_dex: 110
+    required_level: 63
+    base_damage: [33, 58]
+    damage_type: one_hand
+    speed: 5
+    notes: "6-socket elite sword. Popular for Breath of the Dying."
+
+  # ============================================================
+  # WEAPONS — AXES
+  # ============================================================
+
+  - name: "Ettin Axe"
+    slot: weapon
+    item_category: axe
+    max_sockets: 5
+    required_str: 145
+    required_dex: 45
+    required_level: 52
+    base_damage: [33, 66]
+    damage_type: one_hand
+    speed: 10
+    notes: "Elite one-hand axe."
+
+  - name: "Berserker Axe"
+    slot: weapon
+    item_category: axe
+    max_sockets: 6
+    required_str: 138
+    required_dex: 59
+    required_level: 64
+    base_damage: [24, 71]
+    damage_type: one_hand
+    speed: 0
+    notes: "Popular base for Grief and Death due to fast speed and range."
+
+  # ============================================================
+  # WEAPONS — MACES / HAMMERS
+  # ============================================================
+
+  - name: "Flail"
+    slot: weapon
+    item_category: mace
+    max_sockets: 5
+    required_str: 41
+    required_dex: 35
+    required_level: 1
+    base_damage: [1, 24]
+    damage_type: one_hand
+    speed: -10
+    notes: "Popular for Heart of the Oak (HotO) runeword — low requirements."
+
+  - name: "Knout"
+    slot: weapon
+    item_category: mace
+    max_sockets: 5
+    required_str: 82
+    required_dex: 73
+    required_level: 25
+    base_damage: [13, 35]
+    damage_type: one_hand
+    speed: -10
+    notes: "Exceptional Flail."
+
+  - name: "Scourge"
+    slot: weapon
+    item_category: mace
+    max_sockets: 5
+    required_str: 125
+    required_dex: 77
+    required_level: 57
+    base_damage: [3, 80]
+    damage_type: one_hand
+    speed: -10
+    notes: "Elite Flail."
+
+  - name: "Thunder Maul"
+    slot: weapon
+    item_category: hammer
+    max_sockets: 6
+    required_str: 253
+    required_dex: 0
+    required_level: 65
+    base_damage: [33, 180]
+    damage_type: two_hand
+    speed: 20
+    notes: "Highest base damage two-hand hammer."
+
+  - name: "Ogre Maul"
+    slot: weapon
+    item_category: hammer
+    max_sockets: 6
+    required_str: 225
+    required_dex: 0
+    required_level: 51
+    base_damage: [77, 106]
+    damage_type: two_hand
+    speed: 10
+    notes: "Base for Immortal King's Stone Crusher."
+
+  # ============================================================
+  # WEAPONS — POLEARMS
+  # ============================================================
+
+  - name: "Cryptic Axe"
+    slot: weapon
+    item_category: polearm
+    max_sockets: 5
+    required_str: 165
+    required_dex: 103
+    required_level: 59
+    base_damage: [33, 150]
+    damage_type: two_hand
+    speed: 10
+    notes: "Popular base for Infinity and Insight mercenary weapons."
+
+  - name: "Colossus Voulge"
+    slot: weapon
+    item_category: polearm
+    max_sockets: 4
+    required_str: 210
+    required_dex: 55
+    required_level: 56
+    base_damage: [17, 165]
+    damage_type: two_hand
+    speed: 10
+    notes: "Only 4 sockets max."
+
+  - name: "Thresher"
+    slot: weapon
+    item_category: polearm
+    max_sockets: 5
+    required_str: 152
+    required_dex: 118
+    required_level: 53
+    base_damage: [12, 141]
+    damage_type: two_hand
+    speed: -10
+    notes: "Fastest elite polearm. Popular for Infinity on mercenary. Ethereal recommended."
+
+  - name: "Giant Thresher"
+    slot: weapon
+    item_category: polearm
+    max_sockets: 6
+    required_str: 188
+    required_dex: 140
+    required_level: 66
+    base_damage: [40, 114]
+    damage_type: two_hand
+    speed: -10
+    notes: "Very fast, 6 sockets. Popular for Obedience, Infinity."
+
+  - name: "Great Poleaxe"
+    slot: weapon
+    item_category: polearm
+    max_sockets: 6
+    required_str: 179
+    required_dex: 99
+    required_level: 63
+    base_damage: [46, 127]
+    damage_type: two_hand
+    speed: 0
+
+  # ============================================================
+  # WEAPONS — SPEARS
+  # ============================================================
+
+  - name: "Hyperion Spear"
+    slot: weapon
+    item_category: spear
+    max_sockets: 6
+    required_str: 155
+    required_dex: 120
+    required_level: 56
+    base_damage: [35, 119]
+    damage_type: two_hand
+    speed: 0
+    notes: "Base for Arioc's Needle."
+
+  # ============================================================
+  # WEAPONS — SCEPTERS
+  # ============================================================
+
+  - name: "Scepter"
+    slot: weapon
+    item_category: scepter
+    max_sockets: 5
+    required_str: 25
+    required_dex: 0
+    required_level: 1
+    base_damage: [6, 11]
+    damage_type: one_hand
+    speed: 0
+    notes: "Can spawn with Paladin aura automods."
+
+  - name: "Grand Scepter"
+    slot: weapon
+    item_category: scepter
+    max_sockets: 6
+    required_str: 37
+    required_dex: 0
+    required_level: 1
+    base_damage: [8, 18]
+    damage_type: one_hand
+    speed: 10
+    notes: "Can spawn with Paladin aura automods."
+
+  - name: "Caduceus"
+    slot: weapon
+    item_category: scepter
+    max_sockets: 6
+    required_str: 97
+    required_dex: 0
+    required_level: 57
+    base_damage: [18, 50]
+    damage_type: one_hand
+    speed: -10
+    notes: "Elite scepter. Can spawn with Paladin aura automods."
+
+  # ============================================================
+  # WEAPONS — STAVES
+  # ============================================================
+
+  - name: "Long Staff"
+    slot: weapon
+    item_category: staff
+    max_sockets: 4
+    required_str: 0
+    required_dex: 0
+    required_level: 1
+    base_damage: [2, 8]
+    damage_type: two_hand
+    speed: 0
+
+  - name: "Elder Staff"
+    slot: weapon
+    item_category: staff
+    max_sockets: 4
+    required_str: 44
+    required_dex: 37
+    required_level: 25
+    base_damage: [80, 93]
+    damage_type: two_hand
+    speed: 10
+    notes: "Exceptional staff."
+
+  - name: "Archon Staff"
+    slot: weapon
+    item_category: staff
+    max_sockets: 6
+    required_str: 34
+    required_dex: 0
+    required_level: 66
+    base_damage: [83, 99]
+    damage_type: two_hand
+    speed: 10
+    notes: "Elite staff. Used for Obsession runeword."
+
+  # ============================================================
+  # WEAPONS — DAGGERS
+  # ============================================================
+
+  - name: "Bone Knife"
+    slot: weapon
+    item_category: dagger
+    max_sockets: 6
+    required_str: 38
+    required_dex: 75
+    required_level: 58
+    base_damage: [23, 49]
+    damage_type: one_hand
+    speed: -20
+    notes: "Elite dagger. Used for Void and Ritual runewords."
+
+  - name: "Fanged Knife"
+    slot: weapon
+    item_category: dagger
+    max_sockets: 3
+    required_str: 42
+    required_dex: 86
+    required_level: 58
+    base_damage: [15, 57]
+    damage_type: one_hand
+    speed: -20
+
+  # ============================================================
+  # WEAPONS — WANDS
+  # ============================================================
+
+  - name: "Bone Wand"
+    slot: weapon
+    item_category: wand
+    max_sockets: 2
+    required_str: 0
+    required_dex: 0
+    required_level: 1
+    base_damage: [3, 7]
+    damage_type: one_hand
+    speed: -20
+    notes: "Popular base for White runeword with +skills automods."
+
+  - name: "Lich Wand"
+    slot: weapon
+    item_category: wand
+    max_sockets: 2
+    required_str: 25
+    required_dex: 0
+    required_level: 25
+    base_damage: [10, 31]
+    damage_type: one_hand
+    speed: -20
+
+  # ============================================================
+  # WEAPONS — CLAWS (Assassin)
+  # ============================================================
+
+  - name: "Runic Talons"
+    slot: weapon
+    item_category: claw
+    max_sockets: 3
+    required_str: 113
+    required_dex: 113
+    required_level: 60
+    base_damage: [24, 44]
+    damage_type: one_hand
+    speed: -30
+    notes: "Elite claw. Fastest assassin claw base. Popular for Mosaic."
+
+  - name: "Feral Claws"
+    slot: weapon
+    item_category: claw
+    max_sockets: 3
+    required_str: 113
+    required_dex: 113
+    required_level: 60
+    base_damage: [22, 53]
+    damage_type: one_hand
+    speed: -20
+
+  # ============================================================
+  # WEAPONS — MISSILE WEAPONS
+  # ============================================================
+
+  - name: "Matriarchal Bow"
+    slot: weapon
+    item_category: missile_weapon
+    max_sockets: 5
+    required_str: 87
+    required_dex: 187
+    required_level: 57
+    base_damage: [20, 47]
+    damage_type: two_hand
+    speed: -10
+    notes: "Elite Amazon bow."
+
+  - name: "Grand Matron Bow"
+    slot: weapon
+    item_category: missile_weapon
+    max_sockets: 5
+    required_str: 108
+    required_dex: 152
+    required_level: 58
+    base_damage: [14, 72]
+    damage_type: two_hand
+    speed: 10
+    notes: "Elite Amazon bow. Popular for Faith."
+
+  - name: "Hydra Bow"
+    slot: weapon
+    item_category: missile_weapon
+    max_sockets: 6
+    required_str: 134
+    required_dex: 167
+    required_level: 63
+    base_damage: [10, 68]
+    damage_type: two_hand
+    speed: 10
+
+  # ============================================================
+  # WEAPONS — SORCERESS ORBS
+  # ============================================================
+
+  - name: "Swirling Crystal"
+    slot: weapon
+    item_category: orb
+    max_sockets: 3
+    required_str: 0
+    required_dex: 0
+    required_level: 30
+    base_damage: [18, 42]
+    damage_type: one_hand
+    speed: 10
+    class_restricted: sorceress
+    notes: "Sorceress-only. Base for The Oculus and Tal Rasha's Lidless Eye."
+
+  - name: "Eldritch Orb"
+    slot: weapon
+    item_category: orb
+    max_sockets: 3
+    required_str: 0
+    required_dex: 0
+    required_level: 55
+    base_damage: [18, 50]
+    damage_type: one_hand
+    speed: -10
+    class_restricted: sorceress
+    notes: "Sorceress-only. Base for Eschuta's Temper."
+
+  - name: "Dimensional Shard"
+    slot: weapon
+    item_category: orb
+    max_sockets: 3
+    required_str: 0
+    required_dex: 0
+    required_level: 58
+    base_damage: [30, 53]
+    damage_type: one_hand
+    speed: 10
+    class_restricted: sorceress
+    notes: "Sorceress-only. Base for Death's Fathom."
+
+  # ============================================================
+  # GLOVES
+  # ============================================================
+
+  - name: "Chain Gloves"
+    slot: gloves
+    item_category: gloves
+    max_sockets: 0
+    required_str: 25
+    required_dex: 0
+    required_level: 1
+    base_defense: [8, 9]
+    notes: "Base for Chance Guards."
+
+  - name: "Light Gauntlets"
+    slot: gloves
+    item_category: gloves
+    max_sockets: 0
+    required_str: 45
+    required_dex: 0
+    required_level: 1
+    base_defense: [9, 11]
+    notes: "Base for Magefist."
+
+  - name: "Gauntlets"
+    slot: gloves
+    item_category: gloves
+    max_sockets: 0
+    required_str: 60
+    required_dex: 0
+    required_level: 1
+    base_defense: [12, 15]
+    notes: "Base for Frostburn."
+
+  - name: "Heavy Bracers"
+    slot: gloves
+    item_category: gloves
+    max_sockets: 0
+    required_str: 58
+    required_dex: 0
+    required_level: 25
+    base_defense: [37, 44]
+    notes: "Exceptional Chain Gloves. Base for Trang-Oul's Claws."
+
+  - name: "War Gauntlets"
+    slot: gloves
+    item_category: gloves
+    max_sockets: 0
+    required_str: 110
+    required_dex: 0
+    required_level: 25
+    base_defense: [43, 53]
+    notes: "Exceptional Gauntlets. Base for Immortal King's Forge."
+
+  # ============================================================
+  # BELTS
+  # ============================================================
+
+  - name: "Heavy Belt"
+    slot: belt
+    item_category: belt
+    max_sockets: 0
+    required_str: 45
+    required_dex: 0
+    required_level: 1
+    base_defense: [6, 6]
+    potion_slots: 12
+    notes: "Base for Goldwrap."
+
+  - name: "Mesh Belt"
+    slot: belt
+    item_category: belt
+    max_sockets: 0
+    required_str: 58
+    required_dex: 0
+    required_level: 25
+    base_defense: [35, 40]
+    potion_slots: 16
+    notes: "Exceptional Belt. Base for Tal Rasha's Fine-Spun Cloth."
+
+  - name: "War Belt"
+    slot: belt
+    item_category: belt
+    max_sockets: 0
+    required_str: 110
+    required_dex: 0
+    required_level: 25
+    base_defense: [41, 52]
+    potion_slots: 16
+    notes: "Exceptional Plated Belt. Base for Immortal King's Detail."
+
+  - name: "Spiderweb Sash"
+    slot: belt
+    item_category: belt
+    max_sockets: 0
+    required_str: 50
+    required_dex: 0
+    required_level: 46
+    base_defense: [55, 62]
+    potion_slots: 16
+    notes: "Elite Sash. Base for Arachnid Mesh."
+
+  - name: "Mithril Coil"
+    slot: belt
+    item_category: belt
+    max_sockets: 0
+    required_str: 106
+    required_dex: 0
+    required_level: 46
+    base_defense: [58, 68]
+    potion_slots: 16
+    notes: "Elite War Belt. Base for Verdungo's Hearty Cord."
+
+  - name: "Troll Belt"
+    slot: belt
+    item_category: belt
+    max_sockets: 0
+    required_str: 91
+    required_dex: 0
+    required_level: 46
+    base_defense: [59, 66]
+    potion_slots: 16
+    notes: "Elite Heavy Belt. Base for Trang-Oul's Girth."
+
+  # ============================================================
+  # BOOTS
+  # ============================================================
+
+  - name: "Battle Boots"
+    slot: boots
+    item_category: boots
+    max_sockets: 0
+    required_str: 95
+    required_dex: 0
+    required_level: 25
+    base_defense: [37, 44]
+    notes: "Exceptional Light Plated Boots. Base for War Traveler, Aldur's Advance, IK Pillar."
+
+  - name: "War Boots"
+    slot: boots
+    item_category: boots
+    max_sockets: 0
+    required_str: 125
+    required_dex: 0
+    required_level: 25
+    base_defense: [43, 53]
+    notes: "Exceptional Greaves. Base for Immortal King's Pillar."
+
+  - name: "Scarabshell Boots"
+    slot: boots
+    item_category: boots
+    max_sockets: 0
+    required_str: 91
+    required_dex: 0
+    required_level: 49
+    base_defense: [56, 65]
+    notes: "Elite Chain Boots. Base for Sandstorm Trek."
+
+  - name: "Sharkskin Boots"
+    slot: boots
+    item_category: boots
+    max_sockets: 0
+    required_str: 47
+    required_dex: 0
+    required_level: 25
+    base_defense: [33, 39]
+    notes: "Exceptional Heavy Boots. Base for Waterwalk."
+
+  # ============================================================
+  # MISCELLANEOUS SET BASES
+  # ============================================================
+
+  - name: "Chaos Armor"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 84
+    required_dex: 0
+    required_level: 25
+    base_defense: [315, 342]
+    notes: "Exceptional Gothic Plate. Base for Trang-Oul's Scales."
+
+  - name: "Cantor Trophy"
+    slot: shield
+    item_category: necromancer_shield
+    max_sockets: 2
+    required_str: 50
+    required_dex: 0
+    required_level: 42
+    base_defense: [50, 64]
+    notes: "Necromancer-only shrunken head. Base for Trang-Oul's Wing."
+
+  - name: "Hunter's Guise"
+    slot: helmet
+    item_category: druid_pelt
+    max_sockets: 3
+    required_str: 56
+    required_dex: 0
+    required_level: 25
+    base_defense: [28, 34]
+    notes: "Druid-only pelt. Base for Aldur's Stony Gaze."
+
+  - name: "Jagged Star"
+    slot: weapon
+    item_category: mace
+    max_sockets: 5
+    required_str: 74
+    required_dex: 0
+    required_level: 25
+    base_damage: [20, 31]
+    damage_type: one_hand
+    speed: 10
+    notes: "Exceptional Morning Star. Base for Aldur's Rhythm."
+
+  - name: "Hellforge Plate"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 79
+    required_dex: 0
+    required_level: 25
+    base_defense: [275, 305]
+    notes: "Exceptional Full Plate Mail. Base for Naj's Light Plate."
+
+  - name: "Ring Mail"
+    slot: body
+    item_category: body_armour
+    max_sockets: 3
+    required_str: 36
+    required_dex: 0
+    required_level: 1
+    base_defense: [15, 18]
+    notes: "Normal body armour. Base for Angelic Mantle."
+
+  - name: "Sabre"
+    slot: weapon
+    item_category: sword
+    max_sockets: 3
+    required_str: 25
+    required_dex: 25
+    required_level: 1
+    base_damage: [3, 8]
+    damage_type: one_hand
+    speed: -10
+    notes: "Normal sword. Base for Angelic Sickle."

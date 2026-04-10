@@ -1,0 +1,648 @@
+# D2R Unique Items Reference Data
+# Stats reflect perfect / maximum rolls used by the optimiser for reference loadout
+# validation. Variable stats use the max roll unless noted with _min/_max suffix.
+#
+# Sources: diablo.fandom.com, Arreat Summit, community-verified data.
+#
+# Stat key reference (matches runes.yaml and runewords.yaml):
+#   all_skills, class_skills (e.g. sorceress_skills, fire_skills),
+#   fcr, fhr, frw, fbr, ias, ed, mf, gold_find,
+#   life, mana, strength, dexterity, vitality, energy,
+#   resist_fire, resist_cold, resist_lightning, resist_poison, resist_all,
+#   max_resist_fire, max_resist_cold, max_resist_lightning, max_resist_poison,
+#   cb (crushing blow), ds (deadly strike), ow (open wounds),
+#   ll (life leech), ml (mana leech), dr (damage reduction %),
+#   mdr (magic damage reduction), damage_reduced (flat),
+#   absorb_fire, absorb_cold, absorb_lightning
+
+uniques:
+
+  # ============================================================
+  # HELMETS
+  # ============================================================
+
+  - name: "Harlequin Crest"
+    base: "Shako"
+    slot: helmet
+    level_req: 62
+    required_str: 50
+    affixes:
+      all_skills: 2
+      life_per_level: 1.5       # +1.5 per clvl → 148 at level 99
+      mana_per_level: 1.5       # +1.5 per clvl → 148 at level 99
+      dr: 10
+      mf: 50
+      all_attributes: 2
+    sockets: 1                  # can be socketed via Larzuk quest
+    notes: "Stats are not variable except base defense. Best all-round caster helm."
+
+  - name: "Crown of Ages"
+    base: "Corona"
+    slot: helmet
+    level_req: 82
+    required_str: 174
+    affixes:
+      ed: 50
+      defense_min: 100
+      defense_max: 150
+      all_skills: 1
+      dr_min: 10
+      dr_max: 15
+      resist_all_min: 20
+      resist_all_max: 30
+      fhr: 30
+      indestructible: true
+    sockets_min: 1
+    sockets_max: 2
+    notes: "Perfect roll: +150 def, 15% DR, +30 all resist, 2 sockets."
+
+  - name: "Nightwing's Veil"
+    base: "Spired Helm"
+    slot: helmet
+    level_req: 67
+    required_str: 96
+    affixes:
+      ed_min: 90
+      ed_max: 120
+      all_skills: 2
+      cold_skill_damage_min: 8
+      cold_skill_damage_max: 15
+      dexterity_min: 10
+      dexterity_max: 20
+      absorb_cold_min: 5
+      absorb_cold_max: 9
+      half_freeze_duration: true
+      requirements: -50
+    notes: "Best cold sorceress helm."
+
+  - name: "Andariel's Visage"
+    base: "Demonhead"
+    slot: helmet
+    level_req: 83
+    required_str: 102
+    affixes:
+      ed_min: 100
+      ed_max: 150
+      all_skills: 2
+      ias: 20
+      ll_min: 8
+      ll_max: 10
+      strength_min: 25
+      strength_max: 30
+      max_resist_poison: 10
+      resist_fire: -30
+      resist_poison: 70
+      ctc_poison_nova_when_struck: 15
+      charges_venom: 20
+    notes: "Best melee/mercenary helm. Fire resist penalty is a notable drawback."
+
+  - name: "Griffon's Eye"
+    base: "Diadem"
+    slot: helmet
+    level_req: 76
+    required_str: 0
+    affixes:
+      defense_min: 100
+      defense_max: 200
+      all_skills: 1
+      fcr: 25
+      enemy_lightning_resist_min: -15
+      enemy_lightning_resist_max: -20
+      lightning_skill_damage_min: 10
+      lightning_skill_damage_max: 15
+    notes: "Best lightning sorceress/javazon helm."
+
+  # ============================================================
+  # BODY ARMOUR
+  # ============================================================
+
+  - name: "Skullder's Ire"
+    base: "Russet Armor"
+    slot: body
+    level_req: 42
+    required_str: 97
+    affixes:
+      ed_min: 160
+      ed_max: 200
+      repairs_durability: 5
+      mf_per_level: 1.25        # +1.25% per clvl → 123% at level 99
+      all_skills: 1
+      mdr: 10
+    sockets: 1
+    notes: "Best raw MF body armour for farming builds."
+
+  - name: "Que-Hegan's Wisdom"
+    base: "Mage Plate"
+    slot: body
+    level_req: 51
+    required_str: 55
+    affixes:
+      ed_min: 140
+      ed_max: 160
+      all_skills: 1
+      mana_after_each_kill: 3
+      fcr: 20
+      fhr: 20
+      mdr_min: 6
+      mdr_max: 10
+      energy: 15
+    notes: "Budget caster armour with FCR."
+
+  - name: "Ormus' Robes"
+    base: "Dusk Shroud"
+    slot: body
+    level_req: 75
+    required_str: 77
+    affixes:
+      defense_min: 10
+      defense_max: 20
+      fcr: 20
+      cold_skill_damage_min: 10
+      cold_skill_damage_max: 15
+      lightning_skill_damage_min: 10
+      lightning_skill_damage_max: 15
+      fire_skill_damage_min: 10
+      fire_skill_damage_max: 15
+      random_sorceress_skill: 3   # +3 to a random Sorceress skill
+      regenerate_mana_min: 10
+      regenerate_mana_max: 15
+    notes: "Best for single-element sorceress builds when matched with correct skill."
+
+  - name: "Skin of the Vipermagi"
+    base: "Serpentskin Armor"
+    slot: body
+    level_req: 29
+    required_str: 43
+    affixes:
+      ed: 120
+      all_skills: 1
+      fcr: 30
+      mdr_min: 9
+      mdr_max: 13
+      resist_all_min: 20
+      resist_all_max: 35
+    sockets: 1
+    notes: "Highest FCR on any body armour. Excellent budget caster choice."
+
+  # ============================================================
+  # WEAPONS
+  # ============================================================
+
+  - name: "Arioc's Needle"
+    base: "Hyperion Spear"
+    slot: weapon
+    level_req: 81
+    required_str: 155
+    required_dex: 120
+    affixes:
+      ed_min: 180
+      ed_max: 230
+      ds: 50
+      poison_damage: 394
+      poison_duration: 10
+      ias: 30
+      all_skills_min: 2
+      all_skills_max: 4
+      ignore_target_defense: true
+    notes: "Top-tier Warlock weapon for Echoing Strike. Ethereal highly prized."
+
+  - name: "Eschuta's Temper"
+    base: "Eldritch Orb"
+    slot: weapon
+    level_req: 72
+    required_str: 0
+    class_restricted: sorceress
+    affixes:
+      sorceress_skills_min: 1
+      sorceress_skills_max: 3
+      fcr: 40
+      fire_skill_damage_min: 10
+      fire_skill_damage_max: 20
+      lightning_skill_damage_min: 10
+      lightning_skill_damage_max: 20
+      energy_min: 20
+      energy_max: 30
+    notes: "Sorceress-only orb. FCR is highest on any weapon."
+
+  - name: "The Oculus"
+    base: "Swirling Crystal"
+    slot: weapon
+    level_req: 42
+    required_str: 0
+    class_restricted: sorceress
+    affixes:
+      sorceress_skills: 3
+      mana_after_each_kill: 5
+      resist_all: 20
+      ctc_teleport_when_struck: 25
+      fcr: 30
+      vitality: 20
+      energy: 20
+      ed: 20
+      mf: 50
+    notes: "Sorceress-only. Excellent all-round MF weapon. Teleport proc can be disruptive."
+
+  - name: "Death's Fathom"
+    base: "Dimensional Shard"
+    slot: weapon
+    level_req: 73
+    required_str: 0
+    class_restricted: sorceress
+    affixes:
+      sorceress_skills: 3
+      fcr: 20
+      cold_skill_damage_min: 15
+      cold_skill_damage_max: 30
+      resist_lightning_min: 25
+      resist_lightning_max: 40
+      resist_fire_min: 25
+      resist_fire_max: 40
+    notes: "Sorceress-only. Best cold sorceress weapon."
+
+  # ============================================================
+  # SHIELDS
+  # ============================================================
+
+  - name: "Stormshield"
+    base: "Monarch"
+    slot: shield
+    level_req: 73
+    required_str: 156
+    affixes:
+      defense_per_level: 3.75    # +3.75 per clvl → 371 at level 99
+      increased_blocking: 25
+      fbr: 35
+      dr: 35
+      resist_cold: 60
+      resist_lightning: 25
+      strength: 30
+      attacker_takes_lightning_damage: 10
+      indestructible: true
+    notes: "Highest single-item DR at 35%. Excellent defensive shield."
+
+  - name: "Lidless Wall"
+    base: "Grim Shield"
+    slot: shield
+    level_req: 41
+    required_str: 58
+    affixes:
+      ed_min: 80
+      ed_max: 130
+      all_skills: 1
+      max_mana_percent: 10
+      fcr: 20
+      mana_after_each_kill_min: 3
+      mana_after_each_kill_max: 5
+      energy: 10
+      light_radius: 1
+    notes: "Budget caster shield with +skills and FCR."
+
+  - name: "Homunculus"
+    base: "Hierophant Trophy"
+    slot: shield
+    level_req: 42
+    required_str: 58
+    class_restricted: necromancer
+    affixes:
+      ed_min: 150
+      ed_max: 200
+      mana_after_each_kill: 5
+      increased_blocking: 40
+      fbr: 30
+      necromancer_skills: 2
+      energy: 20
+      regenerate_mana: 33
+      resist_all: 40
+      curses: 2
+    notes: "Necromancer-only. Best necromancer shield."
+
+  # ============================================================
+  # GLOVES
+  # ============================================================
+
+  - name: "Chance Guards"
+    base: "Chain Gloves"
+    slot: gloves
+    level_req: 15
+    required_str: 25
+    affixes:
+      ed_min: 20
+      ed_max: 30
+      defense: 15
+      attack_rating: 25
+      mf_min: 25
+      mf_max: 40
+      gold_find: 200
+      light_radius: 2
+    notes: "Best MF gloves. Perfect roll is 40% MF."
+
+  - name: "Magefist"
+    base: "Light Gauntlets"
+    slot: gloves
+    level_req: 23
+    required_str: 45
+    affixes:
+      ed_min: 20
+      ed_max: 30
+      defense: 10
+      fire_skills: 1
+      fcr: 20
+      regenerate_mana: 25
+      fire_damage_min: 1
+      fire_damage_max: 6
+    notes: "Best caster gloves with FCR and mana regen."
+
+  - name: "Trang-Oul's Claws"
+    base: "Heavy Bracers"
+    slot: gloves
+    level_req: 45
+    required_str: 58
+    set_name: "Trang-Oul's Avatar"
+    affixes:
+      fcr: 20
+      resist_cold: 30
+      defense: 30
+      poison_skill_damage: 25
+      curses: 2                  # Necromancer-only bonus
+    notes: "Best-in-slot for many caster builds alongside Magefist for FCR."
+
+  - name: "Frostburn"
+    base: "Gauntlets"
+    slot: gloves
+    level_req: 29
+    required_str: 60
+    affixes:
+      ed_min: 10
+      ed_max: 20
+      defense: 30
+      ed_weapon: 5               # +5% enhanced damage
+      max_mana_percent: 40
+      cold_damage_min: 1
+      cold_damage_max: 6
+    notes: "Massive +40% max mana. Best for Energy Shield sorceress builds."
+
+  # ============================================================
+  # BELTS
+  # ============================================================
+
+  - name: "Arachnid Mesh"
+    base: "Spiderweb Sash"
+    slot: belt
+    level_req: 80
+    required_str: 50
+    affixes:
+      ed_min: 90
+      ed_max: 120
+      slow_target: 10
+      all_skills: 1
+      fcr: 20
+      max_mana_percent: 5
+      charges_venom: 11
+    notes: "Only belt with +skills and FCR. Best-in-slot for casters."
+
+  - name: "Goldwrap"
+    base: "Heavy Belt"
+    slot: belt
+    level_req: 27
+    required_str: 45
+    affixes:
+      ed_min: 40
+      ed_max: 60
+      defense: 25
+      ias: 10
+      mf: 30
+      gold_find_min: 50
+      gold_find_max: 80
+      light_radius: 2
+    notes: "Best MF belt for budget builds."
+
+  - name: "Verdungo's Hearty Cord"
+    base: "Mithril Coil"
+    slot: belt
+    level_req: 63
+    required_str: 106
+    affixes:
+      ed_min: 90
+      ed_max: 140
+      fhr: 10
+      vitality_min: 30
+      vitality_max: 40
+      replenish_life_min: 10
+      replenish_life_max: 13
+      max_stamina_min: 100
+      max_stamina_max: 120
+      dr_min: 10
+      dr_max: 15
+    notes: "Best survivability belt. Stacks well with other DR sources."
+
+  # ============================================================
+  # BOOTS
+  # ============================================================
+
+  - name: "War Traveler"
+    base: "Battle Boots"
+    slot: boots
+    level_req: 42
+    required_str: 95
+    affixes:
+      ed_min: 150
+      ed_max: 190
+      frw: 25
+      vitality: 10
+      strength: 10
+      flat_damage_min: 15
+      flat_damage_max: 25
+      slower_stamina_drain: 40
+      attacker_takes_damage_min: 5
+      attacker_takes_damage_max: 10
+      mf_min: 30
+      mf_max: 50
+    notes: "Best MF boots. Perfect roll is 50% MF."
+
+  - name: "Sandstorm Trek"
+    base: "Scarabshell Boots"
+    slot: boots
+    level_req: 64
+    required_str: 91
+    affixes:
+      ed_min: 140
+      ed_max: 170
+      fhr: 20
+      frw: 20
+      max_stamina_per_level: 1   # +1 per clvl → 99 at level 99
+      strength_min: 10
+      strength_max: 15
+      vitality_min: 10
+      vitality_max: 15
+      slower_stamina_drain: 50
+      resist_poison_min: 40
+      resist_poison_max: 70
+      repairs_durability: 20
+    notes: "Best survivability boots for casters. Used in Maxroll Warlock reference."
+
+  - name: "Waterwalk"
+    base: "Sharkskin Boots"
+    slot: boots
+    level_req: 32
+    required_str: 47
+    affixes:
+      ed_min: 180
+      ed_max: 210
+      frw: 20
+      defense_vs_missile: 100
+      dexterity: 15
+      max_resist_fire: 5
+      max_stamina: 40
+      life_min: 45
+      life_max: 65
+    notes: "Good budget boots with life and fire max resist."
+
+  - name: "Aldur's Advance"
+    base: "Battle Boots"
+    slot: boots
+    level_req: 45
+    required_str: 95
+    set_name: "Aldur's Watchtower"
+    affixes:
+      indestructible: true
+      frw: 40
+      max_stamina: 180
+      damage_to_mana: 10
+      life: 50
+      resist_fire_min: 40
+      resist_fire_max: 50
+    notes: "Set boots with excellent FRW and fire resist. Indestructible."
+
+  # ============================================================
+  # RINGS
+  # ============================================================
+
+  - name: "Stone of Jordan"
+    base: "Ring"
+    slot: ring
+    level_req: 29
+    affixes:
+      all_skills: 1
+      max_mana_percent: 25
+      lightning_damage_min: 1
+      lightning_damage_max: 12
+      mana: 20
+    notes: "Iconic caster ring. +skills and massive mana boost."
+
+  - name: "Bul-Kathos' Wedding Band"
+    base: "Ring"
+    slot: ring
+    level_req: 58
+    affixes:
+      all_skills: 1
+      life_per_level: 0.5       # +0.5 per clvl → 49 at level 99
+      ll_min: 3
+      ll_max: 5
+      max_stamina: 50
+    notes: "Physical fighter's ring with +skills and life scaling."
+
+  - name: "Nagelring"
+    base: "Ring"
+    slot: ring
+    level_req: 7
+    affixes:
+      mdr: 3
+      attack_rating_min: 50
+      attack_rating_max: 75
+      attacker_takes_damage: 3
+      mf_min: 15
+      mf_max: 30
+    notes: "Budget MF ring. Perfect roll is 30% MF."
+
+  - name: "Dwarf Star"
+    base: "Ring"
+    slot: ring
+    level_req: 45
+    affixes:
+      life: 40
+      max_stamina: 40
+      heal_stamina: 15
+      absorb_fire: 15
+      mdr_min: 12
+      mdr_max: 15
+      gold_find: 100
+    notes: "Defensive ring with fire absorb and MDR."
+
+  # ============================================================
+  # AMULETS
+  # ============================================================
+
+  - name: "Mara's Kaleidoscope"
+    base: "Amulet"
+    slot: amulet
+    level_req: 67
+    affixes:
+      all_skills: 2
+      resist_all_min: 20
+      resist_all_max: 30
+      all_attributes: 5
+    notes: "Best all-round caster amulet. Perfect roll is +30 all resist."
+
+  - name: "The Eye of Etlich"
+    base: "Amulet"
+    slot: amulet
+    level_req: 15
+    affixes:
+      light_radius_min: 1
+      light_radius_max: 5
+      all_skills: 1
+      ll_min: 3
+      ll_max: 7
+      cold_damage_min: 1
+      cold_damage_max: 5
+      defense_vs_missile_min: 10
+      defense_vs_missile_max: 40
+    notes: "Budget option with +1 all skills."
+
+  - name: "Highlord's Wrath"
+    base: "Amulet"
+    slot: amulet
+    level_req: 65
+    affixes:
+      all_skills: 1
+      ias: 20
+      ds_per_level: 0.375       # +0.375% per clvl → 37% at level 99
+      resist_lightning: 35
+      lightning_damage_min: 1
+      lightning_damage_max: 30
+      attacker_takes_lightning_damage: 15
+    notes: "Best physical fighter amulet. IAS + deadly strike."
+
+  - name: "Tal Rasha's Adjudication"
+    base: "Amulet"
+    slot: amulet
+    level_req: 67
+    set_name: "Tal Rasha's Wrappings"
+    affixes:
+      sorceress_skills: 2
+      resist_lightning: 33
+      lightning_damage_min: 3
+      lightning_damage_max: 32
+      mana: 42
+      life: 50
+    partial_bonus:
+      4_items:
+        fcr: 10
+    notes: "Part of Tal Rasha's Wrappings set. Grants 10% FCR with 4 set pieces."
+
+  # ============================================================
+  # CHARMS (MF-relevant)
+  # ============================================================
+
+  - name: "Gheed's Fortune"
+    base: "Grand Charm"
+    slot: charm
+    level_req: 62
+    affixes:
+      gold_find_min: 80
+      gold_find_max: 160
+      vendor_prices_min: -10
+      vendor_prices_max: -15
+      mf_min: 20
+      mf_max: 40
+    notes: "Unique grand charm. Limit 1 per character. Perfect roll is 40% MF."

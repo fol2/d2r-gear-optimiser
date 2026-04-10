@@ -1,0 +1,633 @@
+# D2R Set Items Reference Data
+# Set items with individual stats, partial set bonuses, and full set bonuses.
+# Focused on sets relevant to MF and endgame Warlock/caster builds.
+#
+# Sources: diablo.fandom.com, Arreat Summit, community-verified data.
+#
+# Schema notes:
+#   - partial_bonuses: bonuses that apply when N items from the set are worn.
+#     These are CUMULATIVE — the 3-item bonus includes the 2-item bonus.
+#   - item_partial_bonus: bonuses that appear on individual items when
+#     additional set pieces are worn (listed per item).
+#   - full_bonus: additional bonuses when all items are worn (on top of partials).
+#   - Variable stats shown with _min/_max suffix.
+#
+# Stat key reference (matches runes.yaml and runewords.yaml):
+#   all_skills, class_skills, fcr, fhr, frw, fbr, ias, ed, mf, gold_find,
+#   life, mana, strength, dexterity, vitality, energy,
+#   resist_fire, resist_cold, resist_lightning, resist_poison, resist_all,
+#   ll (life leech), ml (mana leech), dr (damage reduction %),
+#   mdr (magic damage reduction)
+
+sets:
+
+  # ============================================================
+  # TAL RASHA'S WRAPPINGS
+  # ============================================================
+  # Most relevant MF set. Designed for Sorceress but most pieces equippable by any class.
+  # Only Tal Rasha's Lidless Eye (orb) requires Sorceress.
+
+  - set_name: "Tal Rasha's Wrappings"
+    class_affinity: sorceress
+    items:
+
+      - name: "Tal Rasha's Adjudication"
+        base: "Amulet"
+        slot: amulet
+        level_req: 67
+        affixes:
+          sorceress_skills: 2
+          resist_lightning: 33
+          lightning_damage_min: 3
+          lightning_damage_max: 32
+          mana: 42
+          life: 50
+        item_partial_bonus:
+          4:
+            fcr: 10
+
+      - name: "Tal Rasha's Lidless Eye"
+        base: "Swirling Crystal"
+        slot: weapon
+        level_req: 65
+        class_restricted: sorceress
+        affixes:
+          fcr: 20
+          mana: 77
+          life: 57
+          energy: 10
+          lightning_mastery_min: 1
+          lightning_mastery_max: 2
+          fire_mastery_min: 1
+          fire_mastery_max: 2
+          cold_mastery_min: 1
+          cold_mastery_max: 2
+        item_partial_bonus:
+          2:
+            sorceress_skills: 1
+          3:
+            enemy_fire_resist: -15
+          4:
+            enemy_lightning_resist: -15
+          full:
+            cold_skill_damage: 15
+
+      - name: "Tal Rasha's Horadric Crest"
+        base: "Death Mask"
+        slot: helmet
+        level_req: 66
+        required_str: 55
+        affixes:
+          ll: 10
+          ml: 10
+          resist_all: 15
+          defense: 45
+          mana: 30
+          life: 60
+
+      - name: "Tal Rasha's Guardianship"
+        base: "Lacquered Plate"
+        slot: body
+        level_req: 71
+        required_str: 84
+        affixes:
+          defense: 400
+          requirements: -60
+          mdr: 15
+          resist_cold: 40
+          resist_lightning: 40
+          resist_fire: 40
+          mf: 88
+        item_partial_bonus:
+          2:
+            fcr: 10
+
+      - name: "Tal Rasha's Fine-Spun Cloth"
+        base: "Mesh Belt"
+        slot: belt
+        level_req: 53
+        required_str: 47
+        affixes:
+          requirements: -20
+          damage_to_mana: 37
+          mana: 30
+          dexterity: 20
+          mf_min: 10
+          mf_max: 15
+        item_partial_bonus:
+          2:
+            defense: 60
+          3:
+            fcr: 10
+
+    partial_bonuses:
+      2:
+        replenish_life: 10
+      3:
+        mf: 65
+      4:
+        fhr: 25
+
+    full_bonus:
+      sorceress_skills: 3
+      replenish_life: 10
+      mf: 65
+      fhr: 25
+      life: 150
+      resist_all: 50
+      defense_vs_missile: 50
+      defense: 150
+    notes: |
+      Full set MF total: 88 (armour) + 15 (belt) + 65 (partial) = 168 base MF.
+      Most valuable partial: 3 items for +65% MF.
+      Common partial combos: Armour + Belt + Amulet (3-piece for MF).
+
+  # ============================================================
+  # IMMORTAL KING
+  # ============================================================
+  # Barbarian set. Powerful full set bonus. IK Will helm has good MF.
+
+  - set_name: "Immortal King"
+    class_affinity: barbarian
+    items:
+
+      - name: "Immortal King's Will"
+        base: "Avenger Guard"
+        slot: helmet
+        level_req: 47
+        required_str: 65
+        class_restricted: barbarian
+        affixes:
+          light_radius: 4
+          defense: 125
+          gold_find: 37
+          mf_min: 25
+          mf_max: 40
+          warcries: 2
+        sockets: 2
+        notes: "2 sockets for Ist runes = up to 90% MF total."
+
+      - name: "Immortal King's Soul Cage"
+        base: "Sacred Armor"
+        slot: body
+        level_req: 76
+        required_str: 232
+        affixes:
+          defense: 400
+          ctc_enchant_when_struck: 5
+          resist_poison: 50
+          combat_skills_barbarian: 2
+        item_partial_bonus:
+          2:
+            fhr: 25
+          3:
+            resist_cold: 40
+          4:
+            resist_fire: 40
+          5:
+            resist_lightning: 40
+          full:
+            ed: 50
+
+      - name: "Immortal King's Detail"
+        base: "War Belt"
+        slot: belt
+        level_req: 29
+        required_str: 110
+        affixes:
+          defense: 36
+          resist_lightning: 31
+          resist_fire: 28
+          strength: 25
+        item_partial_bonus:
+          2:
+            defense: 105
+          3:
+            fhr: 25
+          4:
+            ed: 100           # +100% enhanced defense
+          5:
+            dr: 20
+          full:
+            masteries_barbarian: 2
+
+      - name: "Immortal King's Forge"
+        base: "War Gauntlets"
+        slot: gloves
+        level_req: 30
+        required_str: 110
+        affixes:
+          defense: 65
+          ctc_charged_bolt_when_struck: 12
+          dexterity: 20
+          strength: 20
+        item_partial_bonus:
+          2:
+            ias: 25
+          3:
+            defense: 120
+          4:
+            ll: 10
+          5:
+            ml: 10
+          full:
+            freezes_target: 2
+
+      - name: "Immortal King's Pillar"
+        base: "War Boots"
+        slot: boots
+        level_req: 31
+        required_str: 125
+        affixes:
+          defense: 75
+          frw: 40
+          attack_rating: 110
+          life: 44
+        item_partial_bonus:
+          2:
+            mf: 25
+          3:
+            combat_skills_barbarian: 2
+          4:
+            defense: 160
+          5:
+            half_freeze_duration: true
+
+      - name: "Immortal King's Stone Crusher"
+        base: "Ogre Maul"
+        slot: weapon
+        level_req: 76
+        required_str: 225
+        affixes:
+          ed: 200
+          damage_to_demons: 200
+          damage_to_undead: 250
+          ias: 40
+          indestructible: true
+          cb_min: 35
+          cb_max: 40
+        sockets: 2
+        item_partial_bonus:
+          2:
+            fire_damage_min: 211
+            fire_damage_max: 397
+          3:
+            lightning_damage_min: 7
+            lightning_damage_max: 477
+          4:
+            cold_damage_min: 127
+            cold_damage_max: 364
+          5:
+            poison_damage: 204
+            poison_duration: 6
+          full:
+            magic_damage_min: 250
+            magic_damage_max: 361
+
+    partial_bonuses:
+      2:
+        attack_rating: 50
+      3:
+        attack_rating: 125       # cumulative: 50 + 75
+      4:
+        attack_rating: 250       # cumulative: 50 + 75 + 125
+      5:
+        attack_rating: 450       # cumulative: 50 + 75 + 125 + 200
+
+    full_bonus:
+      barbarian_skills: 3
+      attack_rating: 450
+      life: 150
+      resist_all: 50
+      mdr: 10
+    notes: |
+      Very powerful full set for Barbarians.
+      IK Will helm with 2x Ist = 90% MF — good for MF Barb builds.
+      High strength requirements throughout the set.
+
+  # ============================================================
+  # TRANG-OUL'S AVATAR
+  # ============================================================
+  # Necromancer set. Trang-Oul's Claws gloves are widely used outside the set
+  # for their 20% FCR. Full set transforms Necromancer into Vampire form.
+
+  - set_name: "Trang-Oul's Avatar"
+    class_affinity: necromancer
+    items:
+
+      - name: "Trang-Oul's Guise"
+        base: "Bone Visage"
+        slot: helmet
+        level_req: 65
+        required_str: 106
+        affixes:
+          fhr: 25
+          replenish_life: 5
+          defense: 80
+          strength: 20
+          attacker_takes_damage: 20
+          mana_per_level: 0.625   # +0.625 per clvl → 61 at level 99
+        item_partial_bonus:
+          2:
+            resist_poison: 40
+          3:
+            curses: 1
+
+      - name: "Trang-Oul's Scales"
+        base: "Chaos Armor"
+        slot: body
+        level_req: 49
+        required_str: 84
+        affixes:
+          ed: 150
+          defense: 40
+          requirements: -40
+          resist_poison: 40
+          fhr: 25
+          defense_vs_missile: 100
+        item_partial_bonus:
+          2:
+            replenish_life: 15
+
+      - name: "Trang-Oul's Wing"
+        base: "Cantor Trophy"
+        slot: shield
+        level_req: 54
+        required_str: 50
+        class_restricted: necromancer
+        affixes:
+          fbr: 30
+          ed_min: 100
+          ed_max: 150
+          resist_fire: 38
+          resist_poison: 40
+          dexterity: 15
+          poison_and_bone_skills: 2
+        item_partial_bonus:
+          2:
+            mana: 100
+          3:
+            resist_fire: 25
+
+      - name: "Trang-Oul's Claws"
+        base: "Heavy Bracers"
+        slot: gloves
+        level_req: 45
+        required_str: 58
+        affixes:
+          fcr: 20
+          resist_cold: 30
+          defense: 30
+          poison_skill_damage: 25
+          curses: 2
+        notes: "Widely used outside the set for 20% FCR."
+
+      - name: "Trang-Oul's Girth"
+        base: "Troll Belt"
+        slot: belt
+        level_req: 47
+        required_str: 91
+        affixes:
+          requirements: -40
+          cannot_be_frozen: true
+          replenish_life: 5
+          max_stamina: 66
+          life_min: 25
+          life_max: 50
+        item_partial_bonus:
+          2:
+            regenerate_mana: 15
+
+    partial_bonuses:
+      2:
+        {}                       # no global partial at 2 items
+      3:
+        {}
+      4:
+        {}
+
+    full_bonus:
+      necromancer_skills: 3
+      regenerate_mana: 15
+      replenish_life: 15
+      mana: 100
+      resist_fire: 50
+      resist_poison: 50
+      life_after_each_kill: 10
+      vampire_transform: true    # special: transforms into Vampire form
+    notes: |
+      Full set grants Vampire form with unique FCR breakpoints.
+      Trang-Oul's Claws are commonly worn alone or as a 2-piece.
+      3 items is a popular combo for fire resist + skills on Necromancers.
+
+  # ============================================================
+  # ALDUR'S WATCHTOWER
+  # ============================================================
+  # Druid set. Aldur's Advance boots are commonly used standalone for
+  # their excellent FRW and fire resist.
+
+  - set_name: "Aldur's Watchtower"
+    class_affinity: druid
+    items:
+
+      - name: "Aldur's Stony Gaze"
+        base: "Hunter's Guise"
+        slot: helmet
+        level_req: 36
+        required_str: 56
+        class_restricted: druid
+        affixes:
+          fhr: 25
+          ed: 140
+          resist_cold: 40
+          resist_lightning: 25
+          defense: 25
+          energy: 15
+          light_radius: 2
+
+      - name: "Aldur's Deception"
+        base: "Shadow Plate"
+        slot: body
+        level_req: 76
+        required_str: 220
+        affixes:
+          defense: 300
+          dexterity: 15
+          strength: 20
+          resist_all: 15
+          requirements: -50
+          light_radius: 2
+
+      - name: "Aldur's Rhythm"
+        base: "Jagged Star"
+        slot: weapon
+        level_req: 42
+        required_str: 74
+        affixes:
+          ed_min: 200
+          ed_max: 250
+          ias: 30
+          ll_min: 5
+          ll_max: 10
+          lightning_damage_min: 40
+          lightning_damage_max: 62
+          mana_after_each_kill: 5
+          life: 50
+
+      - name: "Aldur's Advance"
+        base: "Battle Boots"
+        slot: boots
+        level_req: 45
+        required_str: 95
+        affixes:
+          indestructible: true
+          frw: 40
+          max_stamina: 180
+          damage_to_mana: 10
+          life: 50
+          resist_fire_min: 40
+          resist_fire_max: 50
+        notes: "Commonly worn standalone for FRW and fire resist."
+
+    partial_bonuses:
+      2:
+        mana: 150
+      3:
+        attack_rating: 150
+
+    full_bonus:
+      druid_skills: 3
+      mana: 150
+      attack_rating: 150
+      defense: 150
+      all_skills: 1             # +1 in addition to +3 druid
+    notes: |
+      Full set requires Druid for the helm.
+      Aldur's Advance boots are the most commonly used piece standalone.
+
+  # ============================================================
+  # NAJ'S ANCIENT VESTIGE
+  # ============================================================
+  # Minor set with MF relevance. Naj's Puzzler staff grants Teleport charges.
+
+  - set_name: "Naj's Ancient Vestige"
+    class_affinity: none
+    items:
+
+      - name: "Naj's Puzzler"
+        base: "Elder Staff"
+        slot: weapon
+        level_req: 43
+        required_str: 44
+        affixes:
+          ed_min: 150
+          ed_max: 180
+          ias: 30
+          all_skills: 1
+          charges_teleport: 69
+          lightning_damage_min: 1
+          lightning_damage_max: 150
+          energy: 35
+        notes: "Grants Teleport charges — useful for non-Sorceress MF runs."
+
+      - name: "Naj's Circlet"
+        base: "Circlet"
+        slot: helmet
+        level_req: 28
+        required_str: 0
+        affixes:
+          defense: 75
+          resist_lightning: 25
+          energy: 15
+          light_radius: 5
+          mana: 30
+
+      - name: "Naj's Light Plate"
+        base: "Hellforge Plate"
+        slot: body
+        level_req: 43
+        required_str: 79
+        affixes:
+          defense: 300
+          resist_all: 65
+          max_life_percent: 5
+          mana: 100
+
+    partial_bonuses:
+      2:
+        {}
+
+    full_bonus:
+      all_skills: 1
+      resist_all: 10
+      defense: 175
+    notes: |
+      Naj's Puzzler is the main reason this set is relevant — Teleport charges
+      for non-Sorceress builds doing MF runs (e.g. Mephisto).
+
+  # ============================================================
+  # ANGELIC RAIMENT (partial)
+  # ============================================================
+  # Low-level set. The ring + amulet 2-piece combo is commonly used for
+  # massive attack rating on melee characters.
+
+  - set_name: "Angelic Raiment"
+    class_affinity: none
+    items:
+
+      - name: "Angelic Mantle"
+        base: "Ring Mail"
+        slot: body
+        level_req: 12
+        required_str: 36
+        affixes:
+          defense: 40
+          damage_reduced: 3
+
+      - name: "Angelic Halo"
+        base: "Ring"
+        slot: ring
+        level_req: 12
+        affixes:
+          replenish_life: 6
+          light_radius: 1
+        item_partial_bonus:
+          2:
+            all_skills: 1
+          3:
+            attack_rating_per_level: 12   # massive AR scaling
+
+      - name: "Angelic Wings"
+        base: "Amulet"
+        slot: amulet
+        level_req: 12
+        affixes:
+          mana: 75
+          damage_vs_missile_min: 3
+          damage_vs_missile_max: 8
+        item_partial_bonus:
+          2:
+            life: 50
+          3:
+            half_freeze_duration: true
+
+      - name: "Angelic Sickle"
+        base: "Sabre"
+        slot: weapon
+        level_req: 12
+        required_str: 25
+        affixes:
+          ed: 75
+          attack_rating: 100
+          light_radius: 2
+          ias: 30
+
+    partial_bonuses:
+      2:
+        {}
+
+    full_bonus:
+      half_freeze_duration: true
+    notes: |
+      Ring + Amulet combo (2-piece) gives +1 all skills.
+      Ring + Amulet + any third piece gives massive attack rating per level.
