@@ -1,0 +1,1838 @@
+# D2R Runewords Reference Data
+# Comprehensive list of ALL runewords in Diablo II: Resurrected (including Ladder-only
+# and Reign of the Warlock / Season 13 additions).
+#
+# Sources: diablo-archive.fandom.com, diablo2.io, purediablo.com
+#
+# Schema notes:
+#   - rune_sequence: runes in exact insertion order
+#   - base_types: valid socketed item categories
+#   - stats: use consistent keys (see below)
+#   - Variable stats shown as midpoint or noted with _min/_max suffix
+#
+# Stat key reference:
+#   all_skills, class_skills (e.g. fire_skills, sorceress_skills),
+#   fcr, fhr, frw, fbr, ias, ed, mf, gold_find,
+#   life, mana, strength, dexterity, vitality, energy,
+#   resist_fire, resist_cold, resist_lightning, resist_poison, resist_all,
+#   max_resist_fire, max_resist_cold, max_resist_lightning, max_resist_poison,
+#   cb (crushing blow), ds (deadly strike), ow (open wounds),
+#   ll (life leech), ml (mana leech), dr (damage reduction %),
+#   mdr (magic damage reduction), damage_reduced (flat),
+#   ctc_* (chance to cast), aura_* (grants aura),
+#   absorb_fire, absorb_cold, absorb_lightning, absorb_magic
+
+runewords:
+
+  # ============================================================
+  # ORIGINAL RUNEWORDS (Lord of Destruction)
+  # ============================================================
+
+  - name: "Ancient's Pledge"
+    rune_sequence: ["Ral", "Ort", "Tal"]
+    socket_count: 3
+    base_types: ["shield"]
+    level_req: 21
+    stats:
+      ed: 50
+      resist_cold: 43
+      resist_fire: 48
+      resist_lightning: 48
+      resist_poison: 48
+      damage_to_mana: 10
+
+  - name: "Black"
+    rune_sequence: ["Thul", "Io", "Nef"]
+    socket_count: 3
+    base_types: ["club", "hammer", "mace"]
+    level_req: 35
+    stats:
+      ed: 120
+      cb: 40
+      attack_rating: 200
+      cold_damage_min: 3
+      cold_damage_max: 14
+      vitality: 10
+      ias: 15
+      knockback: true
+      mdr: 2
+      charges_corpse_explosion: 12
+
+  - name: "Fury"
+    rune_sequence: ["Jah", "Gul", "Eth"]
+    socket_count: 3
+    base_types: ["melee_weapon"]
+    level_req: 65
+    stats:
+      ed: 209
+      ias: 40
+      prevent_monster_heal: true
+      ow: 66
+      ds: 33
+      ignore_target_defense: true
+      target_defense: -25
+      attack_rating_bonus: 20
+      ll: 6
+      frenzy: 5
+
+  - name: "Holy Thunder"
+    rune_sequence: ["Eth", "Ral", "Ort", "Tal"]
+    socket_count: 4
+    base_types: ["scepter"]
+    level_req: 21
+    stats:
+      ed: 60
+      target_defense: -25
+      fire_damage_min: 5
+      fire_damage_max: 30
+      lightning_damage_min: 21
+      lightning_damage_max: 110
+      poison_damage: 75
+      poison_duration: 5
+      max_damage: 10
+      resist_lightning: 60
+      max_resist_lightning: 5
+      holy_shock: 3
+      charges_chain_lightning: 60
+
+  - name: "Honor"
+    rune_sequence: ["Amn", "El", "Ith", "Tir", "Sol"]
+    socket_count: 5
+    base_types: ["melee_weapon"]
+    level_req: 27
+    stats:
+      ed: 160
+      min_damage: 9
+      max_damage: 9
+      ds: 25
+      attack_rating: 250
+      all_skills: 1
+      ll: 7
+      replenish_life: 10
+      strength: 10
+      light_radius: 1
+      mana_after_each_kill: 2
+
+  - name: "King's Grace"
+    rune_sequence: ["Amn", "Ral", "Thul"]
+    socket_count: 3
+    base_types: ["scepter", "sword"]
+    level_req: 25
+    stats:
+      ed: 100
+      damage_to_demons: 100
+      damage_to_undead: 50
+      fire_damage_min: 5
+      fire_damage_max: 30
+      cold_damage_min: 3
+      cold_damage_max: 14
+      attack_rating: 150
+      attack_rating_demons: 100
+      attack_rating_undead: 100
+      ll: 7
+
+  - name: "Leaf"
+    rune_sequence: ["Tir", "Ral"]
+    socket_count: 2
+    base_types: ["staff"]
+    level_req: 19
+    stats:
+      fire_damage_min: 5
+      fire_damage_max: 30
+      fire_skills: 3
+      fire_bolt: 3
+      inferno: 3
+      warmth: 3
+      mana_after_each_kill: 2
+      defense_per_level: 2
+      resist_cold: 33
+
+  - name: "Lionheart"
+    rune_sequence: ["Hel", "Lum", "Fal"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 41
+    stats:
+      ed: 20
+      requirements: -15
+      strength: 25
+      energy: 10
+      vitality: 20
+      dexterity: 15
+      life: 50
+      resist_all: 30
+
+  - name: "Lore"
+    rune_sequence: ["Ort", "Sol"]
+    socket_count: 2
+    base_types: ["helm"]
+    level_req: 27
+    stats:
+      all_skills: 1
+      energy: 10
+      mana_after_each_kill: 2
+      resist_lightning: 30
+      damage_reduced: 7
+      light_radius: 2
+
+  - name: "Malice"
+    rune_sequence: ["Ith", "El", "Eth"]
+    socket_count: 3
+    base_types: ["melee_weapon"]
+    level_req: 15
+    stats:
+      ed: 33
+      max_damage: 9
+      ow: 100
+      target_defense: -25
+      monster_defense_per_hit: -100
+      prevent_monster_heal: true
+      attack_rating: 50
+      drain_life: -5
+
+  - name: "Melody"
+    rune_sequence: ["Shael", "Ko", "Nef"]
+    socket_count: 3
+    base_types: ["missile_weapon"]
+    level_req: 39
+    stats:
+      ed: 50
+      damage_to_undead: 300
+      bow_crossbow_skills: 3
+      critical_strike: 3
+      dodge: 3
+      slow_missiles: 3
+      ias: 20
+      dexterity: 10
+      knockback: true
+
+  - name: "Memory"
+    rune_sequence: ["Lum", "Io", "Sol", "Eth"]
+    socket_count: 4
+    base_types: ["staff"]
+    level_req: 37
+    stats:
+      sorceress_skills: 3
+      fcr: 33
+      max_mana_percent: 20
+      energy_shield: 3
+      static_field: 2
+      energy: 10
+      vitality: 10
+      min_damage: 9
+      target_defense: -25
+      mdr: 7
+      ed: 50
+
+  - name: "Nadir"
+    rune_sequence: ["Nef", "Tir"]
+    socket_count: 2
+    base_types: ["helm"]
+    level_req: 13
+    stats:
+      ed: 50
+      defense: 10
+      defense_vs_missile: 30
+      charges_cloak_of_shadows: 9
+      mana_after_each_kill: 2
+      strength: 5
+      gold_find: -33
+      light_radius: -3
+
+  - name: "Radiance"
+    rune_sequence: ["Nef", "Sol", "Ith"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 27
+    stats:
+      ed: 75
+      defense_vs_missile: 30
+      energy: 10
+      vitality: 10
+      damage_to_mana: 15
+      mdr: 3
+      mana: 33
+      damage_reduced: 7
+      light_radius: 5
+
+  - name: "Rhyme"
+    rune_sequence: ["Shael", "Eth"]
+    socket_count: 2
+    base_types: ["shield"]
+    level_req: 29
+    stats:
+      increased_blocking: 20
+      fbr: 40
+      resist_all: 25
+      regenerate_mana: 15
+      cannot_be_frozen: true
+      gold_find: 50
+      mf: 25
+
+  - name: "Silence"
+    rune_sequence: ["Dol", "Eld", "Hel", "Ist", "Tir", "Vex"]
+    socket_count: 6
+    base_types: ["weapon"]
+    level_req: 55
+    stats:
+      ed: 200
+      damage_to_undead: 75
+      requirements: -20
+      ias: 20
+      attack_rating_undead: 50
+      all_skills: 2
+      resist_all: 75
+      fhr: 20
+      ml: 11
+      hit_causes_monster_to_flee: 25
+      hit_blinds_target: 33
+      mana_after_each_kill: 2
+      mf: 30
+
+  - name: "Smoke"
+    rune_sequence: ["Nef", "Lum"]
+    socket_count: 2
+    base_types: ["body_armour"]
+    level_req: 37
+    stats:
+      ed: 75
+      defense_vs_missile: 280
+      resist_all: 50
+      fhr: 20
+      charges_weaken: 18
+      energy: 10
+      light_radius: -1
+
+  - name: "Stealth"
+    rune_sequence: ["Tal", "Eth"]
+    socket_count: 2
+    base_types: ["body_armour"]
+    level_req: 17
+    stats:
+      mdr: 3
+      dexterity: 6
+      max_stamina: 15
+      resist_poison: 30
+      regenerate_mana: 15
+      frw: 25
+      fcr: 25
+      fhr: 25
+
+  - name: "Steel"
+    rune_sequence: ["Tir", "El"]
+    socket_count: 2
+    base_types: ["sword", "axe", "mace"]
+    level_req: 13
+    stats:
+      ed: 20
+      min_damage: 3
+      max_damage: 3
+      attack_rating: 50
+      ow: 50
+      ias: 25
+      mana_after_each_kill: 2
+      light_radius: 1
+
+  - name: "Strength"
+    rune_sequence: ["Amn", "Tir"]
+    socket_count: 2
+    base_types: ["melee_weapon"]
+    level_req: 25
+    stats:
+      ed: 35
+      cb: 25
+      ll: 7
+      mana_after_each_kill: 2
+      strength: 20
+      vitality: 10
+
+  - name: "Venom"
+    rune_sequence: ["Tal", "Dol", "Mal"]
+    socket_count: 3
+    base_types: ["weapon"]
+    level_req: 49
+    stats:
+      hit_causes_monster_to_flee: 25
+      prevent_monster_heal: true
+      ignore_target_defense: true
+      ml: 7
+      charges_poison_explosion: 27
+      charges_poison_nova: 11
+      poison_damage: 273
+      poison_duration: 6
+
+  - name: "Wealth"
+    rune_sequence: ["Lem", "Ko", "Tir"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 43
+    stats:
+      gold_find: 300
+      mf: 100
+      mana_after_each_kill: 2
+      dexterity: 10
+
+  - name: "White"
+    rune_sequence: ["Dol", "Io"]
+    socket_count: 2
+    base_types: ["wand"]
+    level_req: 35
+    stats:
+      hit_causes_monster_to_flee: 25
+      vitality: 10
+      poison_and_bone_skills: 3
+      bone_armour: 3
+      bone_spear: 2
+      skeleton_mastery: 4
+      mdr: 4
+      fcr: 20
+      mana: 13
+
+  - name: "Zephyr"
+    rune_sequence: ["Ort", "Eth"]
+    socket_count: 2
+    base_types: ["missile_weapon"]
+    level_req: 21
+    stats:
+      ed: 33
+      attack_rating: 66
+      lightning_damage_min: 1
+      lightning_damage_max: 50
+      target_defense: -25
+      defense: 25
+      frw: 25
+      ias: 25
+      ctc_twister: 7
+
+  # ============================================================
+  # PATCH 1.10 RUNEWORDS
+  # ============================================================
+
+  - name: "Beast"
+    rune_sequence: ["Ber", "Tir", "Um", "Mal", "Lum"]
+    socket_count: 5
+    base_types: ["axe", "scepter", "hammer"]
+    level_req: 63
+    stats:
+      aura_fanaticism: 9
+      ias: 40
+      ed_min: 240
+      ed_max: 270
+      cb: 20
+      ow: 25
+      werebear: 3
+      lycanthropy: 3
+      prevent_monster_heal: true
+      strength_min: 25
+      strength_max: 40
+      energy: 10
+      mana_after_each_kill: 2
+      charges_summon_grizzly: 5
+
+  - name: "Bramble"
+    rune_sequence: ["Ral", "Ohm", "Sur", "Eth"]
+    socket_count: 4
+    base_types: ["body_armour"]
+    level_req: 61
+    stats:
+      aura_thorns_min: 15
+      aura_thorns_max: 21
+      fhr: 50
+      poison_skill_damage_min: 25
+      poison_skill_damage_max: 50
+      defense: 300
+      max_mana_percent: 5
+      regenerate_mana: 15
+      max_resist_cold: 5
+      resist_fire: 30
+      resist_poison: 100
+      life_after_each_kill: 13
+      charges_spirit_of_barbs: 33
+
+  - name: "Breath of the Dying"
+    rune_sequence: ["Vex", "Hel", "El", "Eld", "Zod", "Eth"]
+    socket_count: 6
+    base_types: ["weapon"]
+    level_req: 69
+    stats:
+      ctc_poison_nova_on_kill: 50
+      indestructible: true
+      ias: 60
+      ed_min: 350
+      ed_max: 400
+      damage_to_undead: 200
+      target_defense: -25
+      attack_rating: 50
+      attack_rating_undead: 50
+      ml: 7
+      ll_min: 12
+      ll_max: 15
+      prevent_monster_heal: true
+      all_attributes: 30
+      light_radius: 1
+      requirements: -20
+
+  - name: "Call to Arms"
+    rune_sequence: ["Amn", "Ral", "Mal", "Ist", "Ohm"]
+    socket_count: 5
+    base_types: ["weapon"]
+    level_req: 57
+    stats:
+      all_skills: 1
+      ias: 40
+      ed_min: 250
+      ed_max: 290
+      fire_damage_min: 5
+      fire_damage_max: 30
+      ll: 7
+      battle_command_min: 2
+      battle_command_max: 6
+      battle_orders_min: 1
+      battle_orders_max: 6
+      battle_cry_min: 1
+      battle_cry_max: 4
+      prevent_monster_heal: true
+      replenish_life: 12
+      mf: 30
+
+  - name: "Chaos"
+    rune_sequence: ["Fal", "Ohm", "Um"]
+    socket_count: 3
+    base_types: ["claw"]
+    level_req: 57
+    stats:
+      ctc_frozen_orb: 9
+      ctc_charged_bolt: 11
+      ias: 35
+      ed_min: 290
+      ed_max: 340
+      magic_damage_min: 216
+      magic_damage_max: 471
+      ow: 25
+      whirlwind: 1
+      strength: 10
+      life_after_demon_kill: 15
+
+  - name: "Chains of Honor"
+    rune_sequence: ["Dol", "Um", "Ber", "Ist"]
+    socket_count: 4
+    base_types: ["body_armour"]
+    level_req: 63
+    stats:
+      all_skills: 2
+      damage_to_demons: 200
+      damage_to_undead: 100
+      ll: 8
+      ed: 70
+      strength: 20
+      replenish_life: 7
+      resist_all: 65
+      dr: 8
+      mf: 25
+
+  - name: "Crescent Moon"
+    rune_sequence: ["Shael", "Um", "Tir"]
+    socket_count: 3
+    base_types: ["axe", "sword", "polearm"]
+    level_req: 47
+    stats:
+      ctc_chain_lightning: 10
+      ctc_static_field: 7
+      ias: 20
+      ed_min: 180
+      ed_max: 220
+      ignore_target_defense: true
+      enemy_lightning_resist: -35
+      ow: 25
+      absorb_magic_min: 9
+      absorb_magic_max: 11
+      mana_after_each_kill: 2
+      charges_summon_spirit_wolf: 30
+
+  - name: "Delirium"
+    rune_sequence: ["Lem", "Ist", "Io"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 51
+    stats:
+      ctc_delirium: 1
+      ctc_mind_blast: 6
+      ctc_terror: 14
+      ctc_confuse: 11
+      all_skills: 2
+      defense: 261
+      vitality: 10
+      gold_find: 50
+      mf: 25
+      charges_attract: 60
+
+  - name: "Doom"
+    rune_sequence: ["Hel", "Ohm", "Um", "Lo", "Cham"]
+    socket_count: 5
+    base_types: ["axe", "polearm", "hammer"]
+    level_req: 67
+    stats:
+      ctc_volcano: 5
+      aura_holy_freeze: 12
+      all_skills: 2
+      ias: 45
+      ed_min: 330
+      ed_max: 370
+      enemy_cold_resist_min: -40
+      enemy_cold_resist_max: -60
+      ds: 20
+      ow: 25
+      prevent_monster_heal: true
+      freezes_target: 3
+      requirements: -20
+
+  - name: "Duress"
+    rune_sequence: ["Shael", "Um", "Thul"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 47
+    stats:
+      fhr: 40
+      ed_min: 10
+      ed_max: 20
+      cold_damage_min: 37
+      cold_damage_max: 133
+      cb: 15
+      ow: 33
+      enhanced_defense_min: 150
+      enhanced_defense_max: 200
+      slower_stamina_drain: 20
+      resist_cold: 45
+      resist_lightning: 15
+      resist_fire: 15
+      resist_poison: 15
+
+  - name: "Enigma"
+    rune_sequence: ["Jah", "Ith", "Ber"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 65
+    stats:
+      all_skills: 2
+      frw: 45
+      teleport: 1
+      defense_min: 750
+      defense_max: 775
+      strength_per_level: 0.75
+      max_life_percent: 5
+      dr: 8
+      life_after_each_kill: 14
+      damage_to_mana: 15
+      mf_per_level: 1
+
+  - name: "Eternity"
+    rune_sequence: ["Amn", "Ber", "Ist", "Sol", "Sur"]
+    socket_count: 5
+    base_types: ["melee_weapon"]
+    level_req: 63
+    stats:
+      indestructible: true
+      ed_min: 260
+      ed_max: 310
+      min_damage: 9
+      ll: 7
+      cb: 20
+      hit_blinds_target: true
+      slow_target: 33
+      regenerate_mana: 16
+      replenish_life: 16
+      cannot_be_frozen: true
+      mf: 30
+      charges_revive: 88
+
+  - name: "Exile"
+    rune_sequence: ["Vex", "Ohm", "Ist", "Dol"]
+    socket_count: 4
+    base_types: ["paladin_shield"]
+    level_req: 57
+    stats:
+      ctc_life_tap: 15
+      aura_defiance_min: 13
+      aura_defiance_max: 16
+      offensive_auras: 2
+      fbr: 30
+      freezes_target: true
+      enhanced_defense_min: 220
+      enhanced_defense_max: 260
+      replenish_life: 7
+      max_resist_cold: 5
+      max_resist_fire: 5
+      mf: 25
+      repairs_durability: 4
+
+  - name: "Famine"
+    rune_sequence: ["Fal", "Ohm", "Ort", "Jah"]
+    socket_count: 4
+    base_types: ["axe", "hammer"]
+    level_req: 65
+    stats:
+      ias: 30
+      ed_min: 320
+      ed_max: 370
+      ignore_target_defense: true
+      magic_damage_min: 180
+      magic_damage_max: 200
+      fire_damage_min: 50
+      fire_damage_max: 200
+      lightning_damage_min: 51
+      lightning_damage_max: 250
+      cold_damage_min: 50
+      cold_damage_max: 200
+      ll: 12
+      prevent_monster_heal: true
+      strength: 10
+
+  - name: "Gloom"
+    rune_sequence: ["Fal", "Um", "Pul"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 47
+    stats:
+      ctc_dim_vision: 15
+      fhr: 10
+      enhanced_defense_min: 200
+      enhanced_defense_max: 260
+      strength: 10
+      resist_all: 45
+      half_freeze_duration: true
+      damage_to_mana: 5
+      light_radius: -3
+
+  - name: "Hand of Justice"
+    rune_sequence: ["Sur", "Cham", "Amn", "Lo"]
+    socket_count: 4
+    base_types: ["weapon"]
+    level_req: 67
+    stats:
+      ctc_blaze_on_level_up: 100
+      ctc_meteor_on_death: 100
+      aura_holy_fire: 16
+      ias: 33
+      ed_min: 280
+      ed_max: 330
+      ignore_target_defense: true
+      ll: 7
+      enemy_fire_resist: -20
+      ds: 20
+      hit_blinds_target: true
+      freezes_target: 3
+
+  - name: "Heart of the Oak"
+    rune_sequence: ["Ko", "Vex", "Pul", "Thul"]
+    socket_count: 4
+    base_types: ["staff", "mace"]
+    level_req: 55
+    stats:
+      all_skills: 3
+      fcr: 40
+      damage_to_demons: 75
+      attack_rating_demons: 100
+      cold_damage_min: 3
+      cold_damage_max: 14
+      ml: 7
+      dexterity: 10
+      replenish_life: 20
+      max_mana_percent: 15
+      resist_all_min: 30
+      resist_all_max: 40
+      charges_oak_sage: 25
+      charges_raven: 60
+
+  - name: "Kingslayer"
+    rune_sequence: ["Mal", "Um", "Gul", "Fal"]
+    socket_count: 4
+    base_types: ["sword", "axe"]
+    level_req: 53
+    stats:
+      ias: 30
+      ed_min: 230
+      ed_max: 270
+      target_defense: -25
+      attack_rating_bonus: 20
+      cb: 33
+      ow: 50
+      vengeance: 1
+      prevent_monster_heal: true
+      strength: 10
+      gold_find: 40
+
+  - name: "Passion"
+    rune_sequence: ["Dol", "Ort", "Eld", "Lem"]
+    socket_count: 4
+    base_types: ["weapon"]
+    level_req: 43
+    stats:
+      ias: 25
+      ed_min: 160
+      ed_max: 210
+      attack_rating_bonus_min: 50
+      attack_rating_bonus_max: 80
+      damage_to_undead: 75
+      attack_rating_undead: 50
+      lightning_damage_min: 1
+      lightning_damage_max: 50
+      berserk: 1
+      zeal: 1
+      hit_blinds_target: 10
+      hit_causes_monster_to_flee: 25
+      gold_find: 75
+      charges_heart_of_wolverine: 12
+
+  - name: "Prudence"
+    rune_sequence: ["Mal", "Tir"]
+    socket_count: 2
+    base_types: ["body_armour"]
+    level_req: 49
+    stats:
+      fhr: 25
+      enhanced_defense_min: 140
+      enhanced_defense_max: 170
+      resist_all_min: 25
+      resist_all_max: 35
+      damage_reduced: 3
+      mdr: 17
+      mana_after_each_kill: 2
+      light_radius: 1
+      repairs_durability: 4
+
+  - name: "Sanctuary"
+    rune_sequence: ["Ko", "Ko", "Mal"]
+    socket_count: 3
+    base_types: ["shield"]
+    level_req: 49
+    stats:
+      fhr: 20
+      fbr: 20
+      increased_blocking: 20
+      enhanced_defense_min: 130
+      enhanced_defense_max: 160
+      defense_vs_missile: 250
+      dexterity: 20
+      resist_all_min: 50
+      resist_all_max: 70
+      mdr: 7
+      charges_slow_missiles: 60
+
+  - name: "Splendor"
+    rune_sequence: ["Eth", "Lum"]
+    socket_count: 2
+    base_types: ["shield"]
+    level_req: 37
+    stats:
+      all_skills: 1
+      fcr: 10
+      fbr: 20
+      enhanced_defense_min: 60
+      enhanced_defense_max: 100
+      energy: 10
+      regenerate_mana: 15
+      gold_find: 50
+      mf: 20
+      light_radius: 3
+
+  - name: "Stone"
+    rune_sequence: ["Shael", "Um", "Pul", "Lum"]
+    socket_count: 4
+    base_types: ["body_armour"]
+    level_req: 47
+    stats:
+      fhr: 60
+      enhanced_defense_min: 250
+      enhanced_defense_max: 290
+      defense_vs_missile: 300
+      strength: 16
+      vitality: 16
+      energy: 10
+      resist_all: 15
+      charges_molten_boulder: 80
+      charges_clay_golem: 16
+
+  - name: "Wind"
+    rune_sequence: ["Sur", "El"]
+    socket_count: 2
+    base_types: ["melee_weapon"]
+    level_req: 61
+    stats:
+      ctc_tornado: 10
+      frw: 20
+      ias: 40
+      fhr: 15
+      ed_min: 120
+      ed_max: 160
+      target_defense: -50
+      attack_rating: 50
+      hit_blinds_target: true
+      light_radius: 1
+      charges_twister: 127
+
+  # ============================================================
+  # PATCH 1.10 LADDER RUNEWORDS (now available in all modes in D2R)
+  # ============================================================
+
+  - name: "Brand"
+    rune_sequence: ["Jah", "Lo", "Mal", "Gul"]
+    socket_count: 4
+    base_types: ["missile_weapon"]
+    level_req: 65
+    stats:
+      ctc_amplify_damage_when_struck: 35
+      ctc_bone_spear: 100
+      ed_min: 260
+      ed_max: 340
+      ignore_target_defense: true
+      attack_rating_bonus: 20
+      damage_to_demons_min: 280
+      damage_to_demons_max: 330
+      ds: 20
+      prevent_monster_heal: true
+      knockback: true
+      fires_explosive_arrows: 15
+
+  - name: "Death"
+    rune_sequence: ["Hel", "El", "Vex", "Ort", "Gul"]
+    socket_count: 5
+    base_types: ["axe", "sword"]
+    level_req: 55
+    stats:
+      ctc_chain_lightning_on_death: 100
+      ctc_glacial_spike: 25
+      indestructible: true
+      ed_min: 300
+      ed_max: 385
+      attack_rating_bonus: 20
+      attack_rating: 50
+      lightning_damage_min: 1
+      lightning_damage_max: 50
+      ml: 7
+      cb: 50
+      ds_per_level: 0.5
+      light_radius: 1
+      charges_blood_golem: 15
+      requirements: -20
+
+  - name: "Destruction"
+    rune_sequence: ["Vex", "Lo", "Ber", "Jah", "Ko"]
+    socket_count: 5
+    base_types: ["polearm", "sword"]
+    level_req: 65
+    stats:
+      ctc_volcano: 23
+      ctc_molten_boulder: 5
+      ctc_meteor_on_death: 100
+      ctc_nova: 15
+      ed: 350
+      ignore_target_defense: true
+      magic_damage_min: 100
+      magic_damage_max: 180
+      ml: 7
+      cb: 20
+      ds: 20
+      prevent_monster_heal: true
+      dexterity: 10
+
+  - name: "Dragon"
+    rune_sequence: ["Sur", "Lo", "Sol"]
+    socket_count: 3
+    base_types: ["body_armour", "shield"]
+    level_req: 61
+    stats:
+      ctc_venom_when_struck: 20
+      ctc_hydra: 12
+      aura_holy_fire: 14
+      defense: 360
+      defense_vs_missile: 230
+      all_attributes_min: 3
+      all_attributes_max: 5
+      strength_per_level: 0.375
+      max_resist_lightning: 5
+      damage_reduced: 7
+      # body_armour: max_mana_percent: 5
+      # shield: mana: 50
+
+  - name: "Dream"
+    rune_sequence: ["Io", "Jah", "Pul"]
+    socket_count: 3
+    base_types: ["helm", "shield"]
+    level_req: 65
+    stats:
+      ctc_confuse_when_struck: 10
+      aura_holy_shock: 15
+      fhr_min: 20
+      fhr_max: 30
+      ed: 30
+      defense_min: 150
+      defense_max: 220
+      vitality: 10
+      # helm: max_life_percent: 5
+      # shield: life: 50
+      mana_per_level: 0.625
+      resist_all_min: 5
+      resist_all_max: 20
+      mf_min: 12
+      mf_max: 25
+
+  - name: "Edge"
+    rune_sequence: ["Tir", "Tal", "Amn"]
+    socket_count: 3
+    base_types: ["missile_weapon"]
+    level_req: 25
+    stats:
+      aura_thorns: 15
+      ias: 35
+      damage_to_demons_min: 320
+      damage_to_demons_max: 380
+      damage_to_undead: 280
+      poison_damage: 75
+      poison_duration: 5
+      ll: 7
+      prevent_monster_heal: true
+      all_attributes_min: 5
+      all_attributes_max: 10
+      mana_after_each_kill: 2
+      vendor_prices: -15
+
+  - name: "Faith"
+    rune_sequence: ["Ohm", "Jah", "Lem", "Eld"]
+    socket_count: 4
+    base_types: ["missile_weapon"]
+    level_req: 65
+    stats:
+      aura_fanaticism_min: 12
+      aura_fanaticism_max: 15
+      all_skills_min: 1
+      all_skills_max: 2
+      ed: 330
+      ignore_target_defense: true
+      attack_rating_bonus: 300
+      damage_to_undead: 75
+      attack_rating_undead: 50
+      fire_damage: 120
+      resist_all: 15
+      reanimate_as_returned: 10
+      gold_find: 75
+
+  - name: "Fortitude"
+    rune_sequence: ["El", "Sol", "Dol", "Lo"]
+    socket_count: 4
+    base_types: ["weapon", "body_armour"]
+    level_req: 59
+    stats:
+      ctc_chilling_armour_when_struck: 20
+      fcr: 25
+      ed: 300
+      # weapon only: min_damage: 9, attack_rating: 50, ds: 20, hit_causes_monster_to_flee: 25
+      # armour only: enhanced_defense: 200, defense: 15
+      life_per_level: 1.5
+      replenish_life: 7
+      max_resist_lightning: 5
+      resist_all_min: 25
+      resist_all_max: 30
+      damage_reduced: 7
+      damage_to_mana: 12
+      light_radius: 1
+
+  - name: "Grief"
+    rune_sequence: ["Eth", "Tir", "Lo", "Mal", "Ral"]
+    socket_count: 5
+    base_types: ["axe", "sword"]
+    level_req: 59
+    stats:
+      ctc_venom: 35
+      ias_min: 30
+      ias_max: 40
+      flat_damage_min: 340
+      flat_damage_max: 400
+      ignore_target_defense: true
+      target_defense: -25
+      damage_to_demons_per_level: 1.875
+      fire_damage_min: 5
+      fire_damage_max: 30
+      enemy_poison_resist_min: -20
+      enemy_poison_resist_max: -25
+      ds: 20
+      prevent_monster_heal: true
+      mana_after_each_kill: 2
+      life_after_each_kill_min: 10
+      life_after_each_kill_max: 15
+
+  - name: "Harmony"
+    rune_sequence: ["Tir", "Ith", "Sol", "Ko"]
+    socket_count: 4
+    base_types: ["missile_weapon"]
+    level_req: 39
+    stats:
+      aura_vigor: 10
+      ed_min: 200
+      ed_max: 275
+      min_damage: 9
+      max_damage: 9
+      lightning_damage_min: 55
+      lightning_damage_max: 160
+      fire_damage_min: 55
+      fire_damage_max: 160
+      cold_damage_min: 55
+      cold_damage_max: 160
+      valkyrie_min: 2
+      valkyrie_max: 6
+      dexterity: 10
+      regenerate_mana: 20
+      mana_after_each_kill: 2
+      light_radius: 2
+      charges_revive: 25
+
+  - name: "Ice"
+    rune_sequence: ["Amn", "Shael", "Jah", "Lo"]
+    socket_count: 4
+    base_types: ["missile_weapon"]
+    level_req: 65
+    stats:
+      ctc_blizzard_on_level_up: 100
+      ctc_frost_nova: 25
+      aura_holy_freeze: 18
+      ias: 20
+      ed_min: 140
+      ed_max: 210
+      ignore_target_defense: true
+      cold_skill_damage_min: 25
+      cold_skill_damage_max: 30
+      enemy_cold_resist: -20
+      ll: 7
+      ds: 20
+      gold_find_per_level: 3.125
+
+  - name: "Infinity"
+    rune_sequence: ["Ber", "Mal", "Ber", "Ist"]
+    socket_count: 4
+    base_types: ["polearm"]
+    level_req: 63
+    stats:
+      ctc_chain_lightning_on_kill: 50
+      aura_conviction: 12
+      frw: 35
+      ed_min: 255
+      ed_max: 325
+      enemy_lightning_resist_min: -45
+      enemy_lightning_resist_max: -55
+      cb: 40
+      prevent_monster_heal: true
+      vitality_per_level: 0.5
+      mf: 30
+      charges_cyclone_armour: 30
+
+  - name: "Insight"
+    rune_sequence: ["Ral", "Tir", "Tal", "Sol"]
+    socket_count: 4
+    base_types: ["polearm", "staff"]
+    level_req: 27
+    stats:
+      aura_meditation_min: 12
+      aura_meditation_max: 17
+      fcr: 35
+      ed_min: 200
+      ed_max: 260
+      min_damage: 9
+      attack_rating_bonus_min: 180
+      attack_rating_bonus_max: 250
+      fire_damage_min: 5
+      fire_damage_max: 30
+      poison_damage: 75
+      poison_duration: 5
+      critical_strike_min: 1
+      critical_strike_max: 6
+      all_attributes: 5
+      mana_after_each_kill: 2
+      mf: 23
+
+  - name: "Last Wish"
+    rune_sequence: ["Jah", "Mal", "Jah", "Sur", "Jah", "Ber"]
+    socket_count: 6
+    base_types: ["axe", "hammer", "sword"]
+    level_req: 65
+    stats:
+      ctc_fade_when_struck: 6
+      ctc_life_tap: 10
+      ctc_charged_bolt: 20
+      aura_might: 17
+      ed_min: 330
+      ed_max: 375
+      ignore_target_defense: true
+      cb_min: 60
+      cb_max: 70
+      prevent_monster_heal: true
+      hit_blinds_target: true
+      mf_per_level: 0.5
+
+  - name: "Lawbringer"
+    rune_sequence: ["Amn", "Lem", "Ko"]
+    socket_count: 3
+    base_types: ["hammer", "scepter", "sword"]
+    level_req: 43
+    stats:
+      ctc_decrepify: 20
+      aura_sanctuary_min: 16
+      aura_sanctuary_max: 18
+      target_defense: -50
+      fire_damage_min: 150
+      fire_damage_max: 210
+      cold_damage_min: 130
+      cold_damage_max: 180
+      ll: 7
+      slain_monsters_rest_in_peace: true
+      defense_vs_missile_min: 200
+      defense_vs_missile_max: 250
+      dexterity: 10
+      gold_find: 75
+
+  - name: "Oath"
+    rune_sequence: ["Shael", "Pul", "Mal", "Lum"]
+    socket_count: 4
+    base_types: ["axe", "mace", "sword"]
+    level_req: 49
+    stats:
+      ctc_bone_spirit: 30
+      indestructible: true
+      ias: 50
+      ed_min: 210
+      ed_max: 340
+      damage_to_demons: 75
+      attack_rating_demons: 100
+      prevent_monster_heal: true
+      energy: 10
+      absorb_magic_min: 10
+      absorb_magic_max: 15
+      charges_heart_of_wolverine: 20
+      charges_iron_golem: 14
+
+  - name: "Obedience"
+    rune_sequence: ["Hel", "Ko", "Thul", "Eth", "Fal"]
+    socket_count: 5
+    base_types: ["polearm"]
+    level_req: 41
+    stats:
+      ctc_enchant_on_kill: 30
+      fhr: 40
+      ed: 370
+      target_defense: -25
+      cold_damage_min: 3
+      cold_damage_max: 14
+      enemy_fire_resist: -25
+      cb: 40
+      defense_min: 200
+      defense_max: 300
+      strength: 10
+      dexterity: 10
+      resist_all_min: 20
+      resist_all_max: 30
+      requirements: -20
+
+  - name: "Phoenix"
+    rune_sequence: ["Vex", "Vex", "Lo", "Jah"]
+    socket_count: 4
+    base_types: ["weapon", "shield"]
+    level_req: 65
+    stats:
+      ctc_blaze_on_level_up: 100
+      ctc_firestorm: 40
+      aura_redemption_min: 10
+      aura_redemption_max: 15
+      ed_min: 350
+      ed_max: 400
+      # weapon: ignore_target_defense, ml: 14, ds: 20
+      # shield: defense_vs_missile_min: 350, defense_vs_missile_max: 400
+      enemy_fire_resist: -28
+      life: 50
+      max_resist_lightning: 5
+      max_resist_fire: 10
+      absorb_fire_min: 15
+      absorb_fire_max: 21
+
+  - name: "Pride"
+    rune_sequence: ["Cham", "Sur", "Io", "Lo"]
+    socket_count: 4
+    base_types: ["polearm"]
+    level_req: 67
+    stats:
+      ctc_fire_wall_when_struck: 25
+      aura_concentration_min: 16
+      aura_concentration_max: 20
+      attack_rating_bonus_min: 260
+      attack_rating_bonus_max: 300
+      damage_to_demons_per_level: 1
+      lightning_damage_min: 50
+      lightning_damage_max: 280
+      ds: 20
+      hit_blinds_target: true
+      freezes_target: 3
+      vitality: 10
+      replenish_life: 8
+      gold_find_per_level: 1.875
+
+  - name: "Rift"
+    rune_sequence: ["Hel", "Ko", "Lem", "Gul"]
+    socket_count: 4
+    base_types: ["polearm", "scepter"]
+    level_req: 53
+    stats:
+      ctc_tornado: 20
+      ctc_frozen_orb: 16
+      attack_rating_bonus: 20
+      magic_damage_min: 160
+      magic_damage_max: 250
+      fire_damage_min: 60
+      fire_damage_max: 180
+      all_attributes_min: 5
+      all_attributes_max: 10
+      dexterity: 10
+      damage_to_mana: 38
+      gold_find: 75
+      charges_iron_maiden: 40
+      requirements: -20
+
+  - name: "Spirit"
+    rune_sequence: ["Tal", "Thul", "Ort", "Amn"]
+    socket_count: 4
+    base_types: ["sword", "shield"]
+    level_req: 25
+    stats:
+      all_skills: 2
+      fcr_min: 25
+      fcr_max: 35
+      fhr: 55
+      # sword: lightning_damage_min: 1, lightning_damage_max: 50,
+      #   cold_damage_min: 3, cold_damage_max: 14, poison_damage: 75, ll: 7
+      # shield: defense_vs_missile: 250, resist_cold: 35,
+      #   resist_lightning: 35, resist_poison: 35, attacker_takes_damage: 14
+      vitality: 22
+      mana_min: 89
+      mana_max: 112
+      absorb_magic_min: 3
+      absorb_magic_max: 8
+
+  - name: "Voice of Reason"
+    rune_sequence: ["Lem", "Ko", "El", "Eld"]
+    socket_count: 4
+    base_types: ["mace", "sword"]
+    level_req: 43
+    stats:
+      ctc_frozen_orb: 15
+      ctc_ice_blast: 18
+      attack_rating: 50
+      damage_to_demons_min: 220
+      damage_to_demons_max: 350
+      damage_to_undead_min: 355
+      damage_to_undead_max: 375
+      attack_rating_undead: 50
+      cold_damage_min: 100
+      cold_damage_max: 220
+      enemy_cold_resist: -24
+      dexterity: 10
+      cannot_be_frozen: true
+      gold_find: 75
+      light_radius: 1
+
+  - name: "Wrath"
+    rune_sequence: ["Pul", "Lum", "Ber", "Mal"]
+    socket_count: 4
+    base_types: ["missile_weapon"]
+    level_req: 63
+    stats:
+      ctc_decrepify: 30
+      ctc_life_tap: 5
+      damage_to_demons: 375
+      attack_rating_demons: 100
+      damage_to_undead_min: 250
+      damage_to_undead_max: 300
+      magic_damage_min: 85
+      magic_damage_max: 120
+      lightning_damage_min: 41
+      lightning_damage_max: 240
+      cb: 20
+      prevent_monster_heal: true
+      energy: 10
+      cannot_be_frozen: true
+
+  # ============================================================
+  # PATCH 1.11 RUNEWORDS
+  # ============================================================
+
+  - name: "Bone"
+    rune_sequence: ["Sol", "Um", "Um"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 47
+    stats:
+      ctc_bone_armour_when_struck: 15
+      ctc_bone_spear: 15
+      necromancer_skills: 2
+      mana_min: 100
+      mana_max: 150
+      resist_all: 30
+      damage_reduced: 7
+
+  - name: "Enlightenment"
+    rune_sequence: ["Pul", "Ral", "Sol"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 45
+    stats:
+      ctc_blaze_when_struck: 5
+      ctc_fire_ball: 5
+      sorceress_skills: 2
+      warmth: 1
+      ed: 30
+      resist_fire: 30
+      damage_reduced: 7
+
+  - name: "Myth"
+    rune_sequence: ["Hel", "Amn", "Nef"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 25
+    stats:
+      ctc_howl_when_struck: 3
+      ctc_taunt: 10
+      barbarian_skills: 2
+      defense_vs_missile: 30
+      replenish_life: 10
+      attacker_takes_damage: 14
+      requirements: -15
+
+  - name: "Peace"
+    rune_sequence: ["Shael", "Thul", "Amn"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 29
+    stats:
+      ctc_slow_missiles_when_struck: 4
+      ctc_valkyrie: 2
+      amazon_skills: 2
+      fhr: 20
+      critical_strike: 2
+      resist_cold: 30
+      attacker_takes_damage: 14
+
+  - name: "Principle"
+    rune_sequence: ["Ral", "Gul", "Eld"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 53
+    stats:
+      ctc_holy_bolt: 100
+      paladin_skills: 2
+      damage_to_undead: 50
+      life_min: 120
+      life_max: 147
+      slower_stamina_drain: 15
+      max_resist_poison: 5
+      resist_fire: 30
+
+  - name: "Rain"
+    rune_sequence: ["Ort", "Mal", "Ith"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 49
+    stats:
+      ctc_cyclone_armour_when_struck: 5
+      ctc_twister: 5
+      druid_skills: 2
+      mana_min: 100
+      mana_max: 150
+      resist_lightning: 30
+      mdr: 7
+      damage_to_mana: 15
+
+  - name: "Treachery"
+    rune_sequence: ["Shael", "Thul", "Lem"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 43
+    stats:
+      ctc_fade_when_struck: 5
+      ctc_venom: 25
+      assassin_skills: 2
+      ias: 45
+      fhr: 20
+      resist_cold: 30
+      gold_find: 50
+
+  # ============================================================
+  # PATCH 2.4 RUNEWORDS (D2R new additions)
+  # ============================================================
+
+  - name: "Flickering Flame"
+    rune_sequence: ["Nef", "Pul", "Vex"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 55
+    stats:
+      aura_resist_fire_min: 4
+      aura_resist_fire_max: 8
+      fire_skills: 3
+      enemy_fire_resist_min: -10
+      enemy_fire_resist_max: -15
+      ed: 30
+      defense_vs_missile: 30
+      mana_min: 50
+      mana_max: 75
+      half_freeze_duration: true
+
+  - name: "Obsession"
+    rune_sequence: ["Zod", "Ist", "Lem", "Lum", "Io", "Nef"]
+    socket_count: 6
+    base_types: ["staff"]
+    level_req: 69
+    stats:
+      indestructible: true
+      ctc_weaken_when_struck: 24
+      all_skills: 4
+      fcr: 65
+      fhr: 60
+      vitality: 10
+      energy: 10
+      max_life_percent_min: 15
+      max_life_percent_max: 25
+      regenerate_mana_min: 15
+      regenerate_mana_max: 30
+      resist_all_min: 60
+      resist_all_max: 70
+      gold_find: 75
+      mf: 30
+
+  - name: "Pattern"
+    rune_sequence: ["Tal", "Ort", "Thul"]
+    socket_count: 3
+    base_types: ["claw"]
+    level_req: 23
+    stats:
+      fbr: 30
+      ed_min: 40
+      ed_max: 80
+      attack_rating_bonus: 10
+      fire_damage_min: 12
+      fire_damage_max: 32
+      lightning_damage_min: 1
+      lightning_damage_max: 50
+      cold_damage_min: 3
+      cold_damage_max: 14
+      poison_damage: 75
+      poison_duration: 5
+      strength: 6
+      dexterity: 6
+      resist_all: 15
+
+  - name: "Plague"
+    rune_sequence: ["Cham", "Shael", "Um"]
+    socket_count: 3
+    base_types: ["sword", "claw", "dagger"]
+    level_req: 67
+    stats:
+      ctc_lower_resist_when_struck: 20
+      ctc_poison_nova: 25
+      aura_cleansing_min: 13
+      aura_cleansing_max: 17
+      all_skills_min: 1
+      all_skills_max: 2
+      ias: 20
+      ed_min: 220
+      ed_max: 320
+      enemy_poison_resist: -23
+      ds_per_level: 0.3
+      ow: 25
+
+  - name: "Wisdom"
+    rune_sequence: ["Pul", "Ith", "Eld"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 45
+    stats:
+      piercing_attack: 33
+      ml_min: 4
+      ml_max: 8
+      ed_min: 30
+      ed_max: 40
+      fhr: 15
+      dexterity: 10
+      energy: 10
+      cannot_be_frozen: true
+      slow_target: 25
+      requirements: -15
+
+  # ============================================================
+  # PATCH 2.6 RUNEWORDS (Ladder Season 4+)
+  # ============================================================
+
+  - name: "Bulwark"
+    rune_sequence: ["Shael", "Io", "Sol"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 35
+    stats:
+      fhr: 20
+      ll_min: 4
+      ll_max: 6
+      enhanced_defense_min: 75
+      enhanced_defense_max: 100
+      vitality: 10
+      max_life_percent: 5
+      replenish_life: 30
+      damage_reduced: 7
+      physical_damage_received_min: -10
+      physical_damage_received_max: -15
+
+  - name: "Cure"
+    rune_sequence: ["Shael", "Io", "Tal"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 35
+    stats:
+      aura_cleansing: 1
+      fhr: 20
+      enhanced_defense_min: 75
+      enhanced_defense_max: 100
+      vitality: 10
+      max_life_percent: 5
+      resist_poison_min: 40
+      resist_poison_max: 60
+      poison_length_reduced: 50
+
+  - name: "Ground"
+    rune_sequence: ["Shael", "Io", "Ort"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 35
+    stats:
+      fhr: 20
+      enhanced_defense_min: 75
+      enhanced_defense_max: 100
+      vitality: 10
+      max_life_percent: 5
+      resist_lightning_min: 40
+      resist_lightning_max: 60
+      absorb_lightning_min: 10
+      absorb_lightning_max: 15
+
+  - name: "Hearth"
+    rune_sequence: ["Shael", "Io", "Thul"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 35
+    stats:
+      fhr: 20
+      enhanced_defense_min: 75
+      enhanced_defense_max: 100
+      vitality: 10
+      max_life_percent: 5
+      resist_cold_min: 40
+      resist_cold_max: 60
+      absorb_cold_min: 10
+      absorb_cold_max: 15
+      cannot_be_frozen: true
+
+  - name: "Hustle"
+    rune_sequence: ["Shael", "Ko", "Eld"]
+    socket_count: 3
+    base_types: ["weapon", "body_armour"]
+    level_req: 39
+    ladder_only: true
+    stats:
+      # Weapon version:
+      #   ctc_burst_of_speed: 5, aura_fanaticism: 1, ias: 30,
+      #   ed_min: 180, ed_max: 200, damage_to_undead: 75,
+      #   attack_rating_undead: 50, dexterity: 10
+      # Armour version:
+      #   frw: 65, ias: 40, fhr: 20, evade: 6,
+      #   dexterity: 10, slower_stamina_drain: 50, resist_all: 10
+      #
+      # Combined representative stats (varies by base type):
+      ias: 40
+      fhr: 20
+      frw: 65
+      dexterity: 10
+      resist_all: 10
+
+  - name: "Metamorphosis"
+    rune_sequence: ["Io", "Cham", "Fal"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 67
+    ladder_only: true
+    stats:
+      # Werewolf strikes: Mark of the Wolf (+30% AR, +40% max life, 180s)
+      # Werebear strikes: Mark of the Bear (+25% IAS, -20% phys dmg taken, 180s)
+      shape_shifting_skills: 5
+      cb: 25
+      enhanced_defense_min: 50
+      enhanced_defense_max: 80
+      strength: 10
+      vitality: 10
+      resist_all: 10
+      cannot_be_frozen: true
+
+  - name: "Mosaic"
+    rune_sequence: ["Mal", "Gul", "Amn"]
+    socket_count: 3
+    base_types: ["claw"]
+    level_req: 53
+    stats:
+      # 50% chance finishers do not consume charges (refresh timer instead)
+      martial_arts: 2
+      ias: 20
+      ed_min: 200
+      ed_max: 250
+      attack_rating_bonus: 20
+      ll: 7
+      cold_skill_damage_min: 8
+      cold_skill_damage_max: 15
+      lightning_skill_damage_min: 8
+      lightning_skill_damage_max: 15
+      fire_skill_damage_min: 8
+      fire_skill_damage_max: 15
+      prevent_monster_heal: true
+
+  - name: "Temper"
+    rune_sequence: ["Shael", "Io", "Ral"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 35
+    stats:
+      fhr: 20
+      enhanced_defense_min: 75
+      enhanced_defense_max: 100
+      vitality: 10
+      max_life_percent: 5
+      resist_fire_min: 40
+      resist_fire_max: 60
+      absorb_fire_min: 10
+      absorb_fire_max: 15
+
+  # ============================================================
+  # REIGN OF THE WARLOCK / SEASON 13 RUNEWORDS (RotW / Patch 3.1)
+  # ============================================================
+
+  - name: "Authority"
+    rune_sequence: ["Hel", "Shael", "Ral"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 29
+    stats:
+      warlock_skills: 2
+      ed_min: 40
+      ed_max: 60
+      requirements: -15
+      fhr: 20
+      resist_fire: 30
+      ctc_psychic_ward_when_struck: 2
+      ctc_miasma_chain: 10
+
+  - name: "Coven"
+    rune_sequence: ["Ist", "Ral", "Io"]
+    socket_count: 3
+    base_types: ["helm"]
+    level_req: 51
+    stats:
+      all_skills: 1
+      fcr: 20
+      enhanced_defense_min: 30
+      enhanced_defense_max: 50
+      life_after_each_kill_min: 1
+      life_after_each_kill_max: 5
+      mf_min: 26
+      mf_max: 40
+      resist_fire: 30
+      vitality: 10
+      ctc_sigil_lethargy_when_struck: 5
+
+  - name: "Hysteria"
+    rune_sequence: ["Shael", "Ko", "Eld"]
+    socket_count: 3
+    base_types: ["body_armour"]
+    level_req: 39
+    ladder_only: true
+    stats:
+      frw: 65
+      ias: 40
+      fhr: 20
+      evade: 6
+      dexterity: 10
+      slower_stamina_drain: 50
+      resist_all: 10
+
+  - name: "Mania"
+    rune_sequence: ["Shael", "Ko", "Eld"]
+    socket_count: 3
+    base_types: ["weapon"]
+    level_req: 39
+    ladder_only: true
+    stats:
+      aura_fanaticism: 1
+      ias: 30
+      ed_min: 180
+      ed_max: 200
+      damage_to_undead: 75
+      attack_rating_undead: 50
+      dexterity: 10
+      ctc_burst_of_speed: 5
+
+  - name: "Ritual"
+    rune_sequence: ["Amn", "Shael", "Ohm"]
+    socket_count: 3
+    base_types: ["dagger"]
+    level_req: 57
+    stats:
+      ias: 40
+      ed_min: 250
+      ed_max: 320
+      damage_to_demons_min: 150
+      damage_to_demons_max: 250
+      attack_rating_bonus_min: 200
+      attack_rating_bonus_max: 260
+      life_after_each_kill_min: 3
+      life_after_each_kill_max: 5
+      slain_monsters_rest_in_peace: true
+      ll: 7
+      ctc_sigil_death_when_struck: 13
+
+  - name: "Vigilance"
+    rune_sequence: ["Dol", "Gul"]
+    socket_count: 2
+    base_types: ["shield", "paladin_shield", "necromancer_shield"]
+    level_req: 53
+    stats:
+      frw: 10
+      fbr: 30
+      life_min: 20
+      life_max: 40
+      mana_min: 20
+      mana_max: 40
+      resist_all_min: 25
+      resist_all_max: 35
+      enhanced_defense_min: 75
+      enhanced_defense_max: 100
+      replenish_life: 7
+      max_resist_poison: 5
+      ctc_ring_of_fire_when_struck: 5
+
+  - name: "Void"
+    rune_sequence: ["Thul", "Zod", "Ist"]
+    socket_count: 3
+    base_types: ["dagger"]
+    level_req: 69
+    stats:
+      all_skills: 2
+      fcr: 40
+      magic_skill_damage_min: 10
+      magic_skill_damage_max: 15
+      abyss_min: 1
+      abyss_max: 3
+      all_attributes_min: 8
+      all_attributes_max: 12
+      charges_decrepify: 35
+      cold_damage_min: 3
+      cold_damage_max: 14
+      indestructible: true
+      mf: 30
