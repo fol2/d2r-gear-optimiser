@@ -1,13 +1,10 @@
 """Core inventory models — Items, Affixes, and Sockets."""
 
-from datetime import UTC, datetime
+from datetime import datetime
 
 from sqlmodel import Field, SQLModel
 
-
-def _utcnow() -> datetime:
-    """Return current UTC time (timezone-aware)."""
-    return datetime.now(UTC)
+from d2r_optimiser.core.models._common import utcnow
 
 
 class Item(SQLModel, table=True):
@@ -24,8 +21,8 @@ class Item(SQLModel, table=True):
     socket_count: int = 0
     location: str | None = None  # stash/equipped/mule1/...
     notes: str | None = None
-    created_at: datetime | None = Field(default_factory=_utcnow)
-    updated_at: datetime | None = Field(default_factory=_utcnow)
+    created_at: datetime | None = Field(default_factory=utcnow)
+    updated_at: datetime | None = Field(default_factory=utcnow)
 
 
 class Affix(SQLModel, table=True):
@@ -42,6 +39,6 @@ class Socket(SQLModel, table=True):
     """A socket slot in an item, optionally filled with a rune/jewel/gem."""
 
     id: int | None = Field(default=None, primary_key=True)
-    item_id: int = Field(foreign_key="item.id")
+    item_id: int = Field(foreign_key="item.id", index=True)
     socket_index: int  # 0, 1, 2, ...
     filled_with: str | None = None  # "Ist" / "Perfect Topaz" / jewel uid

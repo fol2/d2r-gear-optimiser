@@ -21,7 +21,6 @@ from d2r_optimiser.core.models import (
     ValidationRecord,
 )
 
-
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
@@ -225,7 +224,9 @@ _SAMPLE_BUILD = {
     "description": "MF-focused echoing-strike warlock build.",
     "formula_module": "warlock_echoing_strike",
     "skill_points": {"echoing_strike": 20, "fire_mastery": 20},
-    "objectives": {"damage": 0.4, "magic_find": 0.4, "effective_hp": 0.15, "breakpoint_score": 0.05},
+    "objectives": {
+        "damage": 0.4, "magic_find": 0.4, "effective_hp": 0.15, "breakpoint_score": 0.05,
+    },
     "constraints": [
         {"stat": "fcr", "operator": ">=", "value": 105},
         {"stat": "resistance_all", "operator": ">=", "value": 75},
@@ -276,6 +277,10 @@ class TestObjectiveWeights:
     def test_custom_weights(self):
         w = ObjectiveWeights(damage=0.7, magic_find=0.1, effective_hp=0.15, breakpoint_score=0.05)
         assert w.damage == 0.7
+
+    def test_rejects_weights_not_summing_to_one(self):
+        with pytest.raises(ValueError, match="must sum to 1.0"):
+            ObjectiveWeights(damage=0.9, magic_find=0.9, effective_hp=0.9, breakpoint_score=0.9)
 
 
 # ---------------------------------------------------------------------------

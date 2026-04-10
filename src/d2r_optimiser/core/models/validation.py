@@ -1,13 +1,10 @@
 """Validation models — predicted vs actual measurements for formula calibration."""
 
-from datetime import UTC, datetime
+from datetime import datetime
 
 from sqlmodel import Field, SQLModel
 
-
-def _utcnow() -> datetime:
-    """Return current UTC time (timezone-aware)."""
-    return datetime.now(UTC)
+from d2r_optimiser.core.models._common import utcnow
 
 
 class ValidationRecord(SQLModel, table=True):
@@ -28,4 +25,4 @@ class ValidationRecord(SQLModel, table=True):
     actual_fcr: float | None = None
     deviation_max: float | None = None  # worst deviation across all stats
     notes: str | None = None
-    created_at: datetime | None = Field(default_factory=_utcnow)
+    created_at: datetime | None = Field(default_factory=utcnow)

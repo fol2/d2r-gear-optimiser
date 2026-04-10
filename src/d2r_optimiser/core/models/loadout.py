@@ -1,14 +1,11 @@
 """Optimisation result models — Loadout and scoring."""
 
-from datetime import UTC, datetime
+from datetime import datetime
 
 from pydantic import BaseModel
 from sqlmodel import Field, SQLModel
 
-
-def _utcnow() -> datetime:
-    """Return current UTC time (timezone-aware)."""
-    return datetime.now(UTC)
+from d2r_optimiser.core.models._common import utcnow
 
 
 class ScoreBreakdown(BaseModel):
@@ -34,7 +31,7 @@ class Loadout(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str
     build_def: str  # which build YAML was targeted
-    created_at: datetime | None = Field(default_factory=_utcnow)
+    created_at: datetime | None = Field(default_factory=utcnow)
     score: float | None = None
     damage: float | None = None
     magic_find: float | None = None

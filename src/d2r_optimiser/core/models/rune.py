@@ -26,7 +26,7 @@ class JewelAffix(SQLModel, table=True):
     __tablename__ = "jewelaffix"
 
     id: int | None = Field(default=None, primary_key=True)
-    jewel_id: int = Field(foreign_key="jewel.id")
+    jewel_id: int = Field(foreign_key="jewel.id", index=True)
     stat: str
     value: float
 
