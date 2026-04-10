@@ -1,0 +1,353 @@
+# D2R Runes Reference Data
+# All 33 runes with their socketed stats for weapons, armour, and shields.
+# Used by the gear optimiser to calculate rune contributions to equipment stats.
+#
+# Sources: diablo-archive.fandom.com, purediablo.com
+# Note: Armour stats apply to body armour and helms unless otherwise noted.
+
+runes:
+  # --- Low Runes (1-11) ---
+
+  - name: "El"
+    number: 1
+    level_req: 11
+    weapon_stats:
+      attack_rating: 50
+      light_radius: 1
+    armour_stats:
+      defense: 15
+      light_radius: 1
+    shield_stats:
+      defense: 15
+      light_radius: 1
+
+  - name: "Eld"
+    number: 2
+    level_req: 11
+    weapon_stats:
+      damage_to_undead: 75
+      attack_rating_to_undead: 50
+    armour_stats:
+      stamina_drain: -15
+    shield_stats:
+      block: 7
+
+  - name: "Tir"
+    number: 3
+    level_req: 13
+    weapon_stats:
+      mana_after_each_kill: 2
+    armour_stats:
+      mana_after_each_kill: 2
+    shield_stats:
+      mana_after_each_kill: 2
+
+  - name: "Nef"
+    number: 4
+    level_req: 13
+    weapon_stats:
+      knockback: true
+    armour_stats:
+      defense_vs_missile: 30
+    shield_stats:
+      defense_vs_missile: 30
+
+  - name: "Eth"
+    number: 5
+    level_req: 15
+    weapon_stats:
+      target_defense: -25
+    armour_stats:
+      regenerate_mana: 15
+    shield_stats:
+      regenerate_mana: 15
+
+  - name: "Ith"
+    number: 6
+    level_req: 15
+    weapon_stats:
+      max_damage: 9
+    armour_stats:
+      damage_to_mana: 15
+    shield_stats:
+      damage_to_mana: 15
+
+  - name: "Tal"
+    number: 7
+    level_req: 17
+    weapon_stats:
+      poison_damage: 75
+      poison_duration: 5
+    armour_stats:
+      resist_poison: 30
+    shield_stats:
+      resist_poison: 35
+
+  - name: "Ral"
+    number: 8
+    level_req: 19
+    weapon_stats:
+      fire_damage_min: 5
+      fire_damage_max: 30
+    armour_stats:
+      resist_fire: 30
+    shield_stats:
+      resist_fire: 35
+
+  - name: "Ort"
+    number: 9
+    level_req: 21
+    weapon_stats:
+      lightning_damage_min: 1
+      lightning_damage_max: 50
+    armour_stats:
+      resist_lightning: 30
+    shield_stats:
+      resist_lightning: 35
+
+  - name: "Thul"
+    number: 10
+    level_req: 23
+    weapon_stats:
+      cold_damage_min: 3
+      cold_damage_max: 14
+      cold_duration: 3
+    armour_stats:
+      resist_cold: 30
+    shield_stats:
+      resist_cold: 35
+
+  - name: "Amn"
+    number: 11
+    level_req: 25
+    weapon_stats:
+      life_leech: 7
+    armour_stats:
+      attacker_takes_damage: 14
+    shield_stats:
+      attacker_takes_damage: 14
+
+  # --- Mid Runes (12-20) ---
+
+  - name: "Sol"
+    number: 12
+    level_req: 27
+    weapon_stats:
+      min_damage: 9
+    armour_stats:
+      damage_reduced: 7
+    shield_stats:
+      damage_reduced: 7
+
+  - name: "Shael"
+    number: 13
+    level_req: 29
+    weapon_stats:
+      ias: 20
+    armour_stats:
+      fhr: 20
+    shield_stats:
+      fbr: 20
+
+  - name: "Dol"
+    number: 14
+    level_req: 31
+    weapon_stats:
+      hit_causes_monster_to_flee: 25
+    armour_stats:
+      replenish_life: 7
+    shield_stats:
+      replenish_life: 7
+
+  - name: "Hel"
+    number: 15
+    level_req: 0
+    weapon_stats:
+      requirements: -20
+    armour_stats:
+      requirements: -15
+    shield_stats:
+      requirements: -15
+
+  - name: "Io"
+    number: 16
+    level_req: 35
+    weapon_stats:
+      vitality: 10
+    armour_stats:
+      vitality: 10
+    shield_stats:
+      vitality: 10
+
+  - name: "Lum"
+    number: 17
+    level_req: 37
+    weapon_stats:
+      energy: 10
+    armour_stats:
+      energy: 10
+    shield_stats:
+      energy: 10
+
+  - name: "Ko"
+    number: 18
+    level_req: 39
+    weapon_stats:
+      dexterity: 10
+    armour_stats:
+      dexterity: 10
+    shield_stats:
+      dexterity: 10
+
+  - name: "Fal"
+    number: 19
+    level_req: 41
+    weapon_stats:
+      strength: 10
+    armour_stats:
+      strength: 10
+    shield_stats:
+      strength: 10
+
+  - name: "Lem"
+    number: 20
+    level_req: 43
+    weapon_stats:
+      gold_find: 75
+    armour_stats:
+      gold_find: 50
+    shield_stats:
+      gold_find: 50
+
+  # --- High Runes (21-33) ---
+
+  - name: "Pul"
+    number: 21
+    level_req: 45
+    weapon_stats:
+      damage_to_demons: 75
+      attack_rating_to_demons: 100
+    armour_stats:
+      ed: 30
+    shield_stats:
+      ed: 30
+
+  - name: "Um"
+    number: 22
+    level_req: 47
+    weapon_stats:
+      ow: 25
+    armour_stats:
+      resist_all: 15
+    shield_stats:
+      resist_all: 22
+
+  - name: "Mal"
+    number: 23
+    level_req: 49
+    weapon_stats:
+      prevent_monster_heal: true
+    armour_stats:
+      magic_damage_reduced: 7
+    shield_stats:
+      magic_damage_reduced: 7
+
+  - name: "Ist"
+    number: 24
+    level_req: 51
+    weapon_stats:
+      mf: 30
+    armour_stats:
+      mf: 25
+    shield_stats:
+      mf: 25
+
+  - name: "Gul"
+    number: 25
+    level_req: 53
+    weapon_stats:
+      attack_rating_bonus: 20
+    armour_stats:
+      max_resist_poison: 5
+    shield_stats:
+      max_resist_poison: 5
+
+  - name: "Vex"
+    number: 26
+    level_req: 55
+    weapon_stats:
+      mana_leech: 7
+    armour_stats:
+      max_resist_fire: 5
+    shield_stats:
+      max_resist_fire: 5
+
+  - name: "Ohm"
+    number: 27
+    level_req: 57
+    weapon_stats:
+      ed: 50
+    armour_stats:
+      max_resist_cold: 5
+    shield_stats:
+      max_resist_cold: 5
+
+  - name: "Lo"
+    number: 28
+    level_req: 59
+    weapon_stats:
+      ds: 20
+    armour_stats:
+      max_resist_lightning: 5
+    shield_stats:
+      max_resist_lightning: 5
+
+  - name: "Sur"
+    number: 29
+    level_req: 61
+    weapon_stats:
+      hit_blinds_target: true
+    armour_stats:
+      max_mana_percent: 5
+    shield_stats:
+      mana: 50
+
+  - name: "Ber"
+    number: 30
+    level_req: 63
+    weapon_stats:
+      cb: 20
+    armour_stats:
+      dr: 8
+    shield_stats:
+      dr: 8
+
+  - name: "Jah"
+    number: 31
+    level_req: 65
+    weapon_stats:
+      ignore_target_defense: true
+    armour_stats:
+      max_life_percent: 5
+    shield_stats:
+      life: 50
+
+  - name: "Cham"
+    number: 32
+    level_req: 67
+    weapon_stats:
+      freezes_target: 3
+    armour_stats:
+      cannot_be_frozen: true
+    shield_stats:
+      cannot_be_frozen: true
+
+  - name: "Zod"
+    number: 33
+    level_req: 69
+    weapon_stats:
+      indestructible: true
+    armour_stats:
+      indestructible: true
+    shield_stats:
+      indestructible: true
