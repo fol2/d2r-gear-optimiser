@@ -5,10 +5,12 @@ from __future__ import annotations
 import json as json_lib
 
 import click
+import pydantic
 from rich.console import Console
 from rich.table import Table
 
 from d2r_optimiser.core.orchestrator import BuildNotFoundError, EmptyInventoryError, optimise
+from d2r_optimiser.loader import LoaderError
 
 console = Console(width=140)
 
@@ -54,6 +56,14 @@ def run_cmd(
         return
     except EmptyInventoryError as exc:
         console.print(f"[red]Empty inventory:[/red] {exc}")
+        ctx.exit(1)
+        return
+    except (LoaderError, pydantic.ValidationError) as exc:
+        console.print(f"[red]Configuration error:[/red] {exc}")
+        ctx.exit(1)
+        return
+    except ImportError as exc:
+        console.print(f"[red]Formula module error:[/red] {exc}")
         ctx.exit(1)
         return
 

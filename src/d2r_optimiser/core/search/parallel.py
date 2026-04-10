@@ -20,17 +20,21 @@ def _worker_search(
     build: BuildDefinition,
     formula_module: str,
     top_k: int,
+    breakpoints: dict | None = None,
 ) -> list[dict]:
     """Worker function executed in a child process.
 
     Each worker receives a single fixed weapon candidate and searches
     all remaining slots.  The formula instance is created fresh inside
     the worker because Protocol instances cannot be pickled across
-    process boundaries.
+    process boundaries.  Breakpoint data is passed explicitly and
+    injected into the formula to ensure parity with single-threaded mode.
     """
     from d2r_optimiser.core.formula.base import get_formula
 
     formula = get_formula(formula_module)
+    if breakpoints and hasattr(formula, "_breakpoints"):
+        formula._breakpoints = breakpoints
 
     # Build the candidate dict for this worker: the weapon slot has exactly
     # one candidate (the assigned weapon), all other slots are the full set.
@@ -67,6 +71,7 @@ def parallel_search(
     top_k: int = 5,
     workers: int | None = None,
     progress_callback: Callable[[int], None] | None = None,
+    breakpoints: dict | None = None,
 ) -> list[dict]:
     """Parallel search sharded by weapon slot.
 
@@ -112,6 +117,8 @@ def parallel_search(
         from d2r_optimiser.core.formula.base import get_formula
 
         formula = get_formula(formula_module)
+        if breakpoints and hasattr(formula, "_breakpoints"):
+            formula._breakpoints = breakpoints
         return search(
             candidates_by_slot,
             build,
@@ -142,12 +149,19 @@ def parallel_search(
                 build,
                 formula_module,
                 top_k,
+                breakpoints,
             )
             for weapon in serialised_weapons
         ]
 
-        for future in futures:
-            worker_results = future.result()
+        for idx, future in enumerate(futures):
+            try:
+                worker_results = future.result()
+            except Exception as exc:
+                weapon_uid = weapon_candidates[idx].get("item_uid", "unknown")
+                raise RuntimeError(
+                    f"Search worker {idx} (weapon={weapon_uid}) failed: {exc}"
+                ) from exc
             all_results.extend(worker_results)
             completed_workers += 1
             if progress_callback:

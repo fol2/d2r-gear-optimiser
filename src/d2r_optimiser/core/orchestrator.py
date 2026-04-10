@@ -89,12 +89,19 @@ def optimise(
     recipes: list[RunewordRecipe] = []
     if runewords_path.exists():
         recipes = load_runewords(runewords_path)
+    else:
+        logger.warning(
+            "Runewords file not found at %s — runeword candidates excluded.",
+            runewords_path,
+        )
 
     # ── 4. Load breakpoints ────────────────────────────────────────────────
     bp_path = _DATA_DIR / "breakpoints.yaml"
     breakpoints: dict = {}
     if bp_path.exists():
         breakpoints = load_breakpoints(bp_path)
+    else:
+        logger.warning("Breakpoints file not found at %s — breakpoint scoring excluded.", bp_path)
 
     # ── 5. Query inventory from SQLite ─────────────────────────────────────
     reset_engine()
@@ -255,6 +262,7 @@ def optimise(
                 top_k=top_k,
                 workers=workers,
                 progress_callback=progress_callback,
+                breakpoints=breakpoints,
             )
 
         return results
@@ -295,12 +303,17 @@ def _build_rune_stats_lookup() -> dict[str, dict[str, dict[str, float]]]:
     """
     runes_path = _DATA_DIR / "runes.yaml"
     if not runes_path.exists():
+        logger.warning("Runes file not found at %s — rune stats unavailable.", runes_path)
         return {}
 
     import yaml
 
     raw = runes_path.read_text(encoding="utf-8")
-    data = yaml.safe_load(raw)
+    try:
+        data = yaml.safe_load(raw)
+    except yaml.YAMLError as exc:
+        logger.warning("Invalid YAML in %s: %s — rune stats unavailable.", runes_path, exc)
+        return {}
     if not data or "runes" not in data:
         return {}
 

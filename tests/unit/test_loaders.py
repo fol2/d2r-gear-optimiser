@@ -390,7 +390,7 @@ class TestItemErrors:
     def test_items_missing_top_key(self, tmp_path: Path):
         f = tmp_path / "no_key.yaml"
         f.write_text("bases:\n  - name: Shako\n", encoding="utf-8")
-        with pytest.raises(LoaderError, match="top-level 'items' key"):
+        with pytest.raises(LoaderError, match="top-level 'items' or 'base_items' key"):
             load_base_items(f)
 
     def test_items_nonexistent(self):

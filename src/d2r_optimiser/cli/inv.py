@@ -242,8 +242,18 @@ def inv_import(ctx: click.Context, file: str) -> None:
 
     session = ensure_db(ctx.obj["db_path"])
     count = 0
+    required = {"name", "slot", "type"}
     try:
-        for entry in data["items"]:
+        for idx, entry in enumerate(data.get("items", [])):
+            if not isinstance(entry, dict):
+                console.print(f"[yellow]Skipping entry {idx}: not a mapping[/yellow]")
+                continue
+            missing = required - entry.keys()
+            if missing:
+                label = entry.get("name", f"#{idx}")
+                console.print(f"[yellow]Skipping '{label}': missing {sorted(missing)}[/yellow]")
+                continue
+
             name = entry.get("name", "unknown")
             slug = _slugify(name)
             uid = _next_uid(session, slug)
@@ -261,8 +271,22 @@ def inv_import(ctx: click.Context, file: str) -> None:
             session.add(item)
             session.flush()
 
-            for stat, value in entry.get("affixes", {}).items():
-                session.add(Affix(item_id=item.id, stat=stat, value=float(value)))
+            affixes = entry.get("affixes", {})
+            if not isinstance(affixes, dict):
+                console.print(
+                    f"[yellow]Warning: affixes for '{name}' is not a mapping"
+                    " — skipping affixes[/yellow]"
+                )
+                affixes = {}
+
+            for stat, value in affixes.items():
+                try:
+                    session.add(Affix(item_id=item.id, stat=stat, value=float(value)))
+                except (ValueError, TypeError):
+                    console.print(
+                        f"[yellow]Warning: skipping affix {stat}={value!r}"
+                        f" on '{name}' (not numeric)[/yellow]"
+                    )
 
             for i in range(item.socket_count):
                 fills = entry.get("socket_fill", [])

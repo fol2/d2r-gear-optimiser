@@ -22,17 +22,17 @@ def check_hard_constraints(
 
 def check_resource_conflicts(
     resource_costs: list[Counter],
+    available_pool: Counter | None = None,
 ) -> list[str]:
-    """Check if any rune or jewel is double-used across assigned slots.
+    """Check if resource usage across assigned slots exceeds available supply.
 
     *resource_costs* is a list of :class:`Counter` objects, one per assigned
     slot.  Each Counter maps resource identifiers (e.g. ``"rune:Ist"`` or
     ``"jewel:uid-123"``) to the quantity consumed by that slot.
 
-    The function merges all counters and compares against a global pool of
-    available resources.  For jewels, each unique UID may only appear once.
-    For runes, total usage must not exceed total count across all Counters
-    provided — i.e. the same physical rune cannot be placed in two items.
+    *available_pool* is a Counter of available resources. If provided, usage
+    is compared against it. If ``None``, jewels default to 1 available each,
+    and runes default to 1 (backward-compatible fallback).
 
     Returns a list of conflict descriptions (empty = no conflicts).
     """
@@ -42,8 +42,13 @@ def check_resource_conflicts(
 
     conflicts: list[str] = []
     for resource_id, count in merged.items():
-        if count > 1:
+        if available_pool is not None:
+            avail = available_pool.get(resource_id, 1)
+        else:
+            # Fallback: jewels always 1, runes default 1
+            avail = 1
+        if count > avail:
             conflicts.append(
-                f"Resource {resource_id!r} used {count} times (only 1 available)"
+                f"Resource {resource_id!r} used {count} times (only {avail} available)"
             )
     return conflicts

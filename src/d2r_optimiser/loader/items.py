@@ -34,11 +34,15 @@ def load_base_items(path: Path) -> list[dict]:
     if data is None:
         return []
 
-    if not isinstance(data, dict) or "items" not in data:
-        msg = f"Expected top-level 'items' key in {path}"
+    if not isinstance(data, dict):
+        msg = f"Expected a YAML mapping in {path}"
         raise LoaderError(msg)
 
-    entries = data["items"]
+    # Accept both 'items' and 'base_items' as top-level key
+    entries = data.get("items") or data.get("base_items")
+    if entries is None:
+        msg = f"Expected top-level 'items' or 'base_items' key in {path}"
+        raise LoaderError(msg)
     if entries is None:
         return []
 

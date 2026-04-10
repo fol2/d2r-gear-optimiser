@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import click
+import pydantic
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -59,8 +60,10 @@ def build_list(ctx: click.Context) -> None:
             if len(desc) > 80:
                 desc = desc[:77] + "..."
             table.add_row(name, build.character_class, desc)
-        except Exception:
-            table.add_row(name, "?", "[dim]Error loading[/dim]")
+        except (FileNotFoundError, LoaderError) as exc:
+            table.add_row(name, "?", f"[dim]Error: {exc}[/dim]")
+        except Exception as exc:
+            table.add_row(name, "?", f"[dim]Unexpected: {type(exc).__name__}[/dim]")
 
     console.print(table)
 
@@ -81,7 +84,7 @@ def build_show(ctx: click.Context, name: str) -> None:
 
     try:
         build = load_build(yaml_path)
-    except Exception as exc:
+    except (FileNotFoundError, LoaderError, pydantic.ValidationError) as exc:
         console.print(f"[red]Error loading build:[/red] {exc}")
         ctx.exit(1)
         return
