@@ -1,0 +1,30 @@
+# Local state
+stash.db
+stash.db-journal
+stash.db-shm
+stash.db-wal
+calibration_log.jsonl
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# uv
+uv.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Conversation logs (personal context)
+*.txt
