@@ -1,0 +1,126 @@
+name: warlock_echoing_strike_mf
+display_name: "Echoing Strike MF Warlock"
+character_class: warlock
+description: |
+  S-tier MF farmer. Physical + Magic dual damage ignores most immunities.
+  Bind Hephasto for Cursed affix — auto Amp Damage breaking Physical Immune.
+  Target 75% FCR breakpoint for MF variant (sacrifice 125% for more MF slots).
+  Core loop: Blade Warp into packs → Echoing Strike → loot.
+
+formula_module: warlock_echoing_strike
+
+# ─── Skill Allocation ────────────────────────────────────────────────────────
+# 110 skill points at level 99 (98 from levelling + 12 from quests).
+# Primary damage: Echoing Strike + synergies (Mirrored Blades, Blade Warp).
+# Utility: Hex Purge (curse removal), Demonic Mastery (summon scaling),
+#          Sigil of Lethargy (crowd control), Consume (life tap), Bind Demon.
+skill_points:
+  echoing_strike: 20      # Primary attack — physical + magic hybrid AoE
+  mirrored_blades: 20     # Synergy — +10% physical damage per level
+  blade_warp: 20          # Synergy — +10% magic damage per level; mobility skill
+  hex_purge: 20           # Curse removal + magic damage burst
+  demonic_mastery: 20     # Bound demon scaling (Hephasto)
+  sigil_lethargy: 1       # 1-point wonder — slow aura for safety
+  consume: 1              # Life sustain; scales from +skills
+  bind_demon: 1           # Bind Hephasto (Cursed → auto Amp Damage)
+  # Remaining 7 points: flex into Sigil of Lethargy or Demonic Mastery prereqs
+
+# ─── Objectives ──────────────────────────────────────────────────────────────
+# Default weight profile — biased towards MF for farming.
+# All presets must sum to 1.0.
+objectives:
+  damage: 0.35
+  magic_find: 0.40
+  effective_hp: 0.15
+  breakpoint_score: 0.10
+
+# ─── Hard Constraints ────────────────────────────────────────────────────────
+# Loadouts violating any constraint are rejected outright.
+constraints:
+  - stat: fcr
+    operator: ">="
+    value: 75               # 75% FCR breakpoint (10 frames); MF variant trades 105% for gear slots
+  - stat: resistance_all
+    operator: ">="
+    value: 75               # Max resistance cap in Hell difficulty
+  - stat: strength
+    operator: ">="
+    value: 0                # Dynamically set based on heaviest gear requirement
+  - stat: dexterity
+    operator: ">="
+    value: 0                # Dynamically set if using max-block setup
+
+# ─── Weight Presets ──────────────────────────────────────────────────────────
+# CLI: optimise run warlock_echoing_strike_mf --mode mf
+presets:
+  mf:
+    damage: 0.25
+    magic_find: 0.50
+    effective_hp: 0.15
+    breakpoint_score: 0.10
+  dps:
+    damage: 0.55
+    magic_find: 0.15
+    effective_hp: 0.20
+    breakpoint_score: 0.10
+  balanced:
+    damage: 0.35
+    magic_find: 0.35
+    effective_hp: 0.20
+    breakpoint_score: 0.10
+  survivability:
+    damage: 0.20
+    magic_find: 0.20
+    effective_hp: 0.45
+    breakpoint_score: 0.15
+
+# ─── Reference Loadouts ─────────────────────────────────────────────────────
+# Known-good gear sets for formula validation (Layer 2 of validation pipeline).
+# These serve as pytest fixtures — predicted stats must match within 5% tolerance.
+reference_loadouts:
+  - name: "Maxroll Standard Endgame"
+    source: "https://maxroll.gg/d2/guides/echoing-strike-warlock-guide"
+    notes: |
+      Standard endgame setup prioritising 125% FCR breakpoint.
+      High +skills stacking for Echoing Strike and Demonic Mastery.
+      Hephasto bound demon with Cursed affix auto-casts Amp Damage.
+    gear:
+      weapon: "Arioc's Needle"            # +2-4 all skills, 50% FCR, +50% damage to demons
+      shield: "Spirit Monarch"            # +2 all skills, 35% FCR, 55% FHR, mana, vitality
+      helmet: "Harlequin Crest (Shako)"   # +2 all skills, life, mana, 50% MF, DR 10%
+      body: "Enigma"                      # +2 all skills, Teleport, 1% MF/level, strength
+      gloves: "Trang-Oul's Claws"         # +20% FCR, +30 cold resist, +2 Curses
+      belt: "Arachnid Mesh"              # +1 all skills, 20% FCR, slow target 10%
+      boots: "Sandstorm Trek"             # +20 strength, +20 vitality, FHR 20%, poison resist
+      amulet: "Mara's Kaleidoscope"       # +2 all skills, +20-30 all resist
+      ring1: "Stone of Jordan"            # +1 all skills, +20 mana, +25% mana
+      ring2: "Bul-Kathos' Wedding Band"   # +1 all skills, +life, life steal
+    expected_stats:
+      fcr: 125                            # 50 (Arioc) + 35 (Spirit) + 20 (Trang) + 20 (Arachnid) = 125
+      fhr: 75                             # 55 (Spirit) + 20 (Sandstorm) = 75
+      plus_all_skills: 14                 # Arioc 2 + Spirit 2 + Shako 2 + Enigma 2 + Arachnid 1 + Mara 2 + SoJ 1 + BK 1 + Trang(curses) = 13-14
+      magic_find: 149                     # Shako 50 + Enigma ~99 (level 99) = ~149 base
+      resistance_all: 95                  # Mara 25 + Spirit 22-35 (avg ~28) + Trang cold 30 + Sandstorm poison ~40-70; varies by roll
+      # Damage and EHP are formula-dependent; calibrate via validation Layer 2-3.
+
+  - name: "Budget MF Variant"
+    source: "Community-derived"
+    notes: |
+      Budget-friendly variant targeting 75% FCR breakpoint.
+      Trades +skills for raw MF on every slot. Suitable for Mephisto/Andariel farming.
+    gear:
+      weapon: "Occulus"                   # +3 sorc skills (partial benefit via +skills), 30% MF, 20% FCR
+      shield: "Spirit Monarch"            # +2 all skills, 35% FCR, 55% FHR
+      helmet: "Harlequin Crest (Shako)"   # +2 all skills, 50% MF
+      body: "Skullder's Ire"             # +1 all skills, 1.25% MF/level (~123 at 99)
+      gloves: "Chance Guards"             # 25-40% MF
+      belt: "Goldwrap"                   # 30% MF, 10% IAS
+      boots: "War Traveler"              # 30-50% MF
+      amulet: "Tal Rasha's Adjudication"  # +2 sorc skills, 15% resist all, 10% FCR (partial benefit)
+      ring1: "Nagelring"                 # 15-30% MF
+      ring2: "Nagelring"                 # 15-30% MF
+    expected_stats:
+      fcr: 75                             # 20 (Occulus) + 35 (Spirit) + 10 (Tal Ammy) + 10 (surplus) = 75 (with MF charms)
+      magic_find: 400                     # Rough estimate with high-roll MF gear
+      plus_all_skills: 8                  # Occulus 3 + Spirit 2 + Shako 2 + Skullder 1 = 8 (sorc skills partial)
+      # Lower damage output; compensated by high MF for farming efficiency.
