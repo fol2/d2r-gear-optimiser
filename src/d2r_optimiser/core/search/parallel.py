@@ -20,8 +20,9 @@ def _worker_search(
     build: BuildDefinition,
     formula_module: str,
     top_k: int,
+    available_pool: Counter | None = None,
     breakpoints: dict | None = None,
-) -> list[dict]:
+) -> dict[str, object]:
     """Worker function executed in a child process.
 
     Each worker receives a single fixed weapon candidate and searches
@@ -41,12 +42,25 @@ def _worker_search(
     candidates_by_slot = dict(remaining_candidates)
     candidates_by_slot["weapon"] = [weapon_candidate]
 
-    return search(
+    evaluated = 0
+
+    def _on_progress(n: int) -> None:
+        nonlocal evaluated
+        evaluated = n
+
+    results = search(
         candidates_by_slot,
         build,
         formula,
         top_k=top_k,
+        available_pool=available_pool,
+        progress_callback=_on_progress,
     )
+
+    return {
+        "results": results,
+        "evaluated": evaluated,
+    }
 
 
 def _serialise_candidate(candidate: dict) -> dict:
@@ -70,6 +84,7 @@ def parallel_search(
     *,
     top_k: int = 5,
     workers: int | None = None,
+    available_pool: Counter | None = None,
     progress_callback: Callable[[int], None] | None = None,
     breakpoints: dict | None = None,
 ) -> list[dict]:
@@ -124,6 +139,7 @@ def parallel_search(
             build,
             formula,
             top_k=top_k,
+            available_pool=available_pool,
             progress_callback=progress_callback,
         )
 
@@ -138,7 +154,7 @@ def parallel_search(
 
     # Dispatch workers
     all_results: list[dict] = []
-    completed_workers = 0
+    evaluated_total = 0
 
     with ProcessPoolExecutor(max_workers=effective_workers) as executor:
         futures = [
@@ -149,6 +165,7 @@ def parallel_search(
                 build,
                 formula_module,
                 top_k,
+                available_pool,
                 breakpoints,
             )
             for weapon in serialised_weapons
@@ -156,16 +173,17 @@ def parallel_search(
 
         for idx, future in enumerate(futures):
             try:
-                worker_results = future.result()
+                payload = future.result()
             except Exception as exc:
                 weapon_uid = weapon_candidates[idx].get("item_uid", "unknown")
                 raise RuntimeError(
                     f"Search worker {idx} (weapon={weapon_uid}) failed: {exc}"
                 ) from exc
+            worker_results = payload.get("results", [])
             all_results.extend(worker_results)
-            completed_workers += 1
+            evaluated_total += int(payload.get("evaluated", 0))
             if progress_callback:
-                progress_callback(completed_workers)
+                progress_callback(evaluated_total)
 
     # Merge and re-sort for global top-K
     all_results.sort(key=lambda r: r["total_score"], reverse=True)

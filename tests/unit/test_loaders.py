@@ -13,6 +13,7 @@ from d2r_optimiser.loader import (
     load_breakpoints,
     load_build,
     load_runewords,
+    load_sets,
 )
 
 # ---------------------------------------------------------------------------
@@ -22,8 +23,10 @@ from d2r_optimiser.loader import (
 _DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 _RUNEWORDS_PATH = _DATA_DIR / "runewords.yaml"
 _BREAKPOINTS_PATH = _DATA_DIR / "breakpoints.yaml"
+_SETS_PATH = _DATA_DIR / "sets.yaml"
 _BUILDS_DIR = _DATA_DIR / "builds"
 _BUILD_WARLOCK_PATH = _BUILDS_DIR / "warlock_echoing_strike_mf.yaml"
+_BUILD_SUMMONER_PATH = _BUILDS_DIR / "warlock_summoner.yaml"
 
 # Known D2R runes (El through Zod) for cross-reference validation
 _ALL_RUNE_NAMES = [
@@ -137,6 +140,24 @@ class TestLoadBuildHappyPath:
         assert build.reference_loadouts is not None
         assert len(build.reference_loadouts) >= 1
 
+    def test_load_summoner_build(self):
+        build = load_build(_BUILD_SUMMONER_PATH)
+        assert build.name == "warlock_summoner"
+        assert build.display_name == "Summoner Warlock"
+        assert build.formula_module == "warlock_summoner"
+
+    def test_summoner_presets(self):
+        build = load_build(_BUILD_SUMMONER_PATH)
+        assert set(build.presets) == {"starter", "standard", "mf"}
+        for preset_name, weights in build.presets.items():
+            total = (
+                weights.damage + weights.magic_find
+                + weights.effective_hp + weights.breakpoint_score
+            )
+            assert abs(total - 1.0) < 1e-9, (
+                f"Preset '{preset_name}' weights sum to {total}"
+            )
+
 
 class TestListBuildsHappyPath:
     """List build files in data/builds/."""
@@ -145,6 +166,7 @@ class TestListBuildsHappyPath:
         names = list_builds(_BUILDS_DIR)
         assert len(names) >= 1
         assert "warlock_echoing_strike_mf" in names
+        assert "warlock_summoner" in names
 
 
 class TestLoadBreakpointsHappyPath:
@@ -185,6 +207,25 @@ class TestLoadBreakpointsHappyPath:
                     for entry in value:
                         assert "threshold" in entry, f"{label} entry missing threshold"
                         assert "frames" in entry, f"{label} entry missing frames"
+
+
+class TestLoadSetsHappyPath:
+    """Load data/sets.yaml and verify threshold bonus parsing."""
+
+    def test_load_sets(self):
+        sets = load_sets(_SETS_PATH)
+        assert len(sets) >= 5
+
+    def test_tal_rasha_full_threshold_is_mapped_to_set_size(self):
+        sets = load_sets(_SETS_PATH)
+        by_name = {s.set_name: s for s in sets}
+
+        tal = by_name["Tal Rasha's Wrappings"]
+        assert len(tal.items) == 5
+
+        lidless_eye = next(item for item in tal.items if item.name == "Tal Rasha's Lidless Eye")
+        assert 5 in lidless_eye.item_partial_bonus
+        assert lidless_eye.item_partial_bonus[5]["cold_skill_damage"] == 15.0
 
 
 # ===========================================================================

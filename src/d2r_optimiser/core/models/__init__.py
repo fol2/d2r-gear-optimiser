@@ -12,7 +12,7 @@ from d2r_optimiser.core.models.loadout import (
     LoadoutSlot,
     ScoreBreakdown,
 )
-from d2r_optimiser.core.models.rune import Jewel, JewelAffix, Rune, RunewordRecipe
+from d2r_optimiser.core.models.rune import Gem, Jewel, JewelAffix, Rune, RunewordRecipe
 from d2r_optimiser.core.models.validation import ValidationRecord
 
 __all__ = [
@@ -22,6 +22,7 @@ __all__ = [
     "Socket",
     # rune.py
     "Rune",
+    "Gem",
     "Jewel",
     "JewelAffix",
     "RunewordRecipe",

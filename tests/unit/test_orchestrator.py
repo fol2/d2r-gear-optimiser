@@ -12,6 +12,7 @@ from d2r_optimiser.core.models import Affix, Item
 from d2r_optimiser.core.orchestrator import (
     BuildNotFoundError,
     EmptyInventoryError,
+    InvalidBuildModeError,
     optimise,
 )
 
@@ -263,6 +264,19 @@ class TestModeOverride:
         # so the total_score will differ unless the build only has one loadout
         # In any case both are valid
         assert results_mf[0]["total_score"] > 0.0
+
+    def test_invalid_mode_raises(self, tmp_path):
+        db = _create_db(tmp_path)
+        _populate_full_inventory(db)
+
+        with pytest.raises(InvalidBuildModeError, match="Unknown mode"):
+            optimise(
+                db_path=db,
+                build_name="warlock_echoing_strike_mf",
+                mode="starter",
+                top_k=1,
+                workers=1,
+            )
 
 
 class TestResultsStructure:

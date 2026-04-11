@@ -254,6 +254,23 @@ class TestEndToEndOptimisation:
         for r in results:
             assert r["total_score"] > 0.0
 
+    def test_summoner_starter_mode_produces_results(self, tmp_path):
+        """The new summoner build accepts its Starter preset and returns results."""
+        db = _create_db(tmp_path)
+        _populate_e2e_inventory(db)
+
+        results = optimise(
+            db_path=db,
+            build_name="warlock_summoner",
+            mode="starter",
+            top_k=3,
+            workers=1,
+        )
+
+        assert len(results) >= 1
+        for result in results:
+            assert result["stats"].get("fcr", 0) >= 75
+
 
 class TestCLIRunCommand:
     """Integration tests for the `optimise run` CLI command."""
@@ -295,6 +312,25 @@ class TestCLIRunCommand:
         assert "total_score" in data[0]
         assert "slots" in data[0]
 
+    def test_cli_run_with_weight_overrides(self, tmp_path):
+        """CLI run accepts repeatable --weight overrides."""
+        db = _create_db(tmp_path)
+        _populate_e2e_inventory(db)
+
+        result = _run([
+            "--db", str(db),
+            "run", "warlock_echoing_strike_mf",
+            "--top-k", "1",
+            "--workers", "1",
+            "--weight", "damage=0.25",
+            "--weight", "mf=0.5",
+            "--weight", "ehp=0.15",
+            "--weight", "bp=0.10",
+        ])
+
+        assert result.exit_code == 0
+        assert "Top 1 Loadouts" in result.output
+
     def test_cli_run_build_not_found(self, tmp_path):
         db = _create_db(tmp_path)
         # Add a dummy item so it does not fail on empty inventory
@@ -323,6 +359,21 @@ class TestCLIRunCommand:
         ])
 
         assert "empty" in result.output.lower() or result.exit_code != 0
+
+    def test_cli_run_invalid_mode_is_reported(self, tmp_path):
+        db = _create_db(tmp_path)
+        _populate_e2e_inventory(db)
+
+        result = _run([
+            "--db", str(db),
+            "run", "warlock_summoner",
+            "--mode", "balanced",
+            "--workers", "1",
+        ])
+
+        assert result.exit_code != 0
+        assert "invalid mode" in result.output.lower()
+        assert "starter" in result.output.lower()
 
 
 class TestCLIValidateCommand:

@@ -3,13 +3,14 @@
 from collections import Counter
 from itertools import combinations_with_replacement
 
-from d2r_optimiser.core.models import Item, Jewel, Rune
+from d2r_optimiser.core.models import Gem, Item, Jewel, Rune
 
 
 def enumerate_socket_options(
     item: Item,
     rune_pool: list[Rune],
     jewel_pool: list[Jewel],
+    gem_pool: list[Gem] | None = None,
     max_combinations: int = 500,
 ) -> list[list[str]]:
     """Enumerate possible socket fillings for an item's empty sockets.
@@ -19,7 +20,7 @@ def enumerate_socket_options(
 
     Returns ``[[]]`` (list containing one empty list) when:
     - the item has no empty sockets, **or**
-    - both *rune_pool* and *jewel_pool* are effectively empty.
+    - all socket material pools are effectively empty.
 
     *max_combinations* caps output to prevent combinatorial explosion.
     """
@@ -45,6 +46,9 @@ def enumerate_socket_options(
             availability[rune.rune_type] += rune.quantity
     for jewel in jewel_pool:
         availability[jewel.uid] += 1
+    for gem in gem_pool or []:
+        if gem.quantity > 0:
+            availability[gem.name] += gem.quantity
 
     candidates = sorted(availability.keys())
     if not candidates:

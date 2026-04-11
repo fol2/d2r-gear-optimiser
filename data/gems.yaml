@@ -1,0 +1,75 @@
+gems:
+  - name: "Perfect Amethyst"
+    gem_type: "Amethyst"
+    grade: "Perfect"
+    weapon_stats:
+      attack_rating: 150
+    armour_stats:
+      strength: 10
+    shield_stats:
+      defense: 30
+
+  - name: "Perfect Diamond"
+    gem_type: "Diamond"
+    grade: "Perfect"
+    weapon_stats:
+      damage_to_undead: 68
+    armour_stats:
+      attack_rating: 100
+    shield_stats:
+      resistance_all: 19
+
+  - name: "Perfect Emerald"
+    gem_type: "Emerald"
+    grade: "Perfect"
+    weapon_stats:
+      poison_damage: 100
+    armour_stats:
+      dexterity: 10
+    shield_stats:
+      poison_res: 40
+
+  - name: "Perfect Ruby"
+    gem_type: "Ruby"
+    grade: "Perfect"
+    weapon_stats:
+      fire_damage_min: 15
+      fire_damage_max: 20
+    armour_stats:
+      life: 38
+    shield_stats:
+      fire_res: 40
+
+  - name: "Perfect Sapphire"
+    gem_type: "Sapphire"
+    grade: "Perfect"
+    weapon_stats:
+      cold_damage_min: 10
+      cold_damage_max: 14
+    armour_stats:
+      mana: 38
+    shield_stats:
+      cold_res: 40
+
+  - name: "Perfect Skull"
+    gem_type: "Skull"
+    grade: "Perfect"
+    weapon_stats:
+      life_leech: 4
+      mana_leech: 3
+    armour_stats:
+      replenish_life: 5
+      regenerate_mana: 19
+    shield_stats:
+      attacker_takes_damage: 20
+
+  - name: "Perfect Topaz"
+    gem_type: "Topaz"
+    grade: "Perfect"
+    weapon_stats:
+      lightning_damage_min: 1
+      lightning_damage_max: 40
+    armour_stats:
+      mf: 24
+    shield_stats:
+      lightning_res: 40

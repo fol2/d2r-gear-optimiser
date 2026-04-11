@@ -15,6 +15,7 @@ from d2r_optimiser.core.formula import (
     lookup_breakpoint,
 )
 from d2r_optimiser.core.formula.warlock_echoing_strike import EchoingStrikeFormula
+from d2r_optimiser.core.formula.warlock_summoner import SummonerFormula
 from d2r_optimiser.core.models import BuildDefinition, Constraint, ObjectiveWeights, ScoreBreakdown
 from d2r_optimiser.loader import load_breakpoints, load_build
 
@@ -25,6 +26,7 @@ from d2r_optimiser.loader import load_breakpoints, load_build
 _DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 _BREAKPOINTS_PATH = _DATA_DIR / "breakpoints.yaml"
 _BUILD_WARLOCK_PATH = _DATA_DIR / "builds" / "warlock_echoing_strike_mf.yaml"
+_BUILD_SUMMONER_PATH = _DATA_DIR / "builds" / "warlock_summoner.yaml"
 
 
 # ---------------------------------------------------------------------------
@@ -49,6 +51,18 @@ def warlock_build() -> BuildDefinition:
 def formula(warlock_bp: dict) -> EchoingStrikeFormula:
     """EchoingStrikeFormula initialised with real breakpoint data."""
     return EchoingStrikeFormula(breakpoints=warlock_bp)
+
+
+@pytest.fixture()
+def summoner_build() -> BuildDefinition:
+    """Load the real summoner build definition."""
+    return load_build(_BUILD_SUMMONER_PATH)
+
+
+@pytest.fixture()
+def summoner_formula(warlock_bp: dict) -> SummonerFormula:
+    """SummonerFormula initialised with real breakpoint data."""
+    return SummonerFormula(breakpoints=warlock_bp)
 
 
 def _make_build(**overrides) -> BuildDefinition:
@@ -515,6 +529,11 @@ class TestGetFormula:
         assert isinstance(f, EchoingStrikeFormula)
         assert isinstance(f, BuildFormula)
 
+    def test_resolve_summoner(self):
+        f = get_formula("warlock_summoner")
+        assert isinstance(f, SummonerFormula)
+        assert isinstance(f, BuildFormula)
+
     def test_unknown_formula_raises(self):
         with pytest.raises(ImportError, match="Formula module not found"):
             get_formula("nonexistent_formula_xyz")
@@ -523,3 +542,57 @@ class TestGetFormula:
         # common.py exists but has no *Formula class
         with pytest.raises(ValueError, match="No \\*Formula class found"):
             get_formula("common")
+
+
+class TestSummonerFormula:
+    """Core behaviour for the summoner scoring model."""
+
+    def test_protocol_compliance(self, summoner_formula: SummonerFormula):
+        assert isinstance(summoner_formula, BuildFormula)
+
+    def test_demon_skills_increase_damage(
+        self,
+        summoner_formula: SummonerFormula,
+        summoner_build: BuildDefinition,
+    ):
+        low = summoner_formula.compute_damage({"demon_skills": 1}, summoner_build)
+        high = summoner_formula.compute_damage({"demon_skills": 6}, summoner_build)
+        assert high > low
+
+    def test_bind_demon_bonus_increases_damage(
+        self,
+        summoner_formula: SummonerFormula,
+        summoner_build: BuildDefinition,
+    ):
+        low = summoner_formula.compute_damage({}, summoner_build)
+        high = summoner_formula.compute_damage({"bind_demon": 3, "all_skills": 2}, summoner_build)
+        assert high > low
+
+    def test_mixed_resistances_increase_ehp(
+        self,
+        summoner_formula: SummonerFormula,
+        summoner_build: BuildDefinition,
+    ):
+        low = summoner_formula.compute_ehp({}, summoner_build)
+        high = summoner_formula.compute_ehp(
+            {
+                "fire_res": 30,
+                "cold_res": 30,
+                "light_res": 30,
+                "poison_res": 30,
+            },
+            summoner_build,
+        )
+        assert high > low
+
+    def test_cannot_be_frozen_improves_breakpoint_score(
+        self,
+        summoner_formula: SummonerFormula,
+        summoner_build: BuildDefinition,
+    ):
+        low = summoner_formula.compute_breakpoint_score({"fcr": 75}, summoner_build)
+        high = summoner_formula.compute_breakpoint_score(
+            {"fcr": 75, "cannot_be_frozen": 1},
+            summoner_build,
+        )
+        assert high > low

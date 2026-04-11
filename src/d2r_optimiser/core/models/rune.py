@@ -1,4 +1,4 @@
-"""Rune, Jewel, and Runeword recipe models."""
+"""Rune, gem, jewel, and runeword recipe models."""
 
 from sqlmodel import Field, SQLModel
 
@@ -8,6 +8,16 @@ class Rune(SQLModel, table=True):
 
     id: int | None = Field(default=None, primary_key=True)
     rune_type: str = Field(unique=True)  # "El" / "Eld" / ... / "Zod"
+    quantity: int = 0
+
+
+class Gem(SQLModel, table=True):
+    """Player's gem pool (fungible — tracked by name + quantity)."""
+
+    id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(unique=True)  # "Perfect Topaz" / "Perfect Diamond"
+    gem_type: str  # "Topaz" / "Diamond" / ...
+    grade: str  # "Perfect" / "Flawless" / ...
     quantity: int = 0
 
 

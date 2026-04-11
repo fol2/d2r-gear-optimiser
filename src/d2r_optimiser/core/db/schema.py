@@ -7,6 +7,7 @@ SQLModel.metadata contains every table definition.
 from d2r_optimiser.core.models.item import Affix, Item, Socket  # noqa: F401
 from d2r_optimiser.core.models.loadout import Loadout, LoadoutItem  # noqa: F401
 from d2r_optimiser.core.models.rune import (  # noqa: F401
+    Gem,
     Jewel,
     JewelAffix,
     Rune,

@@ -50,6 +50,7 @@ def make_candidate(
     stats: dict | None = None,
     resource_cost: dict | None = None,
     socket_fillings: list[str] | None = None,
+    set_meta: dict | None = None,
 ) -> dict:
     """Build a candidate dict matching the search engine interface."""
     return {
@@ -57,6 +58,7 @@ def make_candidate(
         "stats": stats or {},
         "resource_cost": Counter(resource_cost or {}),
         "socket_fillings": socket_fillings,
+        "set_meta": set_meta,
     }
 
 
@@ -225,6 +227,18 @@ class TestCheckResourceConflicts:
         conflicts = check_resource_conflicts(costs)
         assert len(conflicts) == 1
         assert "3 times" in conflicts[0]
+
+    def test_available_pool_allows_multiple_identical_runes(self):
+        """Resource conflicts respect the actual available quantity when supplied."""
+        costs = [
+            Counter({"rune:Ist": 1}),
+            Counter({"rune:Ist": 1}),
+        ]
+        conflicts = check_resource_conflicts(
+            costs,
+            available_pool=Counter({"rune:Ist": 2}),
+        )
+        assert conflicts == []
 
 
 # ===========================================================================
@@ -405,6 +419,101 @@ class TestSearchEngine:
         }
         results = search(candidates, build, formula, top_k=5)
         assert results == []
+
+    def test_search_uses_available_pool(self, formula, easy_build):
+        """Two slots may consume the same rune when the pool quantity allows it."""
+        candidates = {
+            "weapon": [make_candidate("weapon_ist", {"mf": 25}, {"rune:Ist": 1})],
+            "shield": [make_candidate("shield_ist", {"mf": 25}, {"rune:Ist": 1})],
+        }
+
+        results = search(
+            candidates,
+            easy_build,
+            formula,
+            top_k=5,
+            available_pool=Counter({"rune:Ist": 2}),
+        )
+
+        assert len(results) == 1
+        assert results[0]["slots"] == {
+            "weapon": "weapon_ist",
+            "shield": "shield_ist",
+        }
+
+    def test_set_bonuses_are_applied_to_final_stats(self, formula, easy_build):
+        """Active set bonuses are merged into the scored loadout stats."""
+        common_set_meta = {
+            "set_name": "Test Set",
+            "set_size": 2,
+            "partial_bonuses": {2: {"mf": 20}},
+            "full_bonus": {"all_skills": 1},
+        }
+        candidates = {
+            "weapon": [make_candidate(
+                "set_weapon",
+                {"mf": 10},
+                set_meta={
+                    **common_set_meta,
+                    "item_name": "Test Weapon",
+                    "item_partial_bonus": {2: {"fcr": 10}},
+                },
+            )],
+            "belt": [make_candidate(
+                "set_belt",
+                {"mf": 5},
+                set_meta={
+                    **common_set_meta,
+                    "item_name": "Test Belt",
+                    "item_partial_bonus": {},
+                },
+            )],
+        }
+
+        results = search(candidates, easy_build, formula, top_k=1)
+
+        assert len(results) == 1
+        stats = results[0]["stats"]
+        assert stats["mf"] == pytest.approx(35.0)
+        assert stats["fcr"] == pytest.approx(10.0)
+        assert stats["all_skills"] == pytest.approx(1.0)
+
+    def test_explicit_beam_search_returns_same_best_result(self, formula):
+        """Explicit beam search keeps the same top-1 for an easy monotonic case."""
+        build = _make_build(
+            objectives=ObjectiveWeights(
+                damage=0.0,
+                magic_find=1.0,
+                effective_hp=0.0,
+                breakpoint_score=0.0,
+            ),
+            constraints=[],
+        )
+        candidates = {
+            "weapon": [
+                make_candidate("weapon_low", {"mf": 10}),
+                make_candidate("weapon_mid", {"mf": 20}),
+                make_candidate("weapon_high", {"mf": 30}),
+            ],
+            "helmet": [
+                make_candidate("helmet_low", {"mf": 1}),
+                make_candidate("helmet_mid", {"mf": 2}),
+                make_candidate("helmet_high", {"mf": 3}),
+            ],
+            "amulet": [
+                make_candidate("amulet_low", {"mf": 100}),
+                make_candidate("amulet_mid", {"mf": 200}),
+                make_candidate("amulet_high", {"mf": 300}),
+            ],
+        }
+
+        exhaustive = search(candidates, build, formula, top_k=1)
+        beam = search(candidates, build, formula, top_k=1, beam_width=2)
+
+        assert len(exhaustive) == 1
+        assert len(beam) == 1
+        assert beam[0]["slots"] == exhaustive[0]["slots"]
+        assert beam[0]["total_score"] == pytest.approx(exhaustive[0]["total_score"])
 
 
 # ===========================================================================

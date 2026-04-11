@@ -3,7 +3,7 @@
 import json
 from collections import Counter
 
-from d2r_optimiser.core.models import Item, Jewel, Rune, RunewordRecipe
+from d2r_optimiser.core.models import Gem, Item, Jewel, Rune, RunewordRecipe
 from d2r_optimiser.core.resolver import (
     enumerate_craftable_runewords,
     enumerate_socket_options,
@@ -54,6 +54,11 @@ def _recipe(
 
 def _jewel(uid: str) -> Jewel:
     return Jewel(uid=uid, quality="rare")
+
+
+def _gem(name: str, quantity: int = 1) -> Gem:
+    gem_type = name.removeprefix("Perfect ")
+    return Gem(name=name, gem_type=gem_type, grade="Perfect", quantity=quantity)
 
 
 # ===========================================================================
@@ -209,6 +214,28 @@ class TestEnumerateCraftableRunewords:
 
         assert len(results) == 1
 
+    def test_base_name_maps_to_body_armour_category(self):
+        """Reference item data maps Wyrmhide to the body_armour category."""
+        pool = [_rune("Hel"), _rune("Amn"), _rune("Nef")]
+        bases = [_base("wyrmhide_001", "body", 3, base="Wyrmhide")]
+        recipes = [_recipe("Myth", "Hel-Amn-Nef", ["body_armour"], 3)]
+
+        results = enumerate_craftable_runewords(pool, bases, recipes)
+
+        assert len(results) == 1
+        assert results[0]["recipe"].name == "Myth"
+
+    def test_base_name_maps_to_helm_category(self):
+        """Reference item data maps Shako to the helm category."""
+        pool = [_rune("Ort"), _rune("Sol")]
+        bases = [_base("shako_001", "helmet", 2, base="Shako")]
+        recipes = [_recipe("Lore", "Ort-Sol", ["helm"], 2)]
+
+        results = enumerate_craftable_runewords(pool, bases, recipes)
+
+        assert len(results) == 1
+        assert results[0]["recipe"].name == "Lore"
+
     def test_multiple_recipes_mixed(self):
         """Multiple recipes where some are craftable and some are not."""
         pool = [_rune("Jah"), _rune("Ith"), _rune("Ber")]
@@ -288,6 +315,38 @@ class TestEnumerateSocketOptions:
         labels = [r[0] for r in result]
         assert "Ist" in labels
         assert "jewel_001" in labels
+
+    def test_gem_in_pool(self):
+        """Perfect gems are included as socket material candidates."""
+        item = _base("helm_001", "helmet", 1)
+        gems = [_gem("Perfect Topaz", quantity=4)]
+
+        result = enumerate_socket_options(item, [], [], gems)
+
+        assert len(result) == 1
+        assert result[0] == ["Perfect Topaz"]
+
+    def test_mixed_runes_jewels_and_gems(self):
+        """All socket resource pools contribute candidates."""
+        item = _base("helm_001", "helmet", 1)
+        pool = [_rune("Ist")]
+        jewels = [_jewel("jewel_001")]
+        gems = [_gem("Perfect Diamond")]
+
+        result = enumerate_socket_options(item, pool, jewels, gems)
+
+        assert len(result) == 3
+        labels = {entry[0] for entry in result}
+        assert labels == {"Ist", "jewel_001", "Perfect Diamond"}
+
+    def test_pool_exhaustion_gems(self):
+        """Fungible gems respect quantity limits."""
+        item = _base("body_001", "body", 2)
+        gems = [_gem("Perfect Topaz", quantity=1)]
+
+        result = enumerate_socket_options(item, [], [], gems)
+
+        assert result == []
 
     def test_pool_exhaustion(self):
         """Cannot use more runes than available."""

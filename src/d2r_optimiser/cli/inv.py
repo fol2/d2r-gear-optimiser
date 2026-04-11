@@ -11,7 +11,9 @@ from sqlmodel import select
 
 from d2r_optimiser.cli._db_helpers import ensure_db
 from d2r_optimiser.core.models import Affix, Item, Socket
-from d2r_optimiser.core.models.rune import Jewel, JewelAffix, Rune
+from d2r_optimiser.core.models._common import utcnow
+from d2r_optimiser.core.models.rune import Gem, Jewel, JewelAffix, Rune
+from d2r_optimiser.vision import ParsedScreenshotItem, ScreenshotParserError, parse_item_screenshot
 
 console = Console(width=120)
 
@@ -37,6 +39,113 @@ def _next_uid(session, base_slug: str) -> str:
         if match:
             max_counter = max(max_counter, int(match.group(1)))
     return f"{base_slug}_{max_counter + 1:03d}"
+
+
+def _parse_affix_args(affixes: tuple[str, ...]) -> dict[str, float]:
+    """Parse repeated ``stat=value`` CLI arguments into a numeric mapping."""
+    parsed: dict[str, float] = {}
+    for affix_str in affixes:
+        if "=" not in affix_str:
+            msg = f"Invalid affix format: {affix_str!r} (expected stat=value)"
+            raise ValueError(msg)
+        stat, _, val_str = affix_str.partition("=")
+        try:
+            value = float(val_str)
+        except ValueError as exc:
+            msg = f"Invalid affix value: {val_str!r} in {affix_str!r}"
+            raise ValueError(msg) from exc
+        parsed[stat.strip()] = value
+    return parsed
+
+
+def _delete_item_dependents(session, item: Item) -> None:
+    """Delete child rows tied to an inventory item."""
+    for affix in session.exec(select(Affix).where(Affix.item_id == item.id)).all():
+        session.delete(affix)
+    for socket in session.exec(select(Socket).where(Socket.item_id == item.id)).all():
+        session.delete(socket)
+
+
+def _replace_item_affixes(session, item: Item, affixes: dict[str, float]) -> None:
+    """Replace an item's affixes with the provided mapping."""
+    for affix in session.exec(select(Affix).where(Affix.item_id == item.id)).all():
+        session.delete(affix)
+    for stat, value in affixes.items():
+        session.add(Affix(item_id=item.id, stat=stat, value=value))
+
+
+def _replace_item_sockets(
+    session,
+    item: Item,
+    socket_count: int,
+    socket_fillings: list[str] | tuple[str, ...],
+) -> None:
+    """Replace an item's socket rows to match the supplied state."""
+    for socket in session.exec(select(Socket).where(Socket.item_id == item.id)).all():
+        session.delete(socket)
+
+    for index in range(socket_count):
+        fill = socket_fillings[index] if index < len(socket_fillings) else None
+        session.add(Socket(item_id=item.id, socket_index=index, filled_with=fill))
+
+
+def _create_inventory_item(
+    session,
+    *,
+    name: str,
+    slot: str,
+    item_type: str,
+    base: str | None = None,
+    affixes: dict[str, float] | None = None,
+    socket_count: int = 0,
+    socket_fillings: list[str] | tuple[str, ...] = (),
+    location: str | None = None,
+    ethereal: bool = False,
+    notes: str | None = None,
+) -> Item:
+    """Insert an inventory item and its dependent affix/socket rows."""
+    slug = _slugify(name)
+    uid = _next_uid(session, slug)
+
+    item = Item(
+        uid=uid,
+        name=name,
+        slot=slot,
+        item_type=item_type,
+        base=base,
+        socket_count=socket_count,
+        location=location,
+        ethereal=ethereal,
+        notes=notes,
+    )
+    session.add(item)
+    session.flush()
+
+    _replace_item_affixes(session, item, affixes or {})
+    _replace_item_sockets(session, item, socket_count, socket_fillings)
+    return item
+
+
+def _print_parsed_screenshot_item(parsed: ParsedScreenshotItem, image: Path) -> None:
+    """Render a parsed screenshot summary before confirmation."""
+    console.print(f"[bold]Parsed screenshot:[/bold] {image.name}")
+    console.print(f"Name: {parsed.name or '[unknown]'}")
+    console.print(f"Slot: {parsed.slot or '[unknown]'}")
+    console.print(f"Type: {parsed.item_type or '[unknown]'}")
+    if parsed.base:
+        console.print(f"Base: {parsed.base}")
+    console.print(f"Sockets: {max(parsed.socket_count, len(parsed.socket_fill))}")
+    if parsed.socket_fill:
+        console.print(f"Socket fill: {', '.join(parsed.socket_fill)}")
+    if parsed.affixes:
+        console.print(
+            "Affixes: "
+            + ", ".join(f"{stat}={value:g}" for stat, value in sorted(parsed.affixes.items()))
+        )
+    if parsed.confidence:
+        console.print(f"Confidence: {parsed.confidence:.2f}")
+    for warning in parsed.warnings:
+        console.print(f"[yellow]Warning:[/yellow] {warning}")
 
 
 @click.group("inv")
@@ -137,45 +246,218 @@ def inv_add(
     """Add an item to the inventory."""
     session = ensure_db(ctx.obj["db_path"])
     try:
-        slug = _slugify(name)
-        uid = _next_uid(session, slug)
+        try:
+            affixes = _parse_affix_args(affix)
+        except ValueError as exc:
+            console.print(f"[red]{exc}[/red]")
+            session.rollback()
+            return
 
-        item = Item(
-            uid=uid,
+        item = _create_inventory_item(
+            session,
             name=name,
             slot=slot,
             item_type=item_type,
             base=base,
+            affixes=affixes,
             socket_count=sockets,
+            socket_fillings=socket_fill,
             location=location,
             ethereal=ethereal,
         )
-        session.add(item)
-        session.flush()  # get item.id
-
-        # Parse and add affixes
-        for affix_str in affix:
-            if "=" not in affix_str:
-                msg = f"[red]Invalid affix format: {affix_str!r} (expected stat=value)[/red]"
-                console.print(msg)
-                session.rollback()
-                return
-            stat, _, val_str = affix_str.partition("=")
-            try:
-                value = float(val_str)
-            except ValueError:
-                console.print(f"[red]Invalid affix value: {val_str!r} in {affix_str!r}[/red]")
-                session.rollback()
-                return
-            session.add(Affix(item_id=item.id, stat=stat.strip(), value=value))
-
-        # Create socket records
-        for i in range(sockets):
-            fill = socket_fill[i] if i < len(socket_fill) else None
-            session.add(Socket(item_id=item.id, socket_index=i, filled_with=fill))
 
         session.commit()
-        console.print(f"[green]Added:[/green] {item.name} [cyan]({uid})[/cyan]")
+        console.print(f"[green]Added:[/green] {item.name} [cyan]({item.uid})[/cyan]")
+    finally:
+        session.close()
+
+
+@inv_group.command("edit")
+@click.argument("uid")
+@click.option("--name", default=None, help="Updated display name.")
+@click.option("--slot", default=None, help="Updated equipment slot.")
+@click.option("--type", "item_type", default=None, help="Updated item type.")
+@click.option("--base", default=None, help="Updated base item name.")
+@click.option("--affix", multiple=True, help="Replacement affix set as stat=value.")
+@click.option("--clear-affixes", is_flag=True, help="Remove all affixes from the item.")
+@click.option("--sockets", default=None, type=int, help="Updated socket count.")
+@click.option("--socket-fill", multiple=True, help="Replacement socket fillings in order.")
+@click.option(
+    "--clear-socket-fill",
+    is_flag=True,
+    help="Clear all socket fillings while keeping the socket count.",
+)
+@click.option("--location", default=None, help="Updated storage location.")
+@click.option("--notes", default=None, help="Updated notes.")
+@click.option("--ethereal/--non-ethereal", default=None, help="Set the ethereal flag.")
+@click.pass_context
+def inv_edit(
+    ctx: click.Context,
+    uid: str,
+    name: str | None,
+    slot: str | None,
+    item_type: str | None,
+    base: str | None,
+    affix: tuple[str, ...],
+    clear_affixes: bool,
+    sockets: int | None,
+    socket_fill: tuple[str, ...],
+    clear_socket_fill: bool,
+    location: str | None,
+    notes: str | None,
+    ethereal: bool | None,
+) -> None:
+    """Edit an existing inventory item by UID."""
+    session = ensure_db(ctx.obj["db_path"])
+    try:
+        item = session.exec(select(Item).where(Item.uid == uid)).first()
+        if item is None:
+            console.print(f"[red]Item not found:[/red] {uid}")
+            ctx.exit(1)
+            return
+
+        if clear_affixes and affix:
+            console.print("[red]Use either --affix or --clear-affixes, not both.[/red]")
+            ctx.exit(1)
+            return
+
+        if clear_socket_fill and socket_fill:
+            console.print("[red]Use either --socket-fill or --clear-socket-fill, not both.[/red]")
+            ctx.exit(1)
+            return
+
+        item.name = name if name is not None else item.name
+        item.slot = slot if slot is not None else item.slot
+        item.item_type = item_type if item_type is not None else item.item_type
+        item.base = base if base is not None else item.base
+        item.location = location if location is not None else item.location
+        item.notes = notes if notes is not None else item.notes
+        if ethereal is not None:
+            item.ethereal = ethereal
+
+        if clear_affixes or affix:
+            try:
+                affixes = _parse_affix_args(affix) if affix else {}
+            except ValueError as exc:
+                console.print(f"[red]{exc}[/red]")
+                ctx.exit(1)
+                return
+            _replace_item_affixes(session, item, affixes)
+
+        existing_sockets = session.exec(
+            select(Socket).where(Socket.item_id == item.id).order_by(Socket.socket_index)
+        ).all()
+        if sockets is not None or socket_fill or clear_socket_fill:
+            target_socket_count = sockets if sockets is not None else item.socket_count
+            if target_socket_count < 0:
+                console.print("[red]Socket count cannot be negative.[/red]")
+                ctx.exit(1)
+                return
+
+            if clear_socket_fill:
+                new_fillings: list[str] = []
+            elif socket_fill:
+                new_fillings = list(socket_fill)
+            else:
+                new_fillings = [
+                    sock.filled_with
+                    for sock in existing_sockets[:target_socket_count]
+                    if sock.filled_with is not None
+                ]
+
+            if len(new_fillings) > target_socket_count:
+                console.print("[red]More socket fillings supplied than sockets available.[/red]")
+                ctx.exit(1)
+                return
+
+            item.socket_count = target_socket_count
+            _replace_item_sockets(session, item, target_socket_count, new_fillings)
+
+        item.updated_at = utcnow()
+        session.add(item)
+        session.commit()
+        console.print(f"[green]Updated:[/green] {item.name} [cyan]({item.uid})[/cyan]")
+    finally:
+        session.close()
+
+
+@inv_group.command("add-from-screenshot")
+@click.argument("image", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--provider",
+    type=click.Choice(["auto", "gemini", "openai"]),
+    default="auto",
+    show_default=True,
+    help="Vision backend to use.",
+)
+@click.option("--model", default=None, help="Model override for the selected provider.")
+@click.option("--location", default=None, help="Where the item is stored after import.")
+@click.option(
+    "--dry-run",
+    is_flag=True,
+    help="Parse and print the item without writing to the database.",
+)
+@click.option("--yes", is_flag=True, help="Skip confirmation before adding the parsed item.")
+@click.pass_context
+def inv_add_from_screenshot(
+    ctx: click.Context,
+    image: Path,
+    provider: str,
+    model: str | None,
+    location: str | None,
+    dry_run: bool,
+    yes: bool,
+) -> None:
+    """Parse an item screenshot and add the detected item to the inventory."""
+    try:
+        parsed = parse_item_screenshot(image, provider=provider, model=model)
+    except ScreenshotParserError as exc:
+        console.print(f"[red]Screenshot parse failed:[/red] {exc}")
+        ctx.exit(1)
+        return
+
+    _print_parsed_screenshot_item(parsed, image)
+
+    required_fields = {
+        "name": parsed.name.strip(),
+        "slot": parsed.slot.strip(),
+        "type": parsed.item_type.strip(),
+    }
+    missing = [label for label, value in required_fields.items() if not value]
+    if not parsed.parse_ok or missing:
+        for warning in parsed.warnings:
+            console.print(f"[yellow]Warning:[/yellow] {warning}")
+        console.print(
+            "[red]Screenshot parser could not confidently extract a complete item.[/red]"
+        )
+        if missing:
+            console.print(f"[dim]Missing fields: {', '.join(missing)}[/dim]")
+        ctx.exit(1)
+        return
+
+    if dry_run:
+        return
+
+    if not yes:
+        click.confirm("Add this parsed item to the inventory?", abort=True)
+
+    session = ensure_db(ctx.obj["db_path"])
+    try:
+        item = _create_inventory_item(
+            session,
+            name=parsed.name.strip(),
+            slot=parsed.slot.strip(),
+            item_type=parsed.item_type.strip(),
+            base=parsed.base,
+            affixes=parsed.affixes,
+            socket_count=max(parsed.socket_count, len(parsed.socket_fill)),
+            socket_fillings=parsed.socket_fill,
+            location=location,
+            ethereal=parsed.ethereal,
+            notes=parsed.notes,
+        )
+        session.commit()
+        console.print(f"[green]Added:[/green] {item.name} [cyan]({item.uid})[/cyan]")
     finally:
         session.close()
 
@@ -201,10 +483,7 @@ def inv_remove(ctx: click.Context, uid: str, yes: bool) -> None:
             click.confirm(f"Remove {item.name} ({uid})?", abort=True)
 
         # Remove dependent rows first
-        for affix in session.exec(select(Affix).where(Affix.item_id == item.id)).all():
-            session.delete(affix)
-        for socket in session.exec(select(Socket).where(Socket.item_id == item.id)).all():
-            session.delete(socket)
+        _delete_item_dependents(session, item)
         session.delete(item)
         session.commit()
         console.print(f"[green]Removed:[/green] {item.name} ({uid})")
@@ -377,6 +656,49 @@ def inv_add_rune(ctx: click.Context, rune_type: str, quantity: int) -> None:
         total = existing.quantity if existing else quantity
         console.print(
             f"[green]Added {quantity}x {rune_type} rune(s).[/green] "
+            f"Total: {total}"
+        )
+    finally:
+        session.close()
+
+
+# ── inv add-gem ─────────────────────────────────────────────────────────────
+
+
+@inv_group.command("add-gem")
+@click.argument("gem_type")
+@click.option("--grade", default="Perfect", help="Gem grade (for example Perfect).")
+@click.option("--quantity", default=1, type=int, help="Number of gems to add.")
+@click.pass_context
+def inv_add_gem(
+    ctx: click.Context,
+    gem_type: str,
+    grade: str,
+    quantity: int,
+) -> None:
+    """Add gems to the pool."""
+    session = ensure_db(ctx.obj["db_path"])
+    try:
+        name = f"{grade.strip()} {gem_type.strip()}".strip()
+        existing = session.exec(
+            select(Gem).where(Gem.name == name)
+        ).first()
+        if existing:
+            existing.quantity += quantity
+            session.add(existing)
+        else:
+            session.add(
+                Gem(
+                    name=name,
+                    gem_type=gem_type.strip(),
+                    grade=grade.strip(),
+                    quantity=quantity,
+                )
+            )
+        session.commit()
+        total = existing.quantity if existing else quantity
+        console.print(
+            f"[green]Added {quantity}x {name} gem(s).[/green] "
             f"Total: {total}"
         )
     finally:

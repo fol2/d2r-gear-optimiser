@@ -9,6 +9,7 @@ from d2r_optimiser.core.models import (
     Affix,
     BuildDefinition,
     Constraint,
+    Gem,
     Item,
     Jewel,
     JewelAffix,
@@ -138,7 +139,32 @@ class TestRuneModel:
 
 
 # ---------------------------------------------------------------------------
-# 5. Jewel + JewelAffix relationship
+# 5. Gem pool
+# ---------------------------------------------------------------------------
+
+
+class TestGemModel:
+    def test_gem_quantity(self):
+        gem = Gem(name="Perfect Topaz", gem_type="Topaz", grade="Perfect", quantity=4)
+        assert gem.name == "Perfect Topaz"
+        assert gem.gem_type == "Topaz"
+        assert gem.grade == "Perfect"
+        assert gem.quantity == 4
+
+    def test_gem_default_quantity(self):
+        gem = Gem(name="Perfect Diamond", gem_type="Diamond", grade="Perfect")
+        assert gem.quantity == 0
+
+    def test_gem_pool_in_db(self, session):
+        session.add(Gem(name="Perfect Skull", gem_type="Skull", grade="Perfect", quantity=3))
+        session.commit()
+
+        skull = session.exec(select(Gem).where(Gem.name == "Perfect Skull")).one()
+        assert skull.quantity == 3
+
+
+# ---------------------------------------------------------------------------
+# 6. Jewel + JewelAffix relationship
 # ---------------------------------------------------------------------------
 
 
@@ -175,7 +201,7 @@ class TestJewelModels:
 
 
 # ---------------------------------------------------------------------------
-# 6. RunewordRecipe stores/retrieves JSON fields correctly
+# 7. RunewordRecipe stores/retrieves JSON fields correctly
 # ---------------------------------------------------------------------------
 
 
@@ -213,7 +239,7 @@ class TestRunewordRecipe:
 
 
 # ---------------------------------------------------------------------------
-# 7. BuildDefinition validates from a sample dict (Pydantic validation)
+# 8. BuildDefinition validates from a sample dict (Pydantic validation)
 # ---------------------------------------------------------------------------
 
 
@@ -264,7 +290,7 @@ class TestBuildDefinition:
 
 
 # ---------------------------------------------------------------------------
-# 8. ObjectiveWeights defaults sum to ~1.0
+# 9. ObjectiveWeights defaults sum to ~1.0
 # ---------------------------------------------------------------------------
 
 
@@ -284,7 +310,7 @@ class TestObjectiveWeights:
 
 
 # ---------------------------------------------------------------------------
-# 9. Loadout + LoadoutItem relationship
+# 10. Loadout + LoadoutItem relationship
 # ---------------------------------------------------------------------------
 
 
@@ -322,7 +348,7 @@ class TestLoadoutModels:
 
 
 # ---------------------------------------------------------------------------
-# 10. ValidationRecord stores predicted vs actual
+# 11. ValidationRecord stores predicted vs actual
 # ---------------------------------------------------------------------------
 
 
@@ -361,7 +387,7 @@ class TestValidationRecord:
 
 
 # ---------------------------------------------------------------------------
-# 11. Create in-memory SQLite DB, create tables, insert Item + Affixes, query back
+# 12. Create in-memory SQLite DB, create tables, insert Item + Affixes, query back
 # ---------------------------------------------------------------------------
 
 
@@ -439,7 +465,7 @@ class TestDBOperations:
 
 
 # ---------------------------------------------------------------------------
-# 12. Verify cascade-style delete (delete Item → Affixes cleaned up manually)
+# 13. Verify cascade-style delete (delete Item → Affixes cleaned up manually)
 #     Note: SQLModel/SQLite does not auto-cascade by default without explicit
 #     relationship config. We verify the pattern that consumers must follow.
 # ---------------------------------------------------------------------------

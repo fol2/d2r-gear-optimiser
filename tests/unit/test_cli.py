@@ -4,6 +4,9 @@ import yaml
 from click.testing import CliRunner
 
 from d2r_optimiser.cli import cli
+from d2r_optimiser.cli.run import _parse_weight_overrides
+from d2r_optimiser.vision import ParsedScreenshotItem
+from d2r_optimiser.vision.router import resolve_provider
 
 
 def _run(args: list[str], **kwargs):
@@ -142,6 +145,44 @@ class TestInventoryRemove:
         assert "not found" in result.output.lower()
 
 
+class TestInventoryEdit:
+    """Tests for inv edit."""
+
+    def test_inv_edit_updates_affixes_and_sockets(self, tmp_path):
+        db = str(tmp_path / "test.db")
+        _run([
+            "--db", db, "inv", "add",
+            "--name", "Shako",
+            "--slot", "helmet",
+            "--type", "unique",
+            "--affix", "mf=50",
+            "--sockets", "1",
+            "--socket-fill", "Ist",
+        ])
+
+        result = _run([
+            "--db", db, "inv", "edit", "shako_001",
+            "--name", "Harlequin Crest",
+            "--affix", "mf=74",
+            "--affix", "all_skills=2",
+            "--sockets", "2",
+            "--socket-fill", "Ist",
+            "--socket-fill", "Ist",
+        ])
+
+        assert result.exit_code == 0
+        assert "Updated" in result.output
+
+        result = _run(["--db", db, "inv", "list"])
+        assert "Harlequin Crest" in result.output
+        assert "mf=74" in result.output
+
+    def test_inv_edit_not_found(self, tmp_path):
+        db = str(tmp_path / "test.db")
+        result = _run(["--db", db, "inv", "edit", "missing_001", "--name", "Nope"])
+        assert "not found" in result.output.lower()
+
+
 class TestInventoryRune:
     """Tests for inv add-rune."""
 
@@ -159,6 +200,23 @@ class TestInventoryRune:
         assert "Total: 5" in result.output
 
 
+class TestInventoryGem:
+    """Tests for inv add-gem."""
+
+    def test_inv_add_gem(self, tmp_path):
+        db = str(tmp_path / "test.db")
+        result = _run(["--db", db, "inv", "add-gem", "Topaz", "--quantity", "4"])
+        assert result.exit_code == 0
+        assert "4x Perfect Topaz" in result.output
+        assert "Total: 4" in result.output
+
+    def test_inv_add_gem_accumulates(self, tmp_path):
+        db = str(tmp_path / "test.db")
+        _run(["--db", db, "inv", "add-gem", "Diamond", "--quantity", "2"])
+        result = _run(["--db", db, "inv", "add-gem", "Diamond", "--quantity", "3"])
+        assert "Total: 5" in result.output
+
+
 class TestInventoryJewel:
     """Tests for inv add-jewel."""
 
@@ -172,6 +230,58 @@ class TestInventoryJewel:
         ])
         assert result.exit_code == 0
         assert "Added jewel" in result.output
+
+
+class TestInventoryScreenshot:
+    """Tests for screenshot-driven item import."""
+
+    def test_inv_add_from_screenshot(self, tmp_path, monkeypatch):
+        db = str(tmp_path / "test.db")
+        image = tmp_path / "tooltip.png"
+        image.write_bytes(b"fake image bytes")
+
+        def _fake_parse(_image, *, provider=None, model=None):
+            return ParsedScreenshotItem(
+                parse_ok=True,
+                name="Harlequin Crest",
+                slot="helmet",
+                item_type="unique",
+                base="Shako",
+                affixes={"mf": 50, "all_skills": 2},
+                socket_count=1,
+                socket_fill=["Ist"],
+                confidence=0.92,
+            )
+
+        monkeypatch.setattr("d2r_optimiser.cli.inv.parse_item_screenshot", _fake_parse)
+
+        result = _run([
+            "--db", db, "inv", "add-from-screenshot", str(image), "--provider", "gemini", "--yes",
+        ])
+
+        assert result.exit_code == 0
+        assert "Added" in result.output
+
+        result = _run(["--db", db, "inv", "list"])
+        assert "Harlequin Crest" in result.output
+        assert "mf=50" in result.output
+
+
+class TestScreenshotProviderRouting:
+    """Tests for screenshot provider auto-resolution."""
+
+    def test_resolve_provider_prefers_gemini(self, monkeypatch):
+        monkeypatch.setenv("GEMINI_API_KEY", "present")
+        monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+        assert resolve_provider("auto") == "gemini"
+
+    def test_resolve_provider_rejects_unknown(self):
+        try:
+            resolve_provider("foo")
+        except Exception as exc:
+            assert "Unsupported screenshot provider" in str(exc)
+        else:
+            raise AssertionError("Expected provider resolution to fail")
 
 
 class TestImportExport:
@@ -242,6 +352,7 @@ class TestBuildCommands:
         result = _run(["build", "list"])
         assert result.exit_code == 0
         assert "warlock_echoing_strike_mf" in result.output
+        assert "warlock_summoner" in result.output
 
     def test_build_show(self):
         result = _run(["build", "show", "warlock_echoing_strike_mf"])
@@ -254,6 +365,13 @@ class TestBuildCommands:
         assert "fcr" in result.output
         # Check that presets are shown
         assert "mf" in result.output
+
+    def test_build_show_summoner(self):
+        result = _run(["build", "show", "warlock_summoner"])
+        assert result.exit_code == 0
+        assert "Summoner Warlock" in result.output
+        assert "starter" in result.output
+        assert "summon_goatman" in result.output
 
     def test_build_show_not_found(self):
         result = _run(["build", "show", "nonexistent_build"])
@@ -293,3 +411,24 @@ class TestEdgeCases:
         ])
         assert result.exit_code == 0
         assert "Added" in result.output
+
+
+class TestRunWeightParsing:
+    """Tests for `optimise run --weight` parsing."""
+
+    def test_parse_weight_overrides_supports_aliases(self):
+        overrides = _parse_weight_overrides(("mf=0.5", "bp=0.1", "damage=0.25", "ehp=0.15"))
+        assert overrides == {
+            "magic_find": 0.5,
+            "breakpoint_score": 0.1,
+            "damage": 0.25,
+            "effective_hp": 0.15,
+        }
+
+    def test_parse_weight_overrides_rejects_unknown_key(self):
+        try:
+            _parse_weight_overrides(("speed=0.5",))
+        except ValueError as exc:
+            assert "unsupported key" in str(exc)
+        else:
+            raise AssertionError("Expected ValueError for unsupported weight key")

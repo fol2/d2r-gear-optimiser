@@ -7,33 +7,63 @@ import json as json_lib
 import click
 import pydantic
 from rich.console import Console
+from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
 
-from d2r_optimiser.core.orchestrator import BuildNotFoundError, EmptyInventoryError, optimise
+from d2r_optimiser.core.orchestrator import (
+    BuildNotFoundError,
+    EmptyInventoryError,
+    InvalidBuildModeError,
+    optimise,
+)
 from d2r_optimiser.loader import LoaderError
 
 console = Console(width=140)
+_WEIGHT_ALIASES = {
+    "damage": "damage",
+    "mf": "magic_find",
+    "magic_find": "magic_find",
+    "ehp": "effective_hp",
+    "effective_hp": "effective_hp",
+    "bp": "breakpoint_score",
+    "breakpoint": "breakpoint_score",
+    "breakpoint_score": "breakpoint_score",
+}
 
 
 @click.command("run")
 @click.argument("build_name")
 @click.option(
     "--mode",
-    type=click.Choice(["mf", "dps", "balanced", "survivability"]),
+    type=str,
     default=None,
-    help="Weight preset to use (overrides default objectives).",
+    help="Build-defined weight preset to use (for example starter, standard, or mf).",
+)
+@click.option(
+    "--weight",
+    "weight_values",
+    multiple=True,
+    help="Override a weight as key=value (repeatable).",
 )
 @click.option("--top-k", default=5, type=int, help="Number of top results to return.")
 @click.option("--workers", default=None, type=int, help="Parallel workers (default: auto).")
 @click.option("--json", "output_json", is_flag=True, help="Output as JSON instead of a table.")
+@click.option(
+    "--progress/--no-progress",
+    "show_progress",
+    default=True,
+    help="Show live search progress in interactive terminals.",
+)
 @click.pass_context
 def run_cmd(
     ctx: click.Context,
     build_name: str,
     mode: str | None,
+    weight_values: tuple[str, ...],
     top_k: int,
     workers: int | None,
     output_json: bool,
+    show_progress: bool,
 ) -> None:
     """Run the gear optimiser for a build.
 
@@ -41,14 +71,22 @@ def run_cmd(
     build's scoring formula while respecting all hard constraints.
     """
     db_path = ctx.obj["db_path"]
+    try:
+        weight_overrides = _parse_weight_overrides(weight_values)
+    except ValueError as exc:
+        console.print(f"[red]Invalid weight override:[/red] {exc}")
+        ctx.exit(1)
+        return
 
     try:
-        results = optimise(
+        results = _run_optimise(
             db_path=db_path,
             build_name=build_name,
             mode=mode,
+            weight_overrides=weight_overrides or None,
             top_k=top_k,
             workers=workers,
+            show_progress=show_progress and not output_json,
         )
     except BuildNotFoundError as exc:
         console.print(f"[red]Build not found:[/red] {exc}")
@@ -56,6 +94,10 @@ def run_cmd(
         return
     except EmptyInventoryError as exc:
         console.print(f"[red]Empty inventory:[/red] {exc}")
+        ctx.exit(1)
+        return
+    except InvalidBuildModeError as exc:
+        console.print(f"[red]Invalid mode:[/red] {exc}")
         ctx.exit(1)
         return
     except (LoaderError, pydantic.ValidationError) as exc:
@@ -79,6 +121,75 @@ def run_cmd(
         _output_json(results)
     else:
         _output_table(results)
+
+
+def _parse_weight_overrides(weight_values: tuple[str, ...]) -> dict[str, float]:
+    """Parse repeatable ``--weight key=value`` arguments."""
+    overrides: dict[str, float] = {}
+    for weight_str in weight_values:
+        if "=" not in weight_str:
+            msg = f"{weight_str!r} is missing '='"
+            raise ValueError(msg)
+
+        raw_key, _, raw_value = weight_str.partition("=")
+        key = _WEIGHT_ALIASES.get(raw_key.strip().lower())
+        if key is None:
+            supported = ", ".join(sorted(_WEIGHT_ALIASES))
+            msg = f"unsupported key {raw_key!r}; use one of: {supported}"
+            raise ValueError(msg)
+
+        try:
+            overrides[key] = float(raw_value)
+        except ValueError as exc:
+            msg = f"{raw_value!r} is not a valid number for {raw_key!r}"
+            raise ValueError(msg) from exc
+    return overrides
+
+
+def _run_optimise(
+    *,
+    db_path: str,
+    build_name: str,
+    mode: str | None,
+    weight_overrides: dict[str, float] | None,
+    top_k: int,
+    workers: int | None,
+    show_progress: bool,
+) -> list[dict]:
+    """Run the optimiser with optional live progress reporting."""
+    if not (show_progress and console.is_terminal):
+        return optimise(
+            db_path=db_path,
+            build_name=build_name,
+            mode=mode,
+            weight_overrides=weight_overrides,
+            top_k=top_k,
+            workers=workers,
+        )
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("{task.description}"),
+        BarColumn(),
+        TextColumn("{task.completed:,} evaluations"),
+        TimeElapsedColumn(),
+        console=console,
+        transient=True,
+    ) as progress:
+        task_id = progress.add_task("Searching loadouts", total=None, completed=0)
+
+        def _on_progress(evaluated: int) -> None:
+            progress.update(task_id, completed=evaluated)
+
+        return optimise(
+            db_path=db_path,
+            build_name=build_name,
+            mode=mode,
+            weight_overrides=weight_overrides,
+            top_k=top_k,
+            workers=workers,
+            progress_callback=_on_progress,
+        )
 
 
 def _output_json(results: list[dict]) -> None:

@@ -1,0 +1,123 @@
+name: warlock_summoner
+display_name: "Summoner Warlock"
+character_class: warlock
+description: |
+  Endgame summoner build based on the Maxroll Season 13 Summoner Warlock guide.
+  The core loop is to command goatmen and bound demons while repositioning with
+  Blade Warp until Enigma takes over mobility.
+
+  This profile exposes the guide's Starter, Standard, and Magic Find variants
+  as scoring presets. A literal all-resistance hard gate is intentionally
+  avoided here because the current stat model represents survivability through
+  a mix of ``resistance_all`` and individual elemental resist affixes. The EHP
+  formula scores that mixture directly while FCR remains the main hard
+  breakpoint requirement.
+
+formula_module: warlock_summoner
+
+# ─── Skill Allocation ────────────────────────────────────────────────────────
+# Reference priority from Maxroll:
+# 1-point wonders: Blood Oath, Blade Warp, Engorge
+# Max order: Summon Goatman -> Demonic Mastery -> Bind Demon -> Death Mark
+#            -> Sigil Lethargy, with remaining points flexed as gear and level allow.
+skill_points:
+  summon_goatman: 20
+  demonic_mastery: 20
+  bind_demon: 20
+  death_mark: 20
+  sigil_lethargy: 20
+  engorge: 1
+  blood_oath: 1
+  blade_warp: 1
+
+# ─── Objectives ──────────────────────────────────────────────────────────────
+# Default profile matches the Standard variant.
+objectives:
+  damage: 0.45
+  magic_find: 0.10
+  effective_hp: 0.25
+  breakpoint_score: 0.20
+
+# ─── Hard Constraints ────────────────────────────────────────────────────────
+constraints:
+  - stat: fcr
+    operator: ">="
+    value: 75
+  - stat: strength
+    operator: ">="
+    value: 0
+  - stat: dexterity
+    operator: ">="
+    value: 0
+
+# ─── Weight Presets ──────────────────────────────────────────────────────────
+presets:
+  starter:
+    damage: 0.30
+    magic_find: 0.05
+    effective_hp: 0.35
+    breakpoint_score: 0.30
+  standard:
+    damage: 0.45
+    magic_find: 0.10
+    effective_hp: 0.25
+    breakpoint_score: 0.20
+  mf:
+    damage: 0.25
+    magic_find: 0.45
+    effective_hp: 0.15
+    breakpoint_score: 0.15
+
+# ─── Reference Loadouts ──────────────────────────────────────────────────────
+# Gear anchors are based on the Maxroll variant tabs and item-priority tables.
+reference_loadouts:
+  - name: "Starter FCR Entry"
+    source: "https://maxroll.gg/d2/guides/summoner-warlock-guide"
+    notes: |
+      Budget setup aimed at reaching the 75% FCR breakpoint quickly while
+      leaning on summon skill levels and a stable mana pool.
+    gear:
+      weapon: "Spirit Crystal Sword"
+      shield: "Spirit Monarch"
+      helmet: "Lore"
+      body: "Stealth"
+      gloves: "Magefist"
+      belt: "Caster Crafted Belt"
+      boots: "Waterwalk"
+      amulet: "Rare Warlock Amulet"
+      ring1: "Rare FCR Ring"
+      ring2: "Blood Crafted Ring"
+
+  - name: "Standard Endgame"
+    source: "https://maxroll.gg/d2/guides/summoner-warlock-guide"
+    notes: |
+      Standard endgame profile focused on summon scaling, mobility, and a
+      comfortable FCR breakpoint while keeping defensive coverage high.
+    gear:
+      weapon: "Heart of the Oak"
+      shield: "Spirit Monarch"
+      helmet: "Harlequin Crest"
+      body: "Enigma"
+      gloves: "Trang-Oul's Claws"
+      belt: "Arachnid Mesh"
+      boots: "Sandstorm Trek"
+      amulet: "Mara's Kaleidoscope"
+      ring1: "Stone of Jordan"
+      ring2: "Bul-Kathos' Wedding Band"
+
+  - name: "Magic Find Variant"
+    source: "https://maxroll.gg/d2/guides/summoner-warlock-guide"
+    notes: |
+      MF-oriented variant that keeps 75% FCR through weapon and shield while
+      freeing gloves, belt, and boots for higher MF pieces.
+    gear:
+      weapon: "Heart of the Oak"
+      shield: "Spirit Monarch"
+      helmet: "Harlequin Crest"
+      body: "Skullder's Ire"
+      gloves: "Chance Guards"
+      belt: "Goldwrap"
+      boots: "War Traveler"
+      amulet: "Mara's Kaleidoscope"
+      ring1: "Stone of Jordan"
+      ring2: "Nagelring"

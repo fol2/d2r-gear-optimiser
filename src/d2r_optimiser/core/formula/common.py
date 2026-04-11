@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from d2r_optimiser.core.stats import merge_stats
+
 
 def effective_mf(raw_mf: float) -> dict[str, float]:
     """Apply D2R diminishing returns to raw MF.
@@ -61,8 +63,7 @@ def aggregate_stats(items_by_slot: dict[str, list[dict]]) -> dict[str, float]:
     totals: dict[str, float] = {}
     for slot_items in items_by_slot.values():
         for stat_dict in slot_items:
-            for stat, value in stat_dict.items():
-                totals[stat] = totals.get(stat, 0.0) + value
+            merge_stats(totals, stat_dict)
     return totals
 
 
